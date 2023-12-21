@@ -1,0 +1,16 @@
+.container {
+  @apply bg-mainColor h-full flex flex-col items-center;
+}
+.tabContainer {
+  @apply hover:bg-secondColor hover:bg-opacity-70  my-1 items-center flex focus:bg-secondColor
+  h-11 w-10/12 rounded-2xl justify-center focus:outline-none;
+}
+.contentTab {
+  @apply w-2/3  flex;
+}
+.icon {
+  @apply pr-3;
+}
+.tabName {
+  @apply text-sm font-normal text-white;
+}

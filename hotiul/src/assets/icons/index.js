@@ -1,0 +1,10 @@
+export { default as IC_booking } from "./IC_booking.svg";
+export { default as IC_customer } from "./IC_customer.svg";
+export { default as IC_dashboard } from "./IC_dashboard.svg";
+export { default as IC_fee } from "./IC_fee.svg";
+export { default as IC_logout } from "./IC_logout.svg";
+export { default as IC_refund } from "./IC_refund.svg";
+export { default as IC_room } from "./IC_room.svg";
+export { default as IC_service } from "./IC_service.svg";
+export { default as IC_staff } from "./IC_staff.svg";
+export { default as IC_statistic } from "./IC_statistic.svg";

@@ -1,0 +1,9 @@
+.mainContainer {
+  @apply h-screen w-full;
+}
+.sidebar {
+  @apply h-full w-1/6;
+}
+.content {
+  @apply bg-red-300;
+}

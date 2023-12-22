@@ -1,5 +1,5 @@
 .container {
-  @apply bg-mainColor h-full flex flex-col items-center;
+  @apply bg-mainColor h-screen flex flex-col items-center w-1/6 fixed;
 }
 .tabContainer {
   @apply hover:bg-secondColor hover:bg-opacity-70  my-1 items-center flex focus:bg-secondColor

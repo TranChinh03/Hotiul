@@ -1,7 +1,8 @@
 import logo from "./logo.svg";
 import "./App.css";
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import SideBar from "./components/sidebar";
+import { useLocation } from "react-router-dom";
+import SideBar from "./components/sidebar/sidebar";
 import { Home } from "./views/Home/Home";
 import { Room } from "./views/Room/Room";
 import { Booking } from "./views/Booking/Booking";
@@ -11,13 +12,19 @@ import { Statistic } from "./views/Statistic/Statistic";
 import { Customer } from "./views/Customer/Customer";
 import { MonthlyFee } from "./views/MonthlyFee/MonthlyFee";
 import { Services } from "./views/Services/Services";
+import { Header } from "./components/header/header";
+import { useState } from "react";
 
 function App() {
+  const [currentTab, setCurrentTab] = useState("home");
   return (
     <>
       <Router>
-        <SideBar />
+        <SideBar handleChange={setCurrentTab}/>
         <div style={{marginLeft: "16.66667%"}}>
+          <div class="h-1/5">
+            <Header selected={currentTab}/>
+          </div>
             <Routes>
               <Route path="/" exact={true} element={<Home/>} />
               <Route path="/room" element={<Room/>} />

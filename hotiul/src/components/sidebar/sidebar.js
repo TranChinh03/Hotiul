@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./sidebar.module.scss";
-import { IMG_logo } from "../assets/imgs";
+import { IMG_logo } from "../../assets/imgs";
 import {useNavigate} from 'react-router-dom';
+import { message } from 'antd'
 import {
   IC_booking,
   IC_customer,
@@ -13,59 +14,64 @@ import {
   IC_service,
   IC_staff,
   IC_statistic,
-} from "../assets/icons";
+} from "../../assets/icons";
 
-const SideBar = () => {
+const SideBar = ({handleChange}) => {
   const navigate = useNavigate();
   const tabs = [
     {
-      tabname: "Dashboard",
+      tabname: "Home",
+      tab: "home",
       icon: IC_dashboard,
       nav: '/'
     },
     {
       tabname: "Booking",
+      tab: "booking",
       icon: IC_booking,
       nav: '/booking'
     },
     {
       tabname: "Room",
+      tab: "room",
       icon: IC_room,
       nav: '/room'
     },
     {
       tabname: "Refund",
+      tab: "refund",
       icon: IC_refund,
       nav: '/refund'
     },
     {
       tabname: "Customer",
+      tab: "customer",
       icon: IC_customer,
       nav: '/customer'
     },
     {
       tabname: "Monthly Fee",
+      tab: "monthlyFee",
       icon: IC_fee,
       nav: '/monthlyfee'
     },
     {
       tabname: "Services",
+      tab: "services",
       icon: IC_service,
       nav: '/services'
     },
     {
       tabname: "Staff",
+      tab: "staff",
       icon: IC_staff,
       nav: '/staff'
     },
     {
       tabname: "Statistic",
+      tab: "statistic",
       icon: IC_statistic,
       nav: '/statistic'
-    },
-    {
-      tabname: "Logout",
-      icon: IC_logout,
     },
   ];
 
@@ -73,7 +79,12 @@ const SideBar = () => {
     return (
         <button
           className={styles.tabContainer}
-          onClick={() => navigate(map.nav)}
+          onClick={() => 
+            {
+              handleChange(map.tab)
+              navigate(map.nav)
+              message.success("Change")
+            }}
           autoFocus={map.tabname === "Dashboard" ? true : false}>
           <div className={styles.contentTab}>
             <img className={styles.icon} src={map.icon} />
@@ -86,6 +97,12 @@ const SideBar = () => {
     <div className={styles.container}>
       <img src={IMG_logo} />
       {createList}
+      <button className={styles.tabContainer}>
+        <div className={styles.contentTab}>
+              <img className={styles.icon} src={IC_logout} />
+              <p className={styles.tabName}>Log Out</p>
+        </div>
+      </button>
     </div>
   );
 };

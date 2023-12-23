@@ -8,3 +8,7 @@ export { default as IC_room } from "./IC_room.svg";
 export { default as IC_service } from "./IC_service.svg";
 export { default as IC_staff } from "./IC_staff.svg";
 export { default as IC_statistic } from "./IC_statistic.svg";
+export { default as IC_CircleCheck } from "./IC_CircleCheck.svg";
+export { default as IC_CircleLogout } from "./IC_CircleLogout.svg";
+export { default as IC_CirclePerson } from "./IC_CirclePerson.svg";
+export { default as IC_CircleDollar } from "./IC_CircleDollar.svg";

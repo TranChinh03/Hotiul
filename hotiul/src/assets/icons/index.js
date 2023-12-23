@@ -8,3 +8,8 @@ export { default as IC_room } from "./IC_room.svg";
 export { default as IC_service } from "./IC_service.svg";
 export { default as IC_staff } from "./IC_staff.svg";
 export { default as IC_statistic } from "./IC_statistic.svg";
+export { default as IC_add } from "./IC_add.svg";
+export { default as IC_navDetail } from "./IC_navDetail.svg";
+export { default as IC_sort } from "./IC_sort.svg";
+export { default as IC_nextArrow } from "./IC_nextArrow.svg";
+export { default as IC_backArrow } from "./IC_backArrow.svg";

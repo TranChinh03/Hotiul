@@ -1,0 +1,6 @@
+.title {
+  @apply text-mainColor text-sm font-semibold mx-5 my-2;
+}
+.txtSearch {
+  @apply text-xs shadow-md h-10 w-80 px-3 rounded-2xl  focus:outline-secondColor bg-white;
+}

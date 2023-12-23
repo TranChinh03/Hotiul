@@ -14,3 +14,9 @@ export { default as IC_CircleLogout } from './IC_CircleLogout.svg';
 export { default as IC_CirclePerson } from './IC_CirclePerson.svg';
 export { default as IC_CircleDollar } from './IC_CircleDollar.svg';
 export { default as IC_line } from './IC_line.svg';
+export { default as IC_add } from "./IC_add.svg";
+export { default as IC_navDetail } from "./IC_navDetail.svg";
+export { default as IC_sort } from "./IC_sort.svg";
+export { default as IC_nextArrow } from "./IC_nextArrow.svg";
+export { default as IC_backArrow } from "./IC_backArrow.svg";
+

@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import SideBar from "./components/sidebar/sidebar";
 import { Home } from "./views/Home/Home";
@@ -14,35 +14,37 @@ import { MonthlyFee } from "./views/MonthlyFee/MonthlyFee";
 import { Services } from "./views/Services/Services";
 import { Header } from "./components/header/header";
 import { useState } from "react";
+import ProfileCustomer from "./components/profileCustomer/ProfileCustomer";
+import ProfileStaff from "./components/profileStaff/ProfileStaff";
 
 function App() {
   const [currentTab, setCurrentTab] = useState("home");
   return (
     <>
+      {/* <ProfileStaff></ProfileStaff> */}
       <Router>
-        <SideBar handleChange={setCurrentTab}/>
-        <div style={{marginLeft: "16.66667%"}}>
+        <SideBar handleChange={setCurrentTab} />
+        <div style={{ marginLeft: "16.66667%" }}>
           <div class="h-1/5">
-            <Header selected={currentTab}/>
+            <Header selected={currentTab} />
           </div>
           <div class="h-4/5">
-          <Routes>
-              <Route path="/" exact={true} element={<Home/>} />
-              <Route path="/room" element={<Room/>} />
-              <Route path="/booking" element={<Booking/>} />
-              <Route path="/refund" element={<Refund/>} />
-              <Route path="/staff" element={<Staff/>} />
-              <Route path="/statistic" element={<Statistic/>} />
-              <Route path="/customer" element={<Customer/>} />
-              <Route path="/monthlyfee" element={<MonthlyFee/>} />
-              <Route path="/services" element={<Services/>} />
+            <Routes>
+              <Route path="/" exact={true} element={<Home />} />
+              <Route path="/room" element={<Room />} />
+              <Route path="/booking" element={<Booking />} />
+              <Route path="/refund" element={<Refund />} />
+              <Route path="/staff" element={<Staff />} />
+              <Route path="/statistic" element={<Statistic />} />
+              <Route path="/customer" element={<Customer />} />
+              <Route path="/monthlyfee" element={<MonthlyFee />} />
+              <Route path="/services" element={<Services />} />
             </Routes>
           </div>
         </div>
       </Router>
-
     </>
-  )
+  );
 }
 
 export default App;

@@ -28,7 +28,8 @@ function App() {
           <div class="h-1/5">
             <Header selected={currentTab}/>
           </div>
-            <Routes>
+          <div class="h-4/5">
+          <Routes>
               <Route path="/" exact={true} element={<Home/>} />
               <Route path="/room" element={<Room/>} />
               <Route path="/booking" element={<Booking/>} />
@@ -39,6 +40,7 @@ function App() {
               <Route path="/monthlyfee" element={<MonthlyFee/>} />
               <Route path="/services" element={<Services/>} />
             </Routes>
+          </div>
         </div>
       </Router> */}
 		</>

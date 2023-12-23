@@ -1,0 +1,41 @@
+.container {
+	width: 60%;
+	height: fit-content;
+	background-color: white;
+	border-radius: 25px;
+	padding: 45px;
+	padding-top: 20px;
+	margin: auto;
+	margin-top: 20px;
+	box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.15);
+}
+
+.header {
+	width: 100%;
+	height: fit-content;
+	flex-direction: row;
+	display: flex;
+	align-content: center;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.headerTitle {
+	color: var(--2, #023e8a);
+	font-size: 40px;
+	font-style: normal;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.bookingInfo {
+}
+
+.serInfo {
+}
+
+.payInfo {
+}
+
+.footer {
+}

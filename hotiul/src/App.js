@@ -16,12 +16,13 @@ import { Header } from './components/header/header';
 import { useState } from 'react';
 import ProfileCustomer from './components/profileCustomer/ProfileCustomer';
 import ProfileStaff from './components/profileStaff/ProfileStaff';
+import Invoice from './components/invoice/invoice';
 
 function App() {
 	const [currentTab, setCurrentTab] = useState('home');
 	return (
 		<>
-			<ProfileStaff></ProfileStaff>
+			<Invoice></Invoice>
 			{/* <Router>
         <SideBar handleChange={setCurrentTab}/>
         <div style={{marginLeft: "16.66667%"}}>

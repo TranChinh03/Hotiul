@@ -21,7 +21,6 @@ function App() {
   const [currentTab, setCurrentTab] = useState("home");
   return (
     <>
-      {/* <ProfileStaff></ProfileStaff> */}
       <Router>
         <SideBar handleChange={setCurrentTab} />
         <div style={{ marginLeft: "16.66667%" }}>

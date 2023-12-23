@@ -1,9 +1,41 @@
-// .container {
-//   margin-left: 16.6667%,
-// }
-// .sidebar {
-//   @apply h-full w-1/6;
-// }
-// .content {
-//   @apply bg-red-300;
-// }
+.container {
+    padding: 20px;
+    height: 100%;
+}
+
+.homeText {
+    @apply mb-5;
+    font-size: 20px;
+    font-weight: bold;
+    color: #023E8A;
+    line-height: 24px;
+}
+
+.statisticContainer {
+    width: 100%;
+    height: 200px;
+    background-color: #CAF0F8;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.todayActivities {
+    flex: 0.35;
+    
+}
+
+.weekly {
+    flex: 0.3;
+}   
+
+.calendar {
+    flex: 0.35;
+    margin: 0 30px;
+}
+
+.customCalendar {
+    background-color: #00B4D8;
+    margin: 10px;
+}

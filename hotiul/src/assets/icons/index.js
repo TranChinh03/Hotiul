@@ -1,3 +1,4 @@
+
 export { default as IC_booking } from "./IC_booking.svg";
 export { default as IC_customer } from "./IC_customer.svg";
 export { default as IC_dashboard } from "./IC_dashboard.svg";
@@ -13,3 +14,11 @@ export { default as IC_navDetail } from "./IC_navDetail.svg";
 export { default as IC_sort } from "./IC_sort.svg";
 export { default as IC_nextArrow } from "./IC_nextArrow.svg";
 export { default as IC_backArrow } from "./IC_backArrow.svg";
+
+export { default as IC_closebutton } from './IC_closebutton.svg';
+export { default as IC_CircleCheck } from "./IC_CircleCheck.svg";
+export { default as IC_CircleLogout } from "./IC_CircleLogout.svg";
+export { default as IC_CirclePerson } from "./IC_CirclePerson.svg";
+export { default as IC_CircleDollar } from "./IC_CircleDollar.svg";
+
+

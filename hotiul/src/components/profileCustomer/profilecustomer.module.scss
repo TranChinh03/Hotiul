@@ -1,10 +1,12 @@
 .container {
-	width: 90%;
-	height: 100%;
+	width: 80%;
+	height: fit-content;
 	background-color: white;
 	border-radius: 25px;
 	padding: 45px;
-	padding-top: 25px;
+	padding-top: 20px;
+	margin: auto;
+	margin-top: 20px;
 }
 
 .header {
@@ -49,16 +51,16 @@
 
 .infoContainer {
 	width: 95%;
-	height: 160px;
+	height: 140px;
 	background-color: white;
 	margin: auto;
 	border-radius: 25px;
 	box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.15);
 	flex-direction: row;
 	display: flex;
-	padding: 30px;
-	padding-top: 27px;
-	padding-bottom: 27px;
+	padding: 20px;
+	padding-top: 20px;
+	padding-bottom: 20px;
 	justify-content: space-between;
 	margin-top: 20px;
 }
@@ -76,13 +78,13 @@
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	padding-left: 25px;
-	padding-right: 25px;
+	padding-left: 20px;
+	padding-right: 20px;
 }
 
 .title {
 	color: var(--2, #023e8a);
-	font-size: 20px;
+	font-size: 18px;
 	font-style: normal;
 	font-weight: 600;
 }
@@ -90,19 +92,24 @@
 .inputInfo {
 	width: 290px;
 	height: max-content;
-	padding: 10px;
+	padding: 8px;
 	padding-left: 20px;
 	border-radius: 10px;
 	background: #caf0f859;
 	border: none;
-	font-size: 20px;
+	font-size: 18px;
+	color: var(--2, #023e8a);
+}
+
+.valueInfo {
+	font-size: 18px;
 	color: var(--2, #023e8a);
 }
 
 .historyContainer {
 	width: 95%;
 	margin: auto;
-	margin-top: 10px;
+	margin-top: 20px;
 	background: var(--0, #fff);
 	box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.15);
 }

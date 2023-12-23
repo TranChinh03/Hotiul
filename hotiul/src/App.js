@@ -15,6 +15,7 @@ import { Services } from './views/Services/Services';
 import { Header } from './components/header/header';
 import { useState } from 'react';
 import ProfileCustomer from './components/profileCustomer/ProfileCustomer';
+import ProfileStaff from './components/profileStaff/ProfileStaff';
 
 function App() {
 	const [currentTab, setCurrentTab] = useState('home');

@@ -1,6 +1,6 @@
 .container {
 	width: 60%;
-	height: fit-content;
+	height: max-content;
 	background-color: white;
 	border-radius: 25px;
 	padding: 45px;
@@ -18,6 +18,7 @@
 	align-content: center;
 	align-items: center;
 	justify-content: space-between;
+	margin-bottom: 20px;
 }
 
 .headerTitle {
@@ -28,13 +29,163 @@
 	text-transform: uppercase;
 }
 
+.title {
+	color: var(--2, #023e8a);
+	font-size: 26px;
+	font-style: normal;
+	font-weight: bold;
+	line-height: 14px;
+	margin-bottom: 20px;
+}
+
 .bookingInfo {
+	flex-direction: column;
+	display: flex;
+}
+
+.cardContainer {
+	flex-direction: row;
+	display: flex;
+	justify-content: space-between;
+}
+
+.card1 {
+	width: 45%;
+	height: 150px;
+	border-radius: 25px;
+	border-color: #023e8a;
+	border-width: 2px;
+	display: flex;
+	padding: 15px;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.card2 {
+	width: 50%;
+	height: 150px;
+	border-radius: 25px;
+	border-width: 2px;
+	border-color: #023e8a;
+	display: flex;
+	flex-direction: row;
+	padding: 15px;
+	justify-content: space-between;
+}
+
+.colTitle {
+	width: 35%;
+	height: 100%;
+	color: var(--2, #023e8a);
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 600;
+	justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+}
+
+.colData {
+	width: 60%;
+	height: 100%;
+	color: var(--3, #0077b6);
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 600;
+	justify-content: space-between;
+	align-items: flex-end;
+	display: flex;
+	flex-direction: column;
 }
 
 .serInfo {
+	margin: auto;
+	margin-top: 20px;
+	background: var(--0, #fff);
+}
+
+thead[class='ant-table-thead'] th {
+	background: rgba(202, 240, 248, 0.35) !important;
+}
+
+.serTable {
+	box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.15);
+}
+
+.titleCol {
+	color: var(--2, #023e8a);
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 600;
+}
+
+.tableTitle {
+	color: var(--3, #0077b6);
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+}
+
+.tableInfo {
+	color: var(--3, #023e8a);
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+}
+
+.totalText {
+	color: var(--3, #023e8a);
+	font-size: 20px;
+	font-style: normal;
+	font-weight: bold;
+	line-height: normal;
 }
 
 .payInfo {
+	flex-direction: column;
+	display: flex;
+}
+
+.paymentCard {
+	flex-direction: row;
+	display: flex;
+	justify-content: space-between;
+}
+
+.pay1 {
+	width: 45%;
+	height: 80px;
+	border-radius: 25px;
+	display: flex;
+	padding: 15px;
+	flex-direction: row;
+	justify-content: space-between;
+	background-color: #fff;
+	box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.15);
+	align-items: center;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: bold;
+	line-height: normal;
+}
+
+.pay2 {
+	width: 50%;
+	height: 80px;
+	border-radius: 25px;
+	display: flex;
+	padding: 15px;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--3, #0077b6);
+	box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.15);
+	font-size: 20px;
+	font-style: normal;
+	font-weight: bold;
+	line-height: normal;
 }
 
 .footer {

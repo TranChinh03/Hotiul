@@ -103,7 +103,7 @@ function ProfileCustomer() {
 
 	return (
 		<>
-			<div style={{ backgroundColor: 'blue' }}>
+			<div style={{ backgroundColor: 'pink' }}>
 				<div className={styles.container}>
 					<div className={styles.header}>
 						<div className={styles.headerTitle}>Customer Information</div>

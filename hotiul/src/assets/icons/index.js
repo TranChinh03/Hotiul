@@ -19,3 +19,5 @@ export { default as IC_CircleCheck } from "./IC_CircleCheck.svg";
 export { default as IC_CircleLogout } from "./IC_CircleLogout.svg";
 export { default as IC_CirclePerson } from "./IC_CirclePerson.svg";
 export { default as IC_CircleDollar } from "./IC_CircleDollar.svg";
+export { default as IC_edit } from "./IC_edit.svg";
+export { default as IC_delete } from "./IC_delete.svg";

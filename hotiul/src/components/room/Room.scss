@@ -1,0 +1,63 @@
+.available-room {
+    cursor: pointer;
+    background-color: #49E17C;
+    color: white;
+}
+
+.available-room:hover {
+    background-color: #20BF54;
+}
+
+.inuse-room {
+    cursor: pointer;
+    background-color: #FF9C9C;
+    color: white;
+}
+
+.inuse-room:hover {
+    background-color: #FF7979;
+}
+
+.confirmcheckin-room {
+    cursor: pointer;
+    background-color: #00B4D8;
+    color: white;
+}
+
+.confirmcheckin-room:hover {
+    background-color: #0097B7;
+}
+
+.confirmcheckout-room {
+    cursor: pointer;
+    background-color: #FF9640;
+    color: white;
+}
+
+.confirmcheckout-room:hover {
+    background-color: #F26D00;
+}
+
+.fixing-room {
+    cursor: pointer;
+    background-color: #88DDFF;
+    color: white;
+}
+
+.fixing-room:hover {
+    background-color: #28C4FF;
+}
+
+.needclean-room {
+    cursor: pointer;
+    background-color: #EBC706;
+    color: white;
+}
+
+.needclean-room:hover {
+    background-color: #D3B505;
+}
+
+.label-input-field {
+    color: #023E8A;
+}

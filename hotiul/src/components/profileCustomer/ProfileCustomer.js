@@ -1,62 +1,155 @@
 import React, { useState } from 'react';
 import styles from './profilecustomer.module.scss';
-import { IC_closebutton, IC_line } from '../../assets/icons';
+
+import {
+	IC_backArrow,
+	IC_navDetail,
+	IC_nextArrow,
+	IC_sort,
+	IC_closebutton,
+	IC_line,
+} from '../../assets/icons';
 import { Table } from 'antd';
 
-const columns = [
+const column = [
+	{ label: 'ID', accessor: 'id' },
+	{ label: 'Room', accessor: 'room' },
+	{ label: 'Checkin', accessor: 'checkin' },
+	{ label: 'Checkout', accessor: 'checkout' },
+	{ label: 'Detail', accessor: 'detail' },
+];
+
+const data = [
 	{
-		title: () => <div className={styles.tableTitle}>ID</div>,
-		dataIndex: 'id',
-		width: '100px',
-		render: text => <div className={styles.tableInfo}>{text}</div>,
+		id: '001',
+		room: 'R1.02',
+		checkin: '20/11/2023',
+		checkout: '25/11/2023',
 	},
 	{
-		title: () => <div className={styles.tableTitle}>Room</div>,
-		dataIndex: 'room',
-		width: '200px',
-		render: text => <div className={styles.tableInfo}>{text}</div>,
+		id: '002',
+		room: 'R2.03',
+		checkin: '20/11/2023',
+		checkout: '25/11/2023',
 	},
 	{
-		title: () => <div className={styles.tableTitle}>Check-in</div>,
-		dataIndex: 'checkin',
-		width: '150px',
-		render: text => <div className={styles.tableInfo}>{text}</div>,
+		id: '003',
+		room: 'R3.01',
+		checkin: '20/11/2023',
+		checkout: '25/11/2023',
 	},
 	{
-		title: () => <div className={styles.tableTitle}>Check-out</div>,
-		dataIndex: 'checkout',
-		width: '150px',
-		render: text => <div className={styles.tableInfo}>{text}</div>,
+		id: '004',
+		room: 'R4.05',
+		checkin: '20/11/2023',
+		checkout: '25/11/2023',
 	},
 	{
-		title: () => <div className={styles.tableTitle}>Price</div>,
-		dataIndex: 'price',
-		width: '150px',
-		render: text => <div className={styles.tableInfo}>{text}</div>,
+		id: '001',
+		room: 'R1.02',
+		checkin: '20/11/2023',
+		checkout: '25/11/2023',
 	},
 	{
-		title: () => <div className={styles.tableTitle}>Detail >></div>,
-		dataIndex: '',
-		render: () => (
-			<button onClick={() => {}}>
-				<div className={styles.tableInfo}>View detail >></div>
-			</button>
-		),
+		id: '002',
+		room: 'R2.03',
+		checkin: '20/11/2023',
+		checkout: '25/11/2023',
+	},
+	{
+		id: '003',
+		room: 'R3.01',
+		checkin: '20/11/2023',
+		checkout: '25/11/2023',
+	},
+	{
+		id: '004',
+		room: 'R4.05',
+		checkin: '20/11/2023',
+		checkout: '25/11/2023',
+	},
+	{
+		id: '001',
+		room: 'R1.02',
+		checkin: '20/11/2023',
+		checkout: '25/11/2023',
+	},
+	{
+		id: '002',
+		room: 'R2.03',
+		checkin: '20/11/2023',
+		checkout: '25/11/2023',
+	},
+	{
+		id: '003',
+		room: 'R3.01',
+		checkin: '20/11/2023',
+		checkout: '25/11/2023',
+	},
+	{
+		id: '004',
+		room: 'R4.05',
+		checkin: '20/11/2023',
+		checkout: '25/11/2023',
 	},
 ];
-const data = [];
-for (let i = 0; i < 100; i++) {
-	data.push({
-		key: i,
-		id: i,
-		room: `Room ${i}`,
-		checkin: `Date ${i}`,
-		checkout: `Date ${i + 1}`,
-		price: `10000000`,
-	});
-}
+
+// const columns = [
+// 	{
+// 		title: () => <div className={styles.tableTitle}>ID</div>,
+// 		dataIndex: 'id',
+// 		width: '100px',
+// 		render: text => <div className={styles.tableInfo}>{text}</div>,
+// 	},
+// 	{
+// 		title: () => <div className={styles.tableTitle}>Room</div>,
+// 		dataIndex: 'room',
+// 		width: '200px',
+// 		render: text => <div className={styles.tableInfo}>{text}</div>,
+// 	},
+// 	{
+// 		title: () => <div className={styles.tableTitle}>Check-in</div>,
+// 		dataIndex: 'checkin',
+// 		width: '150px',
+// 		render: text => <div className={styles.tableInfo}>{text}</div>,
+// 	},
+// 	{
+// 		title: () => <div className={styles.tableTitle}>Check-out</div>,
+// 		dataIndex: 'checkout',
+// 		width: '150px',
+// 		render: text => <div className={styles.tableInfo}>{text}</div>,
+// 	},
+// 	{
+// 		title: () => <div className={styles.tableTitle}>Price</div>,
+// 		dataIndex: 'price',
+// 		width: '150px',
+// 		render: text => <div className={styles.tableInfo}>{text}</div>,
+// 	},
+// 	{
+// 		title: () => <div className={styles.tableTitle}>Detail >></div>,
+// 		dataIndex: '',
+// 		render: () => (
+// 			<button onClick={() => {}}>
+// 				<div className={styles.tableInfo}>View detail >></div>
+// 			</button>
+// 		),
+// 	},
+// ];
+// const data = [];
+// for (let i = 0; i < 100; i++) {
+// 	data.push({
+// 		key: i,
+// 		id: i,
+// 		room: `Room ${i}`,
+// 		checkin: `Date ${i}`,
+// 		checkout: `Date ${i + 1}`,
+// 		price: `10000000`,
+// 	});
+// }
 
 function ProfileCustomer() {
+	const [pageIndex, setPageIndex] = useState(1);
+	const [totalPage, setTotalPage] = useState(Math.ceil(data.length / 9));
 	const [action, setAction] = useState(true);
 	const [state, setState] = useState({
 		name: '',
@@ -256,9 +349,7 @@ function ProfileCustomer() {
 						</div>
 					</>
 				)}
-
-				<div className={styles.historyContainer}>
-					<Table
+				{/* <Table
 						title={() => <div className={styles.titleHistory}>Booking History</div>}
 						columns={columns}
 						dataSource={data}
@@ -269,7 +360,81 @@ function ProfileCustomer() {
 						// scroll={{
 						// 	y: 200,
 						// }}
-					/>
+					/> */}
+				<div className={styles.con2}>
+					<table
+						id="my-table"
+						class={styles.tableData}>
+						<thead>
+							<tr className={styles.titleHistory}>BOOKING HISTORY</tr>
+							<tr className={styles.tbHeading}>
+								{column.map(headding => {
+									return (
+										<th>
+											<div className="pl-5 pb-3 pt-5 flex justify-center w-full ">
+												<p> {headding.label}</p>
+												<img
+													alt=""
+													className="px-2"
+													src={IC_sort}
+												/>
+											</div>
+										</th>
+									);
+								})}
+							</tr>
+						</thead>
+						<tbody className="h-96">
+							{data.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
+								return (
+									<tr
+										className={styles.rowTbl}
+										key={key}>
+										{column.slice(0, -1).map(({ accessor }) => {
+											const tData = val[accessor] ? val[accessor] : '——';
+											return <td className={styles.col}>{tData}</td>;
+										})}
+										<td className={styles.colDetail}>
+											<button onClick={() => {}}>
+												<div className={styles.tableInfo}>
+													View Detail{' '}
+													<img
+														style={{ justifySelf: 'center', alignSelf: 'center' }}
+														className="pl-2"
+														src={IC_navDetail}
+													/>
+												</div>
+											</button>
+										</td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</table>
+				</div>
+				<div className={styles.con1}>
+					<p className=" text-mainColor pt-5">
+						Showing <strong> 1 - {totalPage} </strong> results of <strong>{data.length}</strong>
+					</p>
+					<div className="flex justify-around">
+						<button
+							onClick={() => {
+								if (pageIndex > 1) setPageIndex(pageIndex - 1);
+							}}
+							className={styles.btnnav}>
+							<img src={IC_backArrow} />
+						</button>
+						<p className="text-mainColor px-3">
+							Page <strong>{pageIndex}</strong>
+						</p>
+						<button
+							onClick={() => {
+								if (pageIndex < totalPage) setPageIndex(pageIndex + 1);
+							}}
+							className={styles.btnnav}>
+							<img src={IC_nextArrow} />
+						</button>
+					</div>
 				</div>
 			</div>
 		</>

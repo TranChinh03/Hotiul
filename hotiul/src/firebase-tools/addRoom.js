@@ -1,3 +1,5 @@
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 const ROOM = [
 	{
 		ID: 'R101',
@@ -65,7 +67,7 @@ const ROOM = [
 	{
 		ID: 'R205',
 		Name: 'R205',
-		Status: 'Need Clean',
+		Status: 'Cleaning',
 		TypeID: 'RTSmallF',
 		TypeName: 'Small Family Room',
 	},
@@ -86,7 +88,7 @@ const ROOM = [
 	{
 		ID: 'R303',
 		Name: 'R303',
-		Status: 'Need Clean',
+		Status: 'Cleaning',
 		TypeID: 'RTCoupleReg',
 		TypeName: 'Couple Regular Room',
 	},
@@ -142,14 +144,14 @@ const ROOM = [
 	{
 		ID: 'R501',
 		Name: 'R501',
-		Status: 'Need Clean',
+		Status: 'Cleaning',
 		TypeID: 'RTCoupleReg',
 		TypeName: 'Couple Regular Room',
 	},
 	{
 		ID: 'R502',
 		Name: 'R502',
-		Status: 'Need Clean',
+		Status: 'Cleaning',
 		TypeID: 'RTSingleReg',
 		TypeName: 'Single Regular Room',
 	},
@@ -219,7 +221,7 @@ const ROOM = [
 	{
 		ID: 'R702',
 		Name: 'R702',
-		Status: 'Need Clean',
+		Status: 'Cleaning',
 		TypeID: 'RTSingleReg',
 		TypeName: 'Single Regular Room',
 	},
@@ -254,7 +256,7 @@ const ROOM = [
 	{
 		ID: 'R802',
 		Name: 'R802',
-		Status: 'Need Clean',
+		Status: 'Cleaning',
 		TypeID: 'RTCoupleVIP',
 		TypeName: 'Couple VIP Room',
 	},
@@ -289,7 +291,7 @@ const ROOM = [
 	{
 		ID: 'R902',
 		Name: 'R902',
-		Status: 'Need Clean',
+		Status: 'Cleaning',
 		TypeID: 'RTSingleVIP',
 		TypeName: 'Single VIP Room',
 	},
@@ -303,7 +305,7 @@ const ROOM = [
 	{
 		ID: 'R904',
 		Name: 'R904',
-		Status: 'Need Clean',
+		Status: 'Cleaning',
 		TypeID: 'RTCoupleReg',
 		TypeName: 'Couple Regular Room',
 	},
@@ -350,3 +352,16 @@ const ROOM = [
 		TypeName: 'Single VIP Room',
 	},
 ];
+
+export const addDbRoom = async () => {
+	ROOM.map(async (b) => {
+	  await setDoc(
+		doc(
+		  db,
+		  "ROOM",
+		  b.ID
+		),
+		b
+	  );
+	});
+  };

@@ -1,3 +1,5 @@
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 const SERVICE = [
 	{
 		ID: 'S01',
@@ -18,3 +20,16 @@ const SERVICE = [
 		Available: 50,
 	},
 ];
+
+export const addDbService = async () => {
+	SERVICE.map(async (b) => {
+	  await setDoc(
+		doc(
+		  db,
+		  "SERVICE",
+		  b.ID
+		),
+		b
+	  );
+	});
+  };

@@ -1,3 +1,5 @@
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 const FEE = [
 	{
 		ID: 'F001',
@@ -70,3 +72,16 @@ const FEE = [
 		],
 	},
 ];
+
+export const addDbFee = async () => {
+	FEE.map(async (b) => {
+	  await setDoc(
+		doc(
+		  db,
+		  "FEE",
+		  b.ID
+		),
+		b
+	  );
+	});
+  };

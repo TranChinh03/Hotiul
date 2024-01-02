@@ -1,3 +1,5 @@
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 const BOOKING = [
 	{
 		ID: 'B001',
@@ -90,3 +92,16 @@ const BOOKING = [
 		Price: 5000000,
 	},
 ];
+
+export const addDbBooking = async () => {
+	BOOKING.map(async (b) => {
+	  await setDoc(
+		doc(
+		  db,
+		  "BOOKING",
+		  b.ID
+		),
+		b
+	  );
+	});
+  };

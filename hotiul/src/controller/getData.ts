@@ -10,3 +10,5 @@ const getData = async (link: string, order?: string) => {
   const data = await getDocs(collection(db, link));
   return data.docs.map((d) => d.data());
 };
+
+export { getData }

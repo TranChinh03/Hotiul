@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import styles from "./booking.module.scss";
 import Search from "../../components/search/search";
 import ButtonAdd from "../../components/buttonAdd/buttonAdd";
-import { IC_backArrow, IC_navDetail, IC_nextArrow } from "../../assets/icons";
+import {
+  IC_backArrow,
+  IC_navDetail,
+  IC_nextArrow,
+  IC_sort,
+} from "../../assets/icons";
 
 export const Booking = () => {
   const column = [
@@ -108,24 +113,31 @@ export const Booking = () => {
   ];
 
   const [pageIndex, setPageIndex] = useState(1);
-  const [totalPage, setTotalPage] = useState(Math.round(data.length / 8));
+  const [totalPage, setTotalPage] = useState(Math.ceil(data.length / 9));
   return (
     <div className={styles.maincontainer}>
       <div className={styles.con1}>
         <Search />
-        <ButtonAdd text={"Add Booking"} />
+        <ButtonAdd text={"Add Refund"} />
       </div>
       <div className={styles.con2}>
         <table id="my-table" class={styles.tableData}>
           <thead>
             <tr className={styles.tbHeading}>
               {column.map((headding) => {
-                return <th className="pb-3 pt-5">{headding.label}</th>;
+                return (
+                  <th>
+                    <div className="pl-5 pb-3 pt-5 flex justify-center w-full ">
+                      <p> {headding.label}</p>
+                      <img alt="" className="px-2" src={IC_sort} />
+                    </div>
+                  </th>
+                );
               })}
             </tr>
           </thead>
           <tbody className="h-96">
-            {data.slice(pageIndex * 8 - 8, pageIndex * 8).map((val, key) => {
+            {data.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
               return (
                 <tr className={styles.rowTbl} key={key}>
                   {column.slice(0, -1).map(({ accessor }) => {

@@ -1,3 +1,5 @@
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 const STAFF = [
 	{
 		ID: 'S01',
@@ -48,3 +50,16 @@ const STAFF = [
 		Role: 'Staff',
 	},
 ];
+
+export const addDbStaff = async () => {
+	STAFF.map(async (b) => {
+	  await setDoc(
+		doc(
+		  db,
+		  "STAFF",
+		  b.ID
+		),
+		b
+	  );
+	});
+  };

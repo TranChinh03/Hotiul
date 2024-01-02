@@ -1,3 +1,5 @@
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 const CUSTOMER = [
 	{
 		ID: 'C01',
@@ -16,3 +18,16 @@ const CUSTOMER = [
 		Booking: [{ ID: 'B002' }, { ID: 'B005' }, { ID: 'B007' }, { ID: 'B008' }],
 	},
 ];
+
+export const addDbCustomer = async () => {
+	CUSTOMER.map(async (b) => {
+	  await setDoc(
+		doc(
+		  db,
+		  "CUSTOMER",
+		  b.ID
+		),
+		b
+	  );
+	});
+  };

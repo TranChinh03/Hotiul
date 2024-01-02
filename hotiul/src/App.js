@@ -16,13 +16,13 @@ import { Header } from './components/header/header';
 import { useState } from 'react';
 import ProfileCustomer from './components/profileCustomer/ProfileCustomer';
 import ProfileStaff from './components/profileStaff/ProfileStaff';
+import { Draft } from './views/Draft/Draft';
 
 function App() {
 	const [currentTab, setCurrentTab] = useState('home');
 	return (
 		<>
-			<ProfileCustomer></ProfileCustomer>
-			{/* <Router>
+			<Router>
         <SideBar handleChange={setCurrentTab} />
         <div style={{ marginLeft: "16.66667%" }}>
           <div class="h-1/5">
@@ -39,10 +39,11 @@ function App() {
               <Route path="/customer" element={<Customer />} />
               <Route path="/monthlyfee" element={<MonthlyFee />} />
               <Route path="/services" element={<Services />} />
+              <Route path="/draft" element={<Draft/>} />
             </Routes>
           </div>
         </div>
-      </Router> */}
+      </Router>
 		</>
 	);
 }

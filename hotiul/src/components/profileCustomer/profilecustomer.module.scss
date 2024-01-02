@@ -125,6 +125,7 @@ thead[class='ant-table-thead'] th {
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
+	padding: auto;
 }
 
 .tableTitle {
@@ -141,4 +142,41 @@ thead[class='ant-table-thead'] th {
 	font-style: normal;
 	font-weight: 300;
 	line-height: normal;
+	display: flex;
+	flex-direction: row;
+	margin: auto;
 }
+
+///
+.maincontainer {
+	@apply m-5 mt-0;
+}
+.con1 {
+	@apply flex w-full items-end justify-between px-5;
+}
+.con2 {
+	@apply py-3 flex w-11/12 items-end justify-between bg-white rounded-3xl shadow-md m-auto mt-5;
+}
+.tbHeading {
+	@apply text-secondColor text-sm font-medium;
+}
+.data {
+	@apply text-mainColor text-sm font-normal;
+}
+.col {
+	@apply text-center px-5 items-center text-secondColor text-sm font-normal py-3 justify-center;
+}
+.colDetail {
+	@apply px-5  items-center text-secondColor text-sm font-normal py-2 flex justify-center align-middle;
+}
+.tableData {
+	@apply table-auto w-full;
+}
+.btnnav {
+	@apply bg-mainColor h-7 w-7 rounded-lg items-center flex justify-center;
+}
+.rowTbl {
+	@apply border-t-[0.75px] border-t-secondColor border-opacity-20;
+}
+///
+///

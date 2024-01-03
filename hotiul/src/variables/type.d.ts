@@ -1,4 +1,4 @@
-declare type TBooking = {
+export type TBooking = {
     ID: string,
     CustomerID: string,
     RoomID: string,
@@ -9,7 +9,7 @@ declare type TBooking = {
     Price: number
 }
 
-declare type TCustomer = {
+export type TCustomer = {
     ID: string,
     Name: string,
     CitizenID: string,
@@ -18,7 +18,7 @@ declare type TCustomer = {
     Booking: {ID: string}[],
 }
 
-declare type TFee = {
+export type TFee = {
     ID: string,
     Name: string,
     Details: {
@@ -27,7 +27,7 @@ declare type TFee = {
     }[]
 }
 
-declare type TRefund = {
+export type TRefund = {
     ID: string, 
     CustomerID: string, 
     RoomID: string, 
@@ -35,7 +35,7 @@ declare type TRefund = {
     RefundStatus: 'Completed' | 'Incompleted' | 'Canceled'
 }
 
-declare type TRoom = {
+export type TRoom = {
     ID: string,
     Name: string,
     Status: 'Available Room' | 'Confirm Checkin' | 'Fixing' | 'In Use' | 'Confirm Checkout' | 'Cleaning',
@@ -43,7 +43,7 @@ declare type TRoom = {
     TypeName: string,
 }
 
-declare type TRoomType = {
+export type TRoomType = {
     ID: string,
     TypeID: 'RTSingleReg',
 		TypeName: string,
@@ -55,14 +55,14 @@ declare type TRoomType = {
 			}[]
 }
 
-declare type TService = {
+export type TService = {
     ID: string,
     Service: string,
     TotalPrice: number,
     Available: number,
 }
 
-declare type TStaff = {
+export type TStaff = {
     ID: string,
     Name: string,
     CitizenID: string,

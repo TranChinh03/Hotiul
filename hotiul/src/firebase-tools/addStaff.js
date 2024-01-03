@@ -9,8 +9,8 @@ const STAFF = [
 		Gender: 'Female',
 		Address: '11 ABC Street',
 		Salary: 10000000,
-		Username: 'quanly01',
-		Password: 'quanly01mk',
+		Username: 'admin',
+		Password: 'admin',
 		Role: 'Manager',
 	},
 	{

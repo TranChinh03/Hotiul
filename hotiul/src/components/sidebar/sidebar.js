@@ -15,6 +15,7 @@ import {
   IC_staff,
   IC_statistic,
 } from "../../assets/icons";
+import { NAV_LINK } from "../../routes/components/NAV_LINK";
 
 const SideBar = ({handleChange}) => {
   const navigate = useNavigate();
@@ -23,55 +24,55 @@ const SideBar = ({handleChange}) => {
       tabname: "Home",
       tab: "home",
       icon: IC_dashboard,
-      nav: '/'
+      nav: NAV_LINK.DASHBOARD
     },
     {
       tabname: "Booking",
       tab: "booking",
       icon: IC_booking,
-      nav: '/booking'
+      nav: NAV_LINK.BOOKING
     },
     {
       tabname: "Room",
       tab: "room",
       icon: IC_room,
-      nav: '/room'
+      nav: NAV_LINK.ROOM
     },
     {
       tabname: "Refund",
       tab: "refund",
       icon: IC_refund,
-      nav: '/refund'
+      nav: NAV_LINK.REFUND
     },
     {
       tabname: "Customer",
       tab: "customer",
       icon: IC_customer,
-      nav: '/customer'
+      nav: NAV_LINK.CUSTOMER
     },
     {
       tabname: "Monthly Fee",
       tab: "monthlyFee",
       icon: IC_fee,
-      nav: '/monthlyfee'
+      nav: NAV_LINK.MONTHLY_FEE
     },
     {
       tabname: "Services",
       tab: "services",
       icon: IC_service,
-      nav: '/services'
+      nav: NAV_LINK.SERVICES
     },
     {
       tabname: "Staff",
       tab: "staff",
       icon: IC_staff,
-      nav: '/staff'
+      nav: NAV_LINK.STAFF
     },
     {
       tabname: "Statistic",
       tab: "statistic",
       icon: IC_statistic,
-      nav: '/statistic'
+      nav: NAV_LINK.STATISTIC
     },
   ];
 
@@ -97,7 +98,11 @@ const SideBar = ({handleChange}) => {
     <div className={styles.container}>
       <img src={IMG_logo} />
       {createList}
-      <button className={styles.tabContainer}>
+      <button onClick={() => {
+        localStorage.removeItem("currentUser")
+        navigate(NAV_LINK.LOGIN)
+        window.location.reload()
+      }} className={styles.tabContainer}>
         <div className={styles.contentTab}>
               <img className={styles.icon} src={IC_logout} />
               <p className={styles.tabName}>Log Out</p>

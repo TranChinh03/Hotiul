@@ -1,6 +1,19 @@
 import styles from './header.module.scss';
+import {Select} from 'antd';
+import {IM_EN_Flag, IM_VN_Flag} from '../../assets/imgs';
+import {useTranslation} from 'react-i18next';
+import { useState } from 'react';
+
 
 export const Header = ({ selected }) => {
+	const [language, setLanguage] = useState(localStorage.language);
+	const {t, i18n} = useTranslation();
+	const options = [
+	  {image: IM_VN_Flag, title: 'VI'},
+	  {image: IM_EN_Flag, title: 'EN'},
+	];
+  
+	const {Option} = Select;
 	const text = [
 		{
 			id: 'home',
@@ -55,7 +68,36 @@ export const Header = ({ selected }) => {
 				<p className={styles.main}>{text.find(x => x.id === selected).main}</p>
 				<p className={styles.sub}>{text.find(x => x.id === selected).sub}</p>
 			</div>
-			<div className={styles.infoContainer}></div>
+			<div className={styles.infoContainer}>
+				<Select
+				style={{width: '150px', marginRight: '100px'}}
+				placeholder="Choose Language"
+				value={language}
+					onChange={e => {
+					setLanguage(e);
+					i18n.changeLanguage(e);
+					localStorage.setItem('language', e);
+				}}>
+				{options.map((option, index) => (
+				<Option key={index} value={option.title}>
+					<div
+					style={{
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'space-between',
+						width: '100%',
+					}}>
+					<div>{option.title}</div>
+					<img
+						src={option.image}
+						alt="Flag"
+						style={{width: '30px', height: '20px'}}
+					/>
+					</div>
+				</Option>
+				))}
+			</Select>
+			</div>
 		</div>
 	);
 };

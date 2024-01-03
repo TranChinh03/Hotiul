@@ -67,7 +67,12 @@ export default function LoginScreen() {
     }
 
     return (
-        <Spin spinning={loading} indicator={<img src={IMG_logo}/>}>
+        <Spin spinning={loading} indicator={
+          <div style={{transform: 'translate(-50%, -50%)', backgroundColor:"#909090", opacity:0.8, width: "50%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+            <img style={{width: "50%"}} src={IMG_logo}/>
+            <LoadingOutlined style={{ fontSize: 24 }} spin />
+          </div>
+        }>
           <div style={{backgroundColor: "#00B4D8"}} className="flex justify-center items-center min-h-screen bg-gradient-to-t from-sidebar to-white">
             <div className="flex w-8/12 shadow-lg bg-white rounded-md p-2">
               <div style={{backgroundColor: "#023E8A"}} className="w-1/2 flex-col justify-center items-center p-5 hidden md:flex">

@@ -1,5 +1,6 @@
 import { setDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import { TBooking, TCustomer, TFee, TRefund, TRoom, TRoomType, TService, TStaff } from "../variables/type";
 
 type params = {
   id: string;
@@ -14,7 +15,7 @@ type params = {
     | "STAFF";
 
   data:
-      TBooking
+    | TBooking
     | TCustomer
     | TFee
     | TRefund
@@ -24,7 +25,6 @@ type params = {
     | TStaff;
 };
 const addData = async ({ data, table, id }: params) => {
-  let userId = window.localStorage.getItem("USER_ID");
   await setDoc(doc(db, `${table}`, id), data)
     .then(() => {
       console.log(">>>>>>>>>> Add Data >>>>>>>>>>");
@@ -33,7 +33,6 @@ const addData = async ({ data, table, id }: params) => {
 };
 
 const updateData = async ({ data, table, id }: params) => {
-  let userId = window.localStorage.getItem("USER_ID");
   //console.log("OKKK");
   await updateDoc(doc(db, `${table}`, id), data)
     .then(() => {

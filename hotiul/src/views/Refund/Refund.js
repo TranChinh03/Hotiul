@@ -9,6 +9,10 @@ import {
   IC_sort,
 } from "../../assets/icons";
 import Combobox from "../../components/combobox/combobox";
+import { LoadingOutlined } from '@ant-design/icons';
+import { Button, Input, Spin, message } from 'antd';
+import { IMG_logo } from "../../assets/imgs";
+import { getData } from "../../controller/getData.ts";
 
 export const Refund = () => {
   const items = [
@@ -38,102 +42,130 @@ export const Refund = () => {
     { label: "Date", accessor: "date" },
     { label: "Detail", accessor: "detail" },
   ];
-  const data = [
-    {
-      id: "001",
-      name: "Anom",
-      money: 19,
-      status: "20/11/2023",
-      date: "25/11/2023",
-    },
-    {
-      id: "001",
-      name: "Anom",
-      money: 12,
-      status: "20/11/2023",
-      date: "25/11/2023",
-    },
-    {
-      id: "001",
-      name: "Anom",
-      money: 17,
-      status: "20/11/2023",
-      date: "25/11/2023",
-    },
-    {
-      id: "001",
-      name: "Anom",
-      money: 17,
-      status: "20/11/2023",
-      date: "25/11/2023",
-    },
-    {
-      id: "001",
-      name: "Anom",
-      money: 12,
-      status: "20/11/2023",
-      date: "25/11/2023",
-    },
-    {
-      id: "001",
-      name: "Anom",
-      money: 19,
-      status: "20/11/2023",
-      date: "25/11/2023",
-    },
-    {
-      id: "001",
-      name: "Anom",
-      money: 17,
-      status: "20/11/2023",
-      date: "25/11/2023",
-    },
-    {
-      id: "001",
-      name: "Anom",
-      money: 12,
-      status: "20/11/2023",
-      date: "25/11/2023",
-    },
-    {
-      id: "001",
-      name: "Anom",
-      money: 19,
-      status: "20/11/2023",
-      date: "25/11/2023",
-    },
-    {
-      id: "001",
-      name: "Anom",
-      money: 17,
-      status: "20/11/2023",
-      date: "25/11/2023",
-    },
-    {
-      id: "001",
-      name: "Anom",
-      money: 12,
-      status: "20/11/2023",
-      date: "25/11/2023",
-    },
-    {
-      id: "001",
-      name: "Anom",
-      money: 19,
-      status: "20/11/2023",
-      date: "25/11/2023",
-    },
-    {
-      id: "001",
-      name: "Anom",
-      money: 19,
-      status: "20/11/2023",
-      date: "25/11/2023",
-    },
-  ];
+  // const data = [
+  //   {
+  //     id: "001",
+  //     name: "Anom",
+  //     money: 19,
+  //     status: "20/11/2023",
+  //     date: "25/11/2023",
+  //   },
+  //   {
+  //     id: "001",
+  //     name: "Anom",
+  //     money: 12,
+  //     status: "20/11/2023",
+  //     date: "25/11/2023",
+  //   },
+  //   {
+  //     id: "001",
+  //     name: "Anom",
+  //     money: 17,
+  //     status: "20/11/2023",
+  //     date: "25/11/2023",
+  //   },
+  //   {
+  //     id: "001",
+  //     name: "Anom",
+  //     money: 17,
+  //     status: "20/11/2023",
+  //     date: "25/11/2023",
+  //   },
+  //   {
+  //     id: "001",
+  //     name: "Anom",
+  //     money: 12,
+  //     status: "20/11/2023",
+  //     date: "25/11/2023",
+  //   },
+  //   {
+  //     id: "001",
+  //     name: "Anom",
+  //     money: 19,
+  //     status: "20/11/2023",
+  //     date: "25/11/2023",
+  //   },
+  //   {
+  //     id: "001",
+  //     name: "Anom",
+  //     money: 17,
+  //     status: "20/11/2023",
+  //     date: "25/11/2023",
+  //   },
+  //   {
+  //     id: "001",
+  //     name: "Anom",
+  //     money: 12,
+  //     status: "20/11/2023",
+  //     date: "25/11/2023",
+  //   },
+  //   {
+  //     id: "001",
+  //     name: "Anom",
+  //     money: 19,
+  //     status: "20/11/2023",
+  //     date: "25/11/2023",
+  //   },
+  //   {
+  //     id: "001",
+  //     name: "Anom",
+  //     money: 17,
+  //     status: "20/11/2023",
+  //     date: "25/11/2023",
+  //   },
+  //   {
+  //     id: "001",
+  //     name: "Anom",
+  //     money: 12,
+  //     status: "20/11/2023",
+  //     date: "25/11/2023",
+  //   },
+  //   {
+  //     id: "001",
+  //     name: "Anom",
+  //     money: 19,
+  //     status: "20/11/2023",
+  //     date: "25/11/2023",
+  //   },
+  //   {
+  //     id: "001",
+  //     name: "Anom",
+  //     money: 19,
+  //     status: "20/11/2023",
+  //     date: "25/11/2023",
+  //   },
+  // ];
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [data, setData] = useState([])
+
+  const fetchData = async () => {
+    await Promise.all([
+      getData('/REFUND').then(data => {
+        setData(data.map(item => {
+          return {
+            id: item.ID,
+            name: item.Name,
+            money: item.Money,
+            status: item.RefundStatus,
+            date: item.date,
+          }
+        }))
+      })
+    ])
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  useEffect(() => {
+    setTotalPage(Math.ceil(data.length / 9))
+  }, [data])
 
   const [pageIndex, setPageIndex] = useState(1);
-  const [totalPage, setTotalPage] = useState(Math.ceil(data.length / 9));
+  const [totalPage, setTotalPage] = useState();
   return (
     <div className={styles.maincontainer}>
       <div className={styles.con1}>

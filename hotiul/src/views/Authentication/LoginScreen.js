@@ -7,6 +7,8 @@ import { Button, Input, Spin, message } from 'antd';
 import { getData } from "../../controller/getData.ts";
 import { useNavigate } from "react-router-dom";
 import { NAV_LINK } from "../../routes/components/NAV_LINK.js";
+import { LoadingOutlined } from '@ant-design/icons';
+
 
 
 export default function LoginScreen() {
@@ -73,7 +75,7 @@ export default function LoginScreen() {
             <LoadingOutlined style={{ fontSize: 24 }} spin />
           </div>
         }>
-          <div style={{backgroundColor: "#00B4D8"}} className="flex justify-center items-center min-h-screen bg-gradient-to-t from-sidebar to-white">
+          <div style={{backgroundColor: "#ffffff"}} className="flex justify-center items-center min-h-screen bg-gradient-to-t from-sidebar to-white">
             <div className="flex w-8/12 shadow-lg bg-white rounded-md p-2">
               <div style={{backgroundColor: "#023E8A"}} className="w-1/2 flex-col justify-center items-center p-5 hidden md:flex">
                 <img src={IMG_logo} alt="image" />

@@ -24,7 +24,7 @@ function HomeRoutes() {
             </div>
             <div class="h-4/5">
                 <Routes>
-                    <Route path="/dashboard" exact={true} element={<Home />} />
+                    <Route path="/" exact={true} element={<Home />} />
                     <Route path="/room" element={<Room />} />
                     <Route path="/booking" element={<Booking />} />
                     <Route path="/refund" element={<Refund />} />

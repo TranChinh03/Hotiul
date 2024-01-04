@@ -4,14 +4,14 @@ const ROOM = [
 	{
 		ID: 'R101',
 		Name: 'R101',
-		Status: 'Available Room',
+		Status: 'Available',
 		TypeID: 'RTSingleReg',
 		TypeName: 'Single Regular Room',
 	},
 	{
 		ID: 'R102',
 		Name: 'R102',
-		Status: 'Available Room',
+		Status: 'Available',
 		TypeID: 'RTSingleVIP',
 		TypeName: 'Single VIP Room',
 	},
@@ -32,7 +32,7 @@ const ROOM = [
 	{
 		ID: 'R105',
 		Name: 'R105',
-		Status: 'Confirm Chekout',
+		Status: 'Confirm Checkout',
 		TypeID: 'RTSmallF',
 		TypeName: 'Small Family Room',
 	},
@@ -95,7 +95,7 @@ const ROOM = [
 	{
 		ID: 'R304',
 		Name: 'R304',
-		Status: 'Confirm Chekout',
+		Status: 'Confirm Checkout',
 		TypeID: 'RTSingleVIP',
 		TypeName: 'Single VIP Room',
 	},
@@ -109,7 +109,7 @@ const ROOM = [
 	{
 		ID: 'R401',
 		Name: 'R401',
-		Status: 'Available Room',
+		Status: 'Available',
 		TypeID: 'RTCoupleReg',
 		TypeName: 'Couple Regular Room',
 	},
@@ -137,7 +137,7 @@ const ROOM = [
 	{
 		ID: 'R405',
 		Name: 'R405',
-		Status: 'Confirm Chekout',
+		Status: 'Confirm Checkout',
 		TypeID: 'RTSingleReg',
 		TypeName: 'Single Regular Room',
 	},
@@ -165,21 +165,21 @@ const ROOM = [
 	{
 		ID: 'R504',
 		Name: 'R504',
-		Status: 'Confirm Chekout',
+		Status: 'Confirm Checkout',
 		TypeID: 'RTSmallF',
 		TypeName: 'Small Family Room',
 	},
 	{
 		ID: 'R505',
 		Name: 'R505',
-		Status: 'Available Room',
+		Status: 'Available',
 		TypeID: 'RTSingleReg',
 		TypeName: 'Single Regular Room',
 	},
 	{
 		ID: 'R601',
 		Name: 'R601',
-		Status: 'Available Room',
+		Status: 'Available',
 		TypeID: 'RTSingleReg',
 		TypeName: 'Single Regular Room',
 	},
@@ -207,7 +207,7 @@ const ROOM = [
 	{
 		ID: 'R605',
 		Name: 'R605',
-		Status: 'Confirm Chekin',
+		Status: 'Confirm Checkin',
 		TypeID: 'RTSingleReg',
 		TypeName: 'Single Regular Room',
 	},
@@ -235,14 +235,14 @@ const ROOM = [
 	{
 		ID: 'R704',
 		Name: 'R704',
-		Status: 'Available Room',
+		Status: 'Available',
 		TypeID: 'RTSmallF',
 		TypeName: 'Small Family Room',
 	},
 	{
 		ID: 'R705',
 		Name: 'R705',
-		Status: 'Confirm Chekout',
+		Status: 'Confirm Checkout',
 		TypeID: 'RTSingleReg',
 		TypeName: 'Single Regular Room',
 	},
@@ -263,14 +263,14 @@ const ROOM = [
 	{
 		ID: 'R803',
 		Name: 'R803',
-		Status: 'Available Room',
+		Status: 'Available',
 		TypeID: 'RTSingleVIP',
 		TypeName: 'Single VIP Room',
 	},
 	{
 		ID: 'R804',
 		Name: 'R804',
-		Status: 'Available Room',
+		Status: 'Available',
 		TypeID: 'RTCoupleVIP',
 		TypeName: 'Couple VIP Room',
 	},
@@ -312,7 +312,7 @@ const ROOM = [
 	{
 		ID: 'R905',
 		Name: 'R905',
-		Status: 'Confirm Chekout',
+		Status: 'Confirm Checkout',
 		TypeID: 'RTSingleReg',
 		TypeName: 'Single Regular Room',
 	},
@@ -347,7 +347,7 @@ const ROOM = [
 	{
 		ID: 'R1005',
 		Name: 'R1005',
-		Status: 'Confirm Chekout',
+		Status: 'Confirm Checkout',
 		TypeID: 'RTSingleVIP',
 		TypeName: 'Single VIP Room',
 	},

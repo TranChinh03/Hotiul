@@ -9,6 +9,10 @@ import {
   IC_sort,
 } from "../../assets/icons";
 import Combobox from "../../components/combobox/combobox";
+import { LoadingOutlined } from '@ant-design/icons';
+import { Button, Input, Spin, message } from 'antd';
+import { IMG_logo } from "../../assets/imgs";
+import { getData } from "../../controller/getData.ts";
 
 export const MonthlyFee = () => {
   const column = [
@@ -17,66 +21,96 @@ export const MonthlyFee = () => {
     { label: "Total", accessor: "total" },
     { label: "Detail", accessor: "detail" },
   ];
-  const data = [
-    {
-      id: "001",
-      fee: "Monthly fee 11/2023",
-      total: "20.000.000",
-    },
-    {
-      id: "001",
-      fee: "Monthly fee 11/2023",
-      total: "20.000.000",
-    },
-    {
-      id: "001",
-      fee: "Monthly fee 11/2023",
-      total: "20.000.000",
-    },
-    {
-      id: "001",
-      fee: "Monthly fee 11/2023",
-      total: "20.000.000",
-    },
-    {
-      id: "001",
-      fee: "Monthly fee 11/2023",
-      total: "20.000.000",
-    },
-    {
-      id: "001",
-      fee: "Monthly fee 11/2023",
-      total: "20.000.000",
-    },
-    {
-      id: "001",
-      fee: "Monthly fee 11/2023",
-      total: "20.000.000",
-    },
-    {
-      id: "001",
-      fee: "Monthly fee 11/2023",
-      total: "20.000.000",
-    },
-    {
-      id: "001",
-      fee: "Monthly fee 11/2023",
-      total: "20.000.000",
-    },
-    {
-      id: "001",
-      fee: "Monthly fee 11/2023",
-      total: "20.000.000",
-    },
-    {
-      id: "001",
-      fee: "Monthly fee 11/2023",
-      total: "20.000.000",
-    },
-  ];
+
+
+
+  // const data = [
+  //   {
+  //     id: "001",
+  //     fee: "Monthly fee 11/2023",
+  //     total: "20.000.000",
+  //   },
+  //   {
+  //     id: "001",
+  //     fee: "Monthly fee 11/2023",
+  //     total: "20.000.000",
+  //   },
+  //   {
+  //     id: "001",
+  //     fee: "Monthly fee 11/2023",
+  //     total: "20.000.000",
+  //   },
+  //   {
+  //     id: "001",
+  //     fee: "Monthly fee 11/2023",
+  //     total: "20.000.000",
+  //   },
+  //   {
+  //     id: "001",
+  //     fee: "Monthly fee 11/2023",
+  //     total: "20.000.000",
+  //   },
+  //   {
+  //     id: "001",
+  //     fee: "Monthly fee 11/2023",
+  //     total: "20.000.000",
+  //   },
+  //   {
+  //     id: "001",
+  //     fee: "Monthly fee 11/2023",
+  //     total: "20.000.000",
+  //   },
+  //   {
+  //     id: "001",
+  //     fee: "Monthly fee 11/2023",
+  //     total: "20.000.000",
+  //   },
+  //   {
+  //     id: "001",
+  //     fee: "Monthly fee 11/2023",
+  //     total: "20.000.000",
+  //   },
+  //   {
+  //     id: "001",
+  //     fee: "Monthly fee 11/2023",
+  //     total: "20.000.000",
+  //   },
+  //   {
+  //     id: "001",
+  //     fee: "Monthly fee 11/2023",
+  //     total: "20.000.000",
+  //   },
+  // ];
 
   const [pageIndex, setPageIndex] = useState(1);
-  const [totalPage, setTotalPage] = useState(Math.ceil(data.length / 9));
+  const [totalPage, setTotalPage] = useState();
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [data, setData] = useState([])
+
+  const fetchData = async () => {
+    await Promise.all([
+      getData('/FEE').then(data => {
+        setData(data.map(item => {
+          return {
+            id: item.ID,
+            fee: item.Name,
+            total: item.Details.reduce((acc, curr) => acc + curr.Price, 0),
+          }
+        }))
+      })
+    ])
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  useEffect(() => {
+    setTotalPage(Math.ceil(data.length / 9))
+  }, [data])
+
   return (
     <div className={styles.maincontainer}>
       <div className={styles.con1}>

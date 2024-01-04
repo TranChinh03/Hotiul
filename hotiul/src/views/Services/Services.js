@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import styles from "../Booking/booking.module.scss";
 import Search from "../../components/search/search";
 import ButtonAdd from "../../components/buttonAdd/buttonAdd";
+import { LoadingOutlined } from '@ant-design/icons';
+import { Button, Input, Spin, message } from 'antd';
+import { IMG_logo } from "../../assets/imgs";
+
 import {
   IC_backArrow,
   IC_delete,
@@ -11,6 +15,7 @@ import {
   IC_sort,
 } from "../../assets/icons";
 import Combobox from "../../components/combobox/combobox";
+import { getData } from "../../controller/getData.ts";
 
 export const Services = () => {
   const column = [
@@ -20,43 +25,48 @@ export const Services = () => {
     { label: "Available", accessor: "available" },
     { label: "Detail", accessor: "detail" },
   ];
-  const data = [
-    {
-      id: "001",
-      service: "Coca",
-      price: "20.000",
-      available: "100",
-    },
-    {
-      id: "001",
-      service: "Coca",
-      price: "20.000",
-      available: "Available",
-    },
-    {
-      id: "001",
-      service: "Coca",
-      price: "20.000",
-      available: "Out of stock",
-    },
-    {
-      id: "001",
-      service: "Coca",
-      price: "20.000",
-      available: "Available",
-    },
-    {
-      id: "001",
-      service: "Coca",
-      price: "20.000",
-      available: "Out of stock",
-    },
-  ];
 
   const [pageIndex, setPageIndex] = useState(1);
-  const [row, setRow] = useState(data.length < 9 ? data.length : 9);
-  const [totalPage, setTotalPage] = useState(Math.ceil(data.length / row));
+  const [row, setRow] = useState();
+  const [totalPage, setTotalPage] = useState();
+
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [data, setData] = useState([])
+
+  const fetchData = async () => {
+    await Promise.all([
+      getData('/SERVICE').then(data => {
+        console.log(data)
+        setData(data.map(item => {
+          return {
+            id: item.ID,
+            service: item.Service,
+            price: item.Price,
+            available: item.Available,
+          }
+        }))
+      })
+    ])
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  useEffect(() => {
+    setRow(data.length < 9 ? data.length : 9);
+    setTotalPage(Math.ceil(data.length / row))
+  }, [data, row])
+
   return (
+    <Spin spinning={isLoading} indicator={
+      <div style={{transform: 'translate(-50%, -50%)', backgroundColor:"#909090", opacity:0.8, width: "50%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+        <img style={{width: "50%"}} src={IMG_logo}/>
+        <LoadingOutlined style={{ fontSize: 24 }} spin />
+      </div>
+    }>
     <div className={styles.maincontainer}>
       <div className={styles.con1}>
         <Search />
@@ -126,5 +136,6 @@ export const Services = () => {
         </div>
       </div>
     </div>
+    </Spin>
   );
 };

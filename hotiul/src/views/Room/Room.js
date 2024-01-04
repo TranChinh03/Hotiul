@@ -1,57 +1,84 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import RoomItem from "../../components/room/RoomItem";
 import { Input, Select } from 'antd';
 import { FaSearch } from "react-icons/fa";
 import '../../../src/components/room/Room.scss';
-const listRoom = [
-  {
-    roomId: '101',
-    roomType: 'Single',
-    roomStatus: 'available',
-  },
-  {
-    roomId: '101',
-    roomType: 'Single',
-    roomStatus: 'inUse',
-  },
-  {
-    roomId: '101',
-    roomType: 'Single',
-    roomStatus: 'available',
-  },
-  {
-    roomId: '101',
-    roomType: 'Single',
-    roomStatus: 'confirmCheckout',
-  },
-  {
-    roomId: '101',
-    roomType: 'Single',
-    roomStatus: 'fixing',
-  },
-  {
-    roomId: '101',
-    roomType: 'Single',
-    roomStatus: 'needClean',
-  },
-  {
-    roomId: '101',
-    roomType: 'Single',
-    roomStatus: 'confirmCheckin',
-  },
-  {
-    roomId: '101',
-    roomType: 'Single',
-    roomStatus: 'available',
-  },
-  {
-    roomId: '101',
-    roomType: 'Single',
-    roomStatus: 'available',
-  },
+import { getData } from "../../controller/getData.ts";
 
-]
+// const listRoom = [
+//   {
+//     roomId: '101',
+//     roomType: 'Single',
+//     roomStatus: 'available',
+//   },
+//   {
+//     roomId: '101',
+//     roomType: 'Single',
+//     roomStatus: 'inUse',
+//   },
+//   {
+//     roomId: '101',
+//     roomType: 'Single',
+//     roomStatus: 'available',
+//   },
+//   {
+//     roomId: '101',
+//     roomType: 'Single',
+//     roomStatus: 'confirmCheckout',
+//   },
+//   {
+//     roomId: '101',
+//     roomType: 'Single',
+//     roomStatus: 'fixing',
+//   },
+//   {
+//     roomId: '101',
+//     roomType: 'Single',
+//     roomStatus: 'needClean',
+//   },
+//   {
+//     roomId: '101',
+//     roomType: 'Single',
+//     roomStatus: 'confirmCheckin',
+//   },
+//   {
+//     roomId: '101',
+//     roomType: 'Single',
+//     roomStatus: 'available',
+//   },
+//   {
+//     roomId: '101',
+//     roomType: 'Single',
+//     roomStatus: 'available',
+//   },
+
+// ]
 export const Room = () => {
+
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [listRoom, setListRoom] = useState([])
+
+  const fetchData = async () => {
+    await Promise.all([
+      getData('/ROOM').then(data => {
+        console.log(data)
+        setListRoom(data.map(item => {
+          return {
+            roomId: item.ID,
+            roomType: item.TypeName,
+            roomStatus: item.Status
+          }
+        }))
+      })
+    ])
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
   const handleChange = (value) => {
     console.log(`selected ${value}`);
   };

@@ -7,7 +7,6 @@ import { Button, Input, Spin, message } from 'antd';
 import { getData } from '../../controller/getData.ts';
 import { useNavigate } from 'react-router-dom';
 import { NAV_LINK } from '../../routes/components/NAV_LINK.js';
-import { LoadingOutlined } from '@ant-design/icons';
 
 export default function LoginScreen() {
 	const navigation = useNavigate();

@@ -6,6 +6,8 @@ import { IC_backArrow, IC_navDetail, IC_nextArrow, IC_sort } from '../../assets/
 import Combobox from '../../components/combobox/combobox';
 import { getData } from '../../controller/getData.ts';
 import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { IMG_logo } from '../../assets/imgs';
 
 export const Staff = () => {
 	const items = [
@@ -75,6 +77,10 @@ export const Staff = () => {
 	useEffect(() => {
 		fetchData();
 	}, []);
+
+	useEffect(() => {
+		setTotalPage(Math.ceil(data.length / 9));
+	}, [data]);
 
 	// const data = [
 	//   {
@@ -148,7 +154,31 @@ export const Staff = () => {
 	const [pageIndex, setPageIndex] = useState(1);
 	const [totalPage, setTotalPage] = useState(Math.ceil(data.length / 9));
 	return (
-		<Spin spinning={isLoading}>
+		<Spin
+			spinning={isLoading}
+			indicator={
+				<div
+					style={{
+						transform: 'translate(-50%, -50%)',
+						backgroundColor: '#909090',
+						opacity: 0.8,
+						width: '50%',
+						height: '50%',
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						flexDirection: 'column',
+					}}>
+					<img
+						style={{ width: '50%' }}
+						src={IMG_logo}
+					/>
+					<LoadingOutlined
+						style={{ fontSize: 24 }}
+						spin
+					/>
+				</div>
+			}>
 			<div className={styles.maincontainer}>
 				<div className={styles.con1}>
 					<Search />

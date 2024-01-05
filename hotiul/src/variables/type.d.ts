@@ -58,7 +58,7 @@ export type TRoomType = {
 export type TService = {
     ID: string,
     Service: string,
-    TotalPrice: number,
+    Price: number,
     Available: number,
 }
 

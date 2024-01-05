@@ -1,6 +1,6 @@
 export const NAV_LINK = {
     HOME: "/*", 
-    DASHBOARD: "/dashboard",
+    DASHBOARD: "/",
     ROOM: "/room",
     BOOKING: "/booking",
     REFUND: "/refund",

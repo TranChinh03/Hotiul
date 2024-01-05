@@ -12,17 +12,17 @@ function RoomItem(props) {
     // Render the appropriate component based on roomStatus
     const renderRoomComponent = () => {
         switch (roomStatus) {
-            case 'available':
+            case 'Available':
                 return <AvailableRoom roomId={roomId} roomType={roomType} />;
-            case 'inUse':
+            case 'In Use':
                 return <InUseRoom roomId={roomId} roomType={roomType} />;
-            case 'confirmCheckin':
+            case 'Confirm Checkin':
                 return <ConfirmCheckinRoom roomId={roomId} roomType={roomType} />;
-            case 'confirmCheckout':
+            case 'Confirm Checkout':
                 return <ConfirmcheckoutRoom roomId={roomId} roomType={roomType} />;
-            case 'fixing':
+            case 'Fixing':
                 return <FixingRoom roomId={roomId} roomType={roomType} />;
-            case 'needClean':
+            case 'Cleaning':
                 return <NeedCleanRoom roomId={roomId} roomType={roomType} />;
             default:
                 // Handle the case where roomStatus is not recognized

@@ -94,59 +94,6 @@ const data = [
 	},
 ];
 
-// const columns = [
-// 	{
-// 		title: () => <div className={styles.tableTitle}>ID</div>,
-// 		dataIndex: 'id',
-// 		width: '100px',
-// 		render: text => <div className={styles.tableInfo}>{text}</div>,
-// 	},
-// 	{
-// 		title: () => <div className={styles.tableTitle}>Room</div>,
-// 		dataIndex: 'room',
-// 		width: '200px',
-// 		render: text => <div className={styles.tableInfo}>{text}</div>,
-// 	},
-// 	{
-// 		title: () => <div className={styles.tableTitle}>Check-in</div>,
-// 		dataIndex: 'checkin',
-// 		width: '150px',
-// 		render: text => <div className={styles.tableInfo}>{text}</div>,
-// 	},
-// 	{
-// 		title: () => <div className={styles.tableTitle}>Check-out</div>,
-// 		dataIndex: 'checkout',
-// 		width: '150px',
-// 		render: text => <div className={styles.tableInfo}>{text}</div>,
-// 	},
-// 	{
-// 		title: () => <div className={styles.tableTitle}>Price</div>,
-// 		dataIndex: 'price',
-// 		width: '150px',
-// 		render: text => <div className={styles.tableInfo}>{text}</div>,
-// 	},
-// 	{
-// 		title: () => <div className={styles.tableTitle}>Detail >></div>,
-// 		dataIndex: '',
-// 		render: () => (
-// 			<button onClick={() => {}}>
-// 				<div className={styles.tableInfo}>View detail >></div>
-// 			</button>
-// 		),
-// 	},
-// ];
-// const data = [];
-// for (let i = 0; i < 100; i++) {
-// 	data.push({
-// 		key: i,
-// 		id: i,
-// 		room: `Room ${i}`,
-// 		checkin: `Date ${i}`,
-// 		checkout: `Date ${i + 1}`,
-// 		price: `10000000`,
-// 	});
-// }
-
 function ProfileCustomer() {
 	const [pageIndex, setPageIndex] = useState(1);
 	const [totalPage, setTotalPage] = useState(Math.ceil(data.length / 9));

@@ -21,9 +21,7 @@ import LoginScreen from './views/Authentication/LoginScreen';
 import RootRoutes from './routes/route/RootRoutes';
 
 const App = () => {
-  return (
-    <RootRoutes/>
-  )
-}
+	return <RootRoutes />;
+};
 
 export default App;

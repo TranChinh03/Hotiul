@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './profilestaff.module.scss';
-import { IC_closebutton } from '../../assets/icons';
+import { IC_closebutton } from '../../assets/icons/index.js';
+import { Select } from 'antd';
+import { addData, updateData } from '../../controller/addData.ts';
+import { deleteData } from '../../controller/deleteData.ts';
 
-function ProfileStaff() {
+function ProfileStaff(props) {
 	const [action, setAction] = useState(true);
-	const [state, setState] = useState({
-		name: '',
-		gender: '',
-		phone: '',
-		ctzId: '',
-		address: '',
-		salary: '',
-	});
+	const [state, setState] = useState({});
+
+	useEffect(() => { 
+		setState({
+			name: props.data.Name,
+			gender: props.data.Gender,
+			phone: props.data.Phone,
+			ctzId: props.data.CitizenID,
+			address: props.data.Address,
+			salary: props.data.Salary
+		})
+	}, [props.data])
 
 	const [edit, setEdit] = useState({
 		name: '',
@@ -44,7 +51,36 @@ function ProfileStaff() {
 		});
 	}
 
+	function handleDelete() {
+		try {
+			deleteData({id: props.data.ID, table: "STAFF"})
+		}
+		catch (err) {
+			console.log("Error delete data", err)
+		}
+		props.setOpen(false)
+		props.fetchData()
+	}
+
 	function handleSave() {
+		try {
+			const newData = {
+					Name: edit.name,
+					CitizenID: edit.ctzId,
+					Phone: edit.phone,
+					Gender: edit.gender,
+					Address: edit.address,
+					Salary: Number(edit.salary),
+					Username: props.data.Username,
+					Password: props.data.Password,
+				}
+				console.log(newData)
+			updateData({data: newData, table: "STAFF", id: props.data.ID});
+		}
+		catch (err) { 
+			console.log("Error updating data", err)
+			return
+		 }
 		assignInfo(state, edit);
 		handleAction();
 	}
@@ -61,6 +97,7 @@ function ProfileStaff() {
 						<>
 							<div className={styles.buttonContainer}>
 								<button
+									onClick={() => handleDelete()}
 									className={styles.button}
 									style={{ backgroundColor: '#FF9A9A' }}>
 									Delete
@@ -71,7 +108,11 @@ function ProfileStaff() {
 									style={{ backgroundColor: '#66EB8B' }}>
 									Edit
 								</button>
-								<button>
+								<button 
+									onClick={() => {
+										props.setOpen(false)
+									}}
+								>
 									<img
 										src={IC_closebutton}
 										alt="CloseButton"></img>
@@ -93,7 +134,11 @@ function ProfileStaff() {
 									style={{ backgroundColor: '#66EB8B' }}>
 									Save
 								</button>
-								<button>
+								<button
+									onClick={() => {
+										props.setOpen(false)
+										handleAction()
+									}}>
 									<img
 										src={IC_closebutton}
 										alt="CloseButton"></img>
@@ -114,7 +159,7 @@ function ProfileStaff() {
 								<div
 									className={styles.title}
 									style={{ marginLeft: '10px' }}>
-									23232
+									{props.data.ID}
 								</div>
 							</div>
 							{action ? (
@@ -222,13 +267,25 @@ function ProfileStaff() {
 									className={styles.info}
 									style={{ marginBottom: '10px' }}>
 									<div className={styles.title}>Gender:</div>
-									<input
+									<Select
+										type="text"
+										name="gender"
+										value={edit.gender}
+										style={{ width: "20vw", height: "50px", padding: 0}}
+										options={[{value: "Female"}, {value: "Male"}]}
+										onChange={e => 		
+											setEdit({
+											...edit,
+											gender: e,
+										})}
+									/>
+									{/* <input
 										className={styles.inputInfo}
 										type="text"
 										name="gender"
 										value={edit.gender}
 										onChange={e => handleChange(e)}
-										required></input>
+										required></input> */}
 								</div>
 								<div
 									className={styles.info}

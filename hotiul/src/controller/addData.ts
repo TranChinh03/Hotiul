@@ -14,18 +14,10 @@ type params = {
     | "SERVICE"
     | "STAFF";
 
-  data:
-    | TBooking
-    | TCustomer
-    | TFee
-    | TRefund
-    | TRoom
-    | TRoomType
-    | TService
-    | TStaff;
+  data: any
 };
 const addData = async ({ data, table, id }: params) => {
-  await setDoc(doc(db, `${table}`, id), data)
+  await setDoc(doc(db, `/${table}/`, id), data)
     .then(() => {
       console.log(">>>>>>>>>> Add Data >>>>>>>>>>");
     })
@@ -34,7 +26,7 @@ const addData = async ({ data, table, id }: params) => {
 
 const updateData = async ({ data, table, id }: params) => {
   //console.log("OKKK");
-  await updateDoc(doc(db, `${table}`, id), data)
+  await updateDoc(doc(db, `/${table}/`, id), data)
     .then(() => {
       console.log(">>>>>>>>>> Update Data >>>>>>>>>>");
     })

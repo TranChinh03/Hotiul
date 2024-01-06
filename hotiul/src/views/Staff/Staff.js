@@ -13,6 +13,8 @@ import { getData } from "../../controller/getData.ts";
 import { Spin } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
 import { IMG_logo } from "../../assets/imgs";
+import Modal from "antd/es/modal/Modal";
+import { AddStaff } from "./component/addStaff.js";
 
 export const Staff = () => {
   const items = [
@@ -147,6 +149,9 @@ export const Staff = () => {
   //   },
   // ];
 
+
+  const [isAddOpen, setIsAddOpen] = useState(false)
+
   const [pageIndex, setPageIndex] = useState(1);
   const [totalPage, setTotalPage] = useState(Math.ceil(data.length / 9));
   return (
@@ -160,7 +165,7 @@ export const Staff = () => {
         <div className={styles.con1}>
           <Search />
           <Combobox label={"Gender"} items={items} item={item} />
-          <ButtonAdd text={"Add Staff"} />
+          <ButtonAdd onClick={() => setIsAddOpen(true)} text={"Add Staff"} />
         </div>
         <div className={styles.con2}>
           <table id="my-table" class={styles.tableData}>
@@ -223,6 +228,11 @@ export const Staff = () => {
           </div>
         </div>
       </div>
+      
+      <Modal open={isAddOpen} footer={null} onCancel={() => setIsAddOpen(false)}>
+        <AddStaff/>
+      </Modal>
+
     </Spin>
   );
 };

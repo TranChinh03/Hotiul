@@ -12,6 +12,7 @@ const STAFF = [
 		Username: 'admin',
 		Password: 'admin',
 		Role: 'Manager',
+		Image: "",
 	},
 	{
 		ID: 'S02',
@@ -24,6 +25,7 @@ const STAFF = [
 		Username: 'nhanvien02',
 		Password: 'nhanvien02mk',
 		Role: 'Staff',
+		Image: "",
 	},
 	{
 		ID: 'S03',
@@ -36,6 +38,7 @@ const STAFF = [
 		Username: 'nhanvien03',
 		Password: 'nhanvien03mk',
 		Role: 'Staff',
+		Image: "",
 	},
 	{
 		ID: 'S04',
@@ -48,6 +51,7 @@ const STAFF = [
 		Username: 'nhanvien04',
 		Password: 'nhanvien04mk',
 		Role: 'Staff',
+		Image: "",
 	},
 ];
 

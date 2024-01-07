@@ -1,143 +1,147 @@
-import React, { useEffect, useState } from 'react';
-import styles from '../Booking/booking.module.scss';
-import Search from '../../components/search/search';
-import ButtonAdd from '../../components/buttonAdd/buttonAdd';
-import { IC_backArrow, IC_navDetail, IC_nextArrow, IC_sort } from '../../assets/icons';
-import Combobox from '../../components/combobox/combobox';
-import { LoadingOutlined } from '@ant-design/icons';
-import { Button, Input, Spin, message } from 'antd';
-import { IMG_logo } from '../../assets/imgs';
-import { getData } from '../../controller/getData.ts';
-import ProfileCustomer from '../../components/profileCustomer/ProfileCustomer.js';
+import React, { useEffect, useState } from "react";
+import styles from "../Booking/booking.module.scss";
+import Search from "../../components/search/search";
+import ButtonAdd from "../../components/buttonAdd/buttonAdd";
+import {
+  IC_backArrow,
+  IC_navDetail,
+  IC_nextArrow,
+  IC_sort,
+} from "../../assets/icons";
+import Combobox from "../../components/combobox/combobox";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Button, Input, Modal, Select, Spin, message } from "antd";
+import { IMG_logo } from "../../assets/imgs";
+import { getData } from "../../controller/getData.ts";
+import ProfileCustomer from "../../components/profileCustomer/ProfileCustomer.js";
 
 export const Customer = () => {
-	//show add customer
-	const [isShowed, setIsShowed] = useState(false);
+  //search and filter
+  const [keywords, setKeywords] = useState("");
+  const [gender, setGender] = useState("");
 
-	const [selectedCustomer, setSelectedCustomer] = useState(null);
+  //show add customer
+  const [isShowed, setIsShowed] = useState(false);
 
-	const items = [
-		{
-			label: (
-				<button
-					className="w-20"
-					onClick={() => setItem(' - - All - -')}>
-					All
-				</button>
-			),
-			key: '1',
-		},
-		{
-			label: (
-				<button
-					className="w-20"
-					onClick={() => setItem('Male')}>
-					Male
-				</button>
-			),
-			key: '2',
-		},
-		{
-			label: (
-				<button
-					className="w-20"
-					onClick={() => setItem('Female')}>
-					Female
-				</button>
-			),
-			key: '3',
-		},
-	];
-	const [item, setItem] = useState(' -- All --');
-	const column = [
-		{ label: 'ID', accessor: 'id' },
-		{ label: 'Customer Name', accessor: 'name' },
-		{ label: 'Phone', accessor: 'phone' },
-		{ label: 'Gender', accessor: 'gender' },
-		{ label: 'Detail', accessor: 'detail' },
-	];
-	// const data = [
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	// ];
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
 
-	const [pageIndex, setPageIndex] = useState(1);
-	const [totalPage, setTotalPage] = useState();
+  const items = [
+    {
+      label: (
+        <button className="w-20" onClick={() => setItem(" - - All - -")}>
+          All
+        </button>
+      ),
+      key: "1",
+    },
+    {
+      label: (
+        <button className="w-20" onClick={() => setItem("Male")}>
+          Male
+        </button>
+      ),
+      key: "2",
+    },
+    {
+      label: (
+        <button className="w-20" onClick={() => setItem("Female")}>
+          Female
+        </button>
+      ),
+      key: "3",
+    },
+  ];
+  const [item, setItem] = useState(" -- All --");
+  const column = [
+    { label: "ID", accessor: "id" },
+    { label: "Customer Name", accessor: "name" },
+    { label: "Phone", accessor: "phone" },
+    { label: "Gender", accessor: "gender" },
+    { label: "Detail", accessor: "detail" },
+  ];
+  const dataTest = [
+    {
+      id: "001",
+      name: "Anom",
+      phone: "01234567",
+      gender: "Male",
+    },
+    {
+      id: "002",
+      name: "Annie",
+      phone: "01234567",
+      gender: "Male",
+    },
+    {
+      id: "003",
+      name: "Khun",
+      phone: "01234567",
+      gender: "Male",
+    },
+    {
+      id: "004",
+      name: "John",
+      phone: "01234567",
+      gender: "Male",
+    },
+    {
+      id: "005",
+      name: "Christina",
+      phone: "01234567",
+      gender: "Male",
+    },
+    {
+      id: "006",
+      name: "Liming",
+      phone: "01234567",
+      gender: "Male",
+    },
+    {
+      id: "007",
+      name: "Heart",
+      phone: "01234567",
+      gender: "Male",
+    },
+    {
+      id: "008",
+      name: "Tin",
+      phone: "01234567",
+      gender: "Male",
+    },
+    {
+      id: "009",
+      name: "Gun",
+      phone: "01234567",
+      gender: "Male",
+    },
+    {
+      id: "001",
+      name: "Anom",
+      phone: "01234567",
+      gender: "Male",
+    },
+    {
+      id: "001",
+      name: "Anom",
+      phone: "01234567",
+      gender: "Male",
+    },
+  ];
+
+  const [pageIndex, setPageIndex] = useState(1);
+  const [totalPage, setTotalPage] = useState();
 
   const [isLoading, setIsLoading] = useState(true);
   const [fullData, setFullData] = useState([]);
   const [data, setData] = useState([]);
 
+  console.log("gender", gender);
   const fetchData = async () => {
     await Promise.all([
-      getData("/CUSTOMER").then((data) => {
-        setFullData(data);
+      getData("/CUSTOMER").then((customer) => {
+        setFullData(customer);
         setData(
-          data.map((item) => {
+          customer.map((item) => {
             return {
               id: item.ID,
               name: item.Name,
@@ -155,10 +159,9 @@ export const Customer = () => {
     fetchData();
   });
 
-	useEffect(() => {
-		setTotalPage(Math.ceil(data.length / 9));
-	}, [data]);
-
+  useEffect(() => {
+    setTotalPage(Math.ceil(data.length / 9));
+  }, [data]);
 
   return (
     <Spin
@@ -184,8 +187,25 @@ export const Customer = () => {
     >
       <div className={styles.maincontainer}>
         <div className={styles.con1}>
-          <Search />
-          <Combobox label={"Gender"} items={items} item={item} />
+          <Search onChange={(e) => setKeywords(e.target.value)} />
+          {/* <Combobox
+            label={"Gender"}
+            items={items}
+            item={item}
+            onChange={(e) => setGender(e.target.value)}
+          /> */}
+          <Select
+            type="text"
+            name="gender"
+            value={gender}
+            style={{
+              width: "20vw",
+              height: "40px",
+              marginLeft: "10px",
+            }}
+            options={[{ value: "All" }, { value: "Female" }, { value: "Male" }]}
+            onChange={(e) => setGender(e)}
+          />
           <ButtonAdd onClick={() => setIsShowed(true)} text={"Add Customer"} />
         </div>
         <div className={styles.con2}>
@@ -206,30 +226,32 @@ export const Customer = () => {
             </thead>
             <tbody className="h-96">
               {data.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
-                return (
-                  <tr className={styles.rowTbl} key={key}>
-                    {column.slice(0, -1).map(({ accessor }) => {
-                      const tData = val[accessor] ? val[accessor] : "——";
-                      return (
-                        <td className={styles.col}>
-                          <button>{tData}</button>
-                        </td>
-                      );
-                    })}
-                    <td
-                      onClick={() => {
-                        setSelectedCustomer(
-                          fullData.find((x) => x.ID === val.id)
-                        );
-                        setIsShowed(true);
-                      }}
-                      className={styles.col}
-                    >
-                      <p>View Full Detail </p>
-                      <img className="pl-2" src={IC_navDetail} />
-                    </td>
-                  </tr>
-                );
+                if (
+                  (val.name.toLowerCase().includes(keywords.toLowerCase()) ||
+                    val.id.toLowerCase().includes(keywords.toLowerCase()) ||
+                    val.phone.includes(keywords)) &&
+                  (val.gender.includes(gender) || gender === "All")
+                )
+                  return (
+                    <tr className={styles.rowTbl} key={key}>
+                      {column.slice(0, -1).map(({ accessor }) => {
+                        const tData = val[accessor] ? val[accessor] : "——";
+                        return <td className={styles.col}>{tData}</td>;
+                      })}
+                      <td
+                        onClick={() => {
+                          setSelectedCustomer(
+                            fullData.find((x) => x.ID === val.id)
+                          );
+                          setIsShowed(true);
+                        }}
+                        className={styles.col}
+                      >
+                        <p>View Full Detail </p>
+                        <img className="pl-2" src={IC_navDetail} />
+                      </td>
+                    </tr>
+                  );
               })}
             </tbody>
           </table>
@@ -262,7 +284,7 @@ export const Customer = () => {
           </div>
         </div>
       </div>
-      {isShowed ? (
+      {/* {isShowed ? (
         <div className={styles.dialog}>
           <div className={styles.condialog}>
             <ProfileCustomer
@@ -274,8 +296,23 @@ export const Customer = () => {
             />
           </div>
         </div>
-      ) : null}
+      ) : null} */}
+      <Modal
+        centered={true}
+        width="75%"
+        closeIcon={null}
+        open={isShowed}
+        footer={null}
+        onCancel={() => setIsShowed(false)}
+      >
+        <ProfileCustomer
+          data={selectedCustomer}
+          onClose={() => {
+            setIsShowed(false);
+            setSelectedCustomer(null);
+          }}
+        />
+      </Modal>
     </Spin>
   );
-
 };

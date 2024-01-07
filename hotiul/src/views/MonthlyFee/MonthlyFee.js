@@ -20,30 +20,21 @@ export const MonthlyFee = () => {
 		{ label: 'Detail', accessor: 'detail' },
 	];
 
-	const [selectedData, setSelectedData] = useState(null);
-
 	const [pageIndex, setPageIndex] = useState(1);
 	const [totalPage, setTotalPage] = useState();
-
 	const [isLoading, setIsLoading] = useState(true);
+
 	const [data, setData] = useState([]);
+	const [selectedData, setSelectedData] = useState(null);
+	const [fullData, setFullData] = useState([]);
 
 	const [isOpenModal, setIsOpenModal] = useState(false);
 	const [isOpenFee, setIsOpenFee] = useState(false);
 
-	const handleOpenFeeInformation = () => {
-		setIsOpenModal(true);
-		setSelectedData(null);
-	};
-
-	const handleSaveFeeInformation = () => {
-		fetchData();
-		setIsOpenModal(false);
-	};
-
 	const fetchData = async () => {
 		await Promise.all([
 			getData('/FEE').then(data => {
+				setFullData(data);
 				setData(
 					data.map(item => {
 						return {

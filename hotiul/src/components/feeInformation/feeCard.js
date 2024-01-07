@@ -53,6 +53,12 @@ function FeeCard(props) {
 		});
 	}
 
+	function assignInfo(state, edit) {
+		state.name = edit.name;
+		state.price = edit.price;
+		state.date = edit.date;
+	}
+
 	return (
 		<>
 			<div className={styles.container}>

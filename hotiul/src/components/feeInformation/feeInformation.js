@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './fee.module.scss';
 import ButtonAdd from '../../components/buttonAdd/buttonAdd';
 import { addData, updateData } from '../../controller/addData.ts';
@@ -14,7 +14,7 @@ import {
 	IC_closebutton,
 	IC_line,
 } from '../../assets/icons';
-import { Table } from 'antd';
+import { Button, Table } from 'antd';
 
 const column = [
 	{ label: 'ID', accessor: 'Id' },
@@ -25,13 +25,27 @@ const column = [
 ];
 
 function FeeInformation(props) {
-	const dataValue = props.data;
+	//const dataValue = props.data;
+	const [dataValue, setDataValue] = useState(props.data);
 
-	const [detailValue, setDetailValue] = useState([]);
+	const [tableData, setTableData] = useState([]);
 
 	console.log('dv', dataValue);
 
 	const [isOpenFee, setIsOpenFee] = useState(false);
+
+	useEffect(() => {
+		// Update tableData when dataValue changes
+		if (dataValue && dataValue.detail) {
+			const newTableData = dataValue.detail.map(item => ({
+				Id: item.Id || '——',
+				Name: item.Name || '——',
+				Date: item.Date || '——',
+				Price: item.Price || '——',
+			}));
+			setTableData(newTableData);
+		}
+	}, [dataValue]);
 
 	function handleOpenFeeCard() {
 		setIsOpenFee(true);
@@ -56,16 +70,26 @@ function FeeInformation(props) {
 			const newData = {
 				ID: feeID,
 				Name: edit.fee,
-				Detail: edit.detail,
+				Details: edit.detail,
 			};
-			console.log(newData);
-			addData({ data: newData, table: 'FEE', id: feeID });
-			setEdit({
-				fee: '',
-				detail: [],
-			});
-			props.setOpen(false);
+
+			if (dataValue) {
+				// If dataValue is not null, update existing data
+				updateData({
+					data: { Name: edit.fee, Details: edit.detail },
+					table: 'FEE',
+					id: dataValue.id,
+				});
+			} else {
+				// If dataValue is null, add new data
+				addData({ data: newData, table: 'FEE', id: feeID });
+				setEdit({
+					fee: '',
+					detail: [],
+				});
+			}
 			props.fetchData();
+			props.setOpen(false);
 		} catch (err) {
 			console.log('Error updating data', err);
 			return;
@@ -74,8 +98,11 @@ function FeeInformation(props) {
 
 	function handleSaveFeeCard(newData) {
 		console.log('New data from FeeCard:', newData);
-		// setDataValue(...dataValue, newData);
-		//console.log('ra cai qq gi z', dataValue);
+
+		setDataValue(prevDataValue => {
+			const updatedDetail = [...(prevDataValue.detail || []), newData];
+			return { ...prevDataValue, detail: updatedDetail };
+		});
 	}
 
 	function handleCancel() {
@@ -162,37 +189,38 @@ function FeeInformation(props) {
 							</tr>
 						</thead>
 						<tbody className="h-52">
-							{dataValue ? (
-								dataValue.detail.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
-									return (
-										<tr
-											className={styles.rowTbl}
-											key={key}>
-											{column.slice(0, -1).map(({ accessor }) => {
-												const tData = val[accessor] ? val[accessor] : '——';
-
-												return <td className={styles.col}>{tData}</td>;
-											})}
-											<td className={styles.colDetail}>
-												<button onClick={() => {}}>
-													<div
-														className={styles.tableInfo}
-														onClick={props.clickDetail}>
-														View Detail{' '}
-														<img
-															style={{ justifySelf: 'center', alignSelf: 'center' }}
-															className="pl-2"
-															src={IC_navDetail}
-														/>
-													</div>
-												</button>
-											</td>
-										</tr>
-									);
-								})
-							) : (
-								<div>Chua co cai qq gi het</div>
-							)}
+							{tableData.map((val, key) => {
+								return (
+									<tr
+										className={styles.rowTbl}
+										key={key}>
+										{column.slice(0, -1).map(({ accessor }) => {
+											const tData = val[accessor];
+											return (
+												<td
+													className={styles.col}
+													key={accessor}>
+													{tData}
+												</td>
+											);
+										})}
+										<td className={styles.colDetail}>
+											<button onClick={() => {}}>
+												<div
+													className={styles.tableInfo}
+													onClick={props.clickDetail}>
+													View Detail{' '}
+													<img
+														style={{ justifySelf: 'center', alignSelf: 'center' }}
+														className="pl-2"
+														src={IC_navDetail}
+													/>
+												</div>
+											</button>
+										</td>
+									</tr>
+								);
+							})}
 						</tbody>
 					</table>
 				</div>
@@ -234,6 +262,12 @@ function FeeInformation(props) {
 						onClick={() => handleOpenFeeCard()}
 						text={'Add Fee'}
 					/>
+					<Button
+						onClick={() => {
+							console.log('okeoke', dataValue);
+						}}>
+						Nhan do coi
+					</Button>
 				</div>
 			</div>
 			<Modal

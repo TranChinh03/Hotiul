@@ -28,3 +28,9 @@
 .rowTbl {
   @apply border-t-[0.75px] border-t-secondColor border-opacity-20;
 }
+.dialog {
+  @apply items-center z-50 top-0 absolute max-h-fit w-full bg-mainColor bg-opacity-50;
+}
+.condialog {
+  @apply w-11/12 my-5;
+}

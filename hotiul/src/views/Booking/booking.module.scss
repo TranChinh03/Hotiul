@@ -18,7 +18,11 @@
 }
 .col p,
 .col img {
-  @apply inline-block cursor-pointer hover:opacity-70;
+  @apply inline-block cursor-pointer;
+}
+.col:hover p,
+.col:hover img {
+  @apply opacity-70;
 }
 .tableData {
   @apply table-auto w-full;

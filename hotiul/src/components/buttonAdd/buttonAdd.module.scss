@@ -1,6 +1,7 @@
 .container {
   @apply px-5 bg-mainColor flex rounded-2xl items-center h-14 cursor-pointer;
 }
+
 .text {
-  @apply text-white  font-bold text-base px-2 whitespace-nowrap;
+  @apply text-white font-bold text-base px-2 whitespace-nowrap;
 }

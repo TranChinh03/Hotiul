@@ -30,7 +30,7 @@ function ProfileStaff(props) {
 		}
 	  };	
 
-	useEffect(() => { 
+	useEffect(() => {
 		setState({
 			name: props.data.Name,
 			gender: props.data.Gender,
@@ -75,7 +75,7 @@ function ProfileStaff(props) {
 
 	function handleDelete() {
 		try {
-			deleteData({id: props.data.ID, table: "STAFF"})
+			deleteData({ id: props.data.ID, table: "STAFF" })
 		}
 		catch (err) {
 			console.log("Error delete data", err)
@@ -122,7 +122,7 @@ function ProfileStaff(props) {
 				console.log(newData)
 			updateData({data: newData, table: "STAFF", id: props.data.ID});
 		}
-		catch (err) { 
+		catch (err) {
 			console.log("Error updating data", err)
 			return
 		 }
@@ -160,7 +160,7 @@ function ProfileStaff(props) {
 									style={{ backgroundColor: '#66EB8B' }}>
 									Edit
 								</button>
-								<button 
+								<button
 									onClick={() => {
 										props.setOpen(false)
 									}}
@@ -378,13 +378,13 @@ function ProfileStaff(props) {
 										type="text"
 										name="gender"
 										value={edit.gender}
-										style={{ width: "20vw", height: "50px", padding: 0}}
-										options={[{value: "Female"}, {value: "Male"}]}
-										onChange={e => 		
+										style={{ width: "20vw", height: "50px", padding: 0 }}
+										options={[{ value: "Female" }, { value: "Male" }]}
+										onChange={e =>
 											setEdit({
-											...edit,
-											gender: e,
-										})}
+												...edit,
+												gender: e,
+											})}
 									/>
 									{/* <input
 										className={styles.inputInfo}

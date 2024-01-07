@@ -51,6 +51,7 @@ const ROOM_TYPE = [
 				Quantity: 1,
 			},
 		],
+		Price: 200
 	},
 	{
 		ID: 'RT02',
@@ -102,6 +103,7 @@ const ROOM_TYPE = [
 				Quantity: 1,
 			},
 		],
+		Price: 250
 	},
 	{
 		ID: 'RT03',
@@ -161,6 +163,7 @@ const ROOM_TYPE = [
 				Quantity: 1,
 			},
 		],
+		Price: 300
 	},
 	{
 		ID: 'RT04',
@@ -220,6 +223,7 @@ const ROOM_TYPE = [
 				Quantity: 1,
 			},
 		],
+		Price: 450
 	},
 	{
 		ID: 'RT05',
@@ -279,18 +283,19 @@ const ROOM_TYPE = [
 				Quantity: 1,
 			},
 		],
+		Price: 600
 	},
 ];
 
 export const addDbRoomType = async () => {
 	ROOM_TYPE.map(async (b) => {
-	  await setDoc(
-		doc(
-		  db,
-		  "ROOM_TYPE",
-		  b.ID
-		),
-		b
-	  );
+		await setDoc(
+			doc(
+				db,
+				"ROOM_TYPE",
+				b.ID
+			),
+			b
+		);
 	});
-  };
+};

@@ -73,11 +73,11 @@ function FeeInformation(props) {
 
 	function handleChange(evt) {
 		const value = evt.target.value;
-		setDataValue({
-			...dataValue,
+		setEdit({
+			...edit,
 			fee: value,
 		});
-		setEdit({ ...edit, fee: dataValue.fee });
+		//setDataValue({ ...dataValue, fee: edit.fee });
 	}
 
 	function handleSave() {
@@ -161,7 +161,7 @@ function FeeInformation(props) {
 						className={styles.inputInfo}
 						type="text"
 						name="fee"
-						value={dataValue.fee}
+						value={edit.fee}
 						onChange={e => handleChange(e)}
 						required></input>
 				</div>

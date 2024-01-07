@@ -9,7 +9,7 @@ function ProfileStaff(props) {
 	const [action, setAction] = useState(true);
 	const [state, setState] = useState({});
 
-	useEffect(() => { 
+	useEffect(() => {
 		setState({
 			name: props.data.Name,
 			gender: props.data.Gender,
@@ -53,7 +53,7 @@ function ProfileStaff(props) {
 
 	function handleDelete() {
 		try {
-			deleteData({id: props.data.ID, table: "STAFF"})
+			deleteData({ id: props.data.ID, table: "STAFF" })
 		}
 		catch (err) {
 			console.log("Error delete data", err)
@@ -65,22 +65,22 @@ function ProfileStaff(props) {
 	function handleSave() {
 		try {
 			const newData = {
-					Name: edit.name,
-					CitizenID: edit.ctzId,
-					Phone: edit.phone,
-					Gender: edit.gender,
-					Address: edit.address,
-					Salary: Number(edit.salary),
-					Username: props.data.Username,
-					Password: props.data.Password,
-				}
-				console.log(newData)
-			updateData({data: newData, table: "STAFF", id: props.data.ID});
+				Name: edit.name,
+				CitizenID: edit.ctzId,
+				Phone: edit.phone,
+				Gender: edit.gender,
+				Address: edit.address,
+				Salary: Number(edit.salary),
+				Username: props.data.Username,
+				Password: props.data.Password,
+			}
+			console.log(newData)
+			updateData({ data: newData, table: "STAFF", id: props.data.ID });
 		}
-		catch (err) { 
+		catch (err) {
 			console.log("Error updating data", err)
 			return
-		 }
+		}
 		assignInfo(state, edit);
 		handleAction();
 	}
@@ -108,7 +108,7 @@ function ProfileStaff(props) {
 									style={{ backgroundColor: '#66EB8B' }}>
 									Edit
 								</button>
-								<button 
+								<button
 									onClick={() => {
 										props.setOpen(false)
 									}}
@@ -271,13 +271,13 @@ function ProfileStaff(props) {
 										type="text"
 										name="gender"
 										value={edit.gender}
-										style={{ width: "20vw", height: "50px", padding: 0}}
-										options={[{value: "Female"}, {value: "Male"}]}
-										onChange={e => 		
+										style={{ width: "20vw", height: "50px", padding: 0 }}
+										options={[{ value: "Female" }, { value: "Male" }]}
+										onChange={e =>
 											setEdit({
-											...edit,
-											gender: e,
-										})}
+												...edit,
+												gender: e,
+											})}
 									/>
 									{/* <input
 										className={styles.inputInfo}

@@ -3,7 +3,6 @@ import { db } from "../firebaseConfig";
 const ROOM_TYPE = [
 	{
 		ID: 'RT01',
-		TypeID: 'RTSingleReg',
 		TypeName: 'Single Regular Room',
 		NumPerson: 1,
 		Amenities: [
@@ -52,10 +51,10 @@ const ROOM_TYPE = [
 				Quantity: 1,
 			},
 		],
+		Price: 200
 	},
 	{
 		ID: 'RT02',
-		TypeID: 'RTCoupleReg',
 		TypeName: 'Couple Regular Room',
 		NumPerson: 2,
 		Amenities: [
@@ -104,10 +103,10 @@ const ROOM_TYPE = [
 				Quantity: 1,
 			},
 		],
+		Price: 250
 	},
 	{
 		ID: 'RT03',
-		TypeID: 'RTSingleVIP',
 		TypeName: 'Single VIP Room',
 		NumPerson: 1,
 		Amenities: [
@@ -164,10 +163,10 @@ const ROOM_TYPE = [
 				Quantity: 1,
 			},
 		],
+		Price: 300
 	},
 	{
 		ID: 'RT04',
-		TypeID: 'RTCoupleVIP',
 		TypeName: 'Couple VIP Room',
 		NumPerson: 2,
 		Amenities: [
@@ -224,10 +223,10 @@ const ROOM_TYPE = [
 				Quantity: 1,
 			},
 		],
+		Price: 450
 	},
 	{
 		ID: 'RT05',
-		TypeID: 'RTSmallF',
 		TypeName: 'Small Family Room',
 		NumPerson: 4,
 		Amenities: [
@@ -284,18 +283,19 @@ const ROOM_TYPE = [
 				Quantity: 1,
 			},
 		],
+		Price: 600
 	},
 ];
 
 export const addDbRoomType = async () => {
 	ROOM_TYPE.map(async (b) => {
-	  await setDoc(
-		doc(
-		  db,
-		  "ROOM_TYPE",
-		  b.ID
-		),
-		b
-	  );
+		await setDoc(
+			doc(
+				db,
+				"ROOM_TYPE",
+				b.ID
+			),
+			b
+		);
 	});
-  };
+};

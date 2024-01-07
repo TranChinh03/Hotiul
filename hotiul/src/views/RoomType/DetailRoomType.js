@@ -5,10 +5,15 @@ import Modal from '@mui/material/Modal';
 import { Input, InputNumber } from 'antd';
 import { formatCurrency, removeCommas } from '../../utils/appUtils.js';
 import { updateData } from '../../controller/addData.ts';
+import { deleteData } from '../../controller/deleteData.ts';
 import { MdDelete } from "react-icons/md";
 import { FaDoorOpen, FaUser } from "react-icons/fa";
 import { IC_add } from "../../assets/icons/index.js";
 import { Button } from "@mui/material";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { getData } from "../../controller/getData.ts";
+import ConfirmDialog from "../../components/confirmdialog/ConfirmDialog.js";
 const style = {
     position: 'absolute',
     top: '40%',
@@ -72,13 +77,57 @@ function DetailRoomType(props) {
         updateData({ data: roomTypeData, table: "ROOM_TYPE", id: props.selectedRoomType?.id });
         handleCloseDetailModal();
     }
-    const handleDelete = () => {
+    const [roomList, setRoomList] = useState([]);
+    useEffect(() => {
+        fetchRoom();
+    }, []);
+    const fetchRoom = async (roomTypeId) => {
+        setRoomList(await getData('/ROOM'));
+    }
+    const validateDelete = () => {
+        const listRoomTypeIdHasRoom = roomList.map((item) => (item.TypeID));
+        console.log(listRoomTypeIdHasRoom);
+        if (listRoomTypeIdHasRoom.includes(props.selectedRoomType.id)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
 
+        setOpenSnackbar(false);
+    };
+    const handleDelete = () => {
+        if (validateDelete()) {
+            setConfirmDialogOpen(true);
+        }
+        else {
+            setSnackbarMessage("Cannot delete this room type");
+            setOpenSnackbar(true);
+        }
     }
     const handleCloseDetailModal = () => {
         setIsUpdate(false);
+        setOpenSnackbar(false);
         props.onCloseModal();
     }
+    const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+    const handleConfirmDelete = () => {
+        deleteData({ id: props.selectedRoomType.id, table: "ROOM_TYPE" });
+        setConfirmDialogOpen(false);
+        handleCloseDetailModal();
+        alert("Delete room type successfully");
+    };
+    const handleCancelDelete = () => {
+        // Đóng Confirm Dialog khi người dùng hủy bỏ
+        setConfirmDialogOpen(false);
+    };
     return (
         <div>
             <Modal
@@ -88,6 +137,26 @@ function DetailRoomType(props) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
+                    <ConfirmDialog
+                        open={confirmDialogOpen}
+                        title={'Confirm Delete'}
+                        content={`Do you want to delete this room type?`}
+                        onClose={handleCancelDelete}
+                        onConfirm={handleConfirmDelete}
+                    />
+                    <Snackbar
+                        className='!z-50'
+                        open={openSnackbar}
+                        autoHideDuration={6000} // Thời gian hiển thị (milliseconds)
+                        onClose={handleCloseSnackbar}
+                    >
+                        <MuiAlert onClose={handleCloseSnackbar}
+                            severity="error"
+                            elevation={6}
+                            variant="filled">
+                            {snackbarMessage}
+                        </MuiAlert>
+                    </Snackbar>
                     <div className="flex flex-row justify-between">
                         {isUpdate && <div className="text-[34px] ml-6">
                             <Input

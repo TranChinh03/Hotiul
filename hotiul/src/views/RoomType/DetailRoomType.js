@@ -210,7 +210,7 @@ function DetailRoomType(props) {
                                         size="large"
                                     />
                                     ||
-                                    <div className="font-bold text-yellow-400 text-2xl">
+                                    <div className="px-4 font-bold text-yellow-400 text-2xl">
                                         {props.selectedRoomType && formatCurrency(props.selectedRoomType.price)}
                                     </div>
                                 }

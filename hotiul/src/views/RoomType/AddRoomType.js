@@ -86,6 +86,7 @@ function AddRoomType(props) {
         props.onCloseModal();
         setSnackbarMessage("Add new room type successfully");
         setOpenSnackbar(true);
+        handleCloseAddModal();
     }
     const clearInput = () => {
         setAmenityList(defaulAmenityList);

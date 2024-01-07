@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./sidebar.module.scss";
 import { IMG_logo } from "../../assets/imgs";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { message } from 'antd'
 import {
   IC_booking,
@@ -17,7 +17,7 @@ import {
 } from "../../assets/icons";
 import { NAV_LINK } from "../../routes/components/NAV_LINK";
 
-const SideBar = ({handleChange}) => {
+const SideBar = ({ handleChange }) => {
   const navigate = useNavigate();
   const tabs = [
     {
@@ -37,6 +37,12 @@ const SideBar = ({handleChange}) => {
       tab: "room",
       icon: IC_room,
       nav: NAV_LINK.ROOM
+    },
+    {
+      tabname: "Room Type",
+      tab: "roomtype",
+      icon: IC_room,
+      nav: NAV_LINK.ROOMTYPE
     },
     {
       tabname: "Refund",
@@ -78,20 +84,19 @@ const SideBar = ({handleChange}) => {
 
   const createList = tabs.map((map) => {
     return (
-        <button
-          className={styles.tabContainer}
-          onClick={() => 
-            {
-              handleChange(map.tab)
-              navigate(map.nav)
-              message.success("Change")
-            }}
-          autoFocus={map.tabname === "Dashboard" ? true : false}>
-          <div className={styles.contentTab}>
-            <img className={styles.icon} src={map.icon} />
-            <p className={styles.tabName}>{map.tabname}</p>
-          </div>
-        </button>
+      <button
+        className={styles.tabContainer}
+        onClick={() => {
+          handleChange(map.tab)
+          navigate(map.nav)
+          message.success("Change")
+        }}
+        autoFocus={map.tabname === "Dashboard" ? true : false}>
+        <div className={styles.contentTab}>
+          <img className={styles.icon} src={map.icon} />
+          <p className={styles.tabName}>{map.tabname}</p>
+        </div>
+      </button>
     );
   });
   return (
@@ -104,8 +109,8 @@ const SideBar = ({handleChange}) => {
         window.location.reload()
       }} className={styles.tabContainer}>
         <div className={styles.contentTab}>
-              <img className={styles.icon} src={IC_logout} />
-              <p className={styles.tabName}>Log Out</p>
+          <img className={styles.icon} src={IC_logout} />
+          <p className={styles.tabName}>Log Out</p>
         </div>
       </button>
     </div>

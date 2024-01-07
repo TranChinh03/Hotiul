@@ -1,12 +1,14 @@
 .container {
     padding: 20px;
     height: 100%;
+    font-family: 'Inter', sans-serif
 }
 
 .homeText {
     @apply mb-5;
     font-size: 20px;
     font-weight: bold;
+    font-family: 'Inter', sans-serif;
     color: #023E8A;
     line-height: 24px;
 }
@@ -23,12 +25,12 @@
 
 .todayActivities {
     flex: 0.35;
-    
+
 }
 
 .weekly {
     flex: 0.3;
-}   
+}
 
 .calendar {
     flex: 0.35;

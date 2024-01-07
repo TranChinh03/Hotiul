@@ -168,11 +168,11 @@ export const Refund = () => {
   const [totalPage, setTotalPage] = useState();
   return (
     <Spin spinning={isLoading} indicator={
-        <div style={{transform: 'translate(-50%, -50%)', backgroundColor:"#909090", opacity:0.8, width: "50%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
-          <img style={{width: "50%"}} src={IMG_logo}/>
-          <LoadingOutlined style={{ fontSize: 24 }} spin />
-        </div>
-      }>
+      <div style={{ transform: 'translate(-50%, -50%)', backgroundColor: "#909090", opacity: 0.8, width: "50%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+        <img style={{ width: "50%" }} src={IMG_logo} />
+        <LoadingOutlined style={{ fontSize: 24 }} spin />
+      </div>
+    }>
       <div className={styles.maincontainer}>
         <div className={styles.con1}>
           <Search />
@@ -203,8 +203,9 @@ export const Refund = () => {
                       const tData = val[accessor] ? val[accessor] : "——";
                       return <td className={styles.col}>{tData}</td>;
                     })}
-                    <td className={styles.colDetail}>
-                      View Full Detail <img className="pl-2" src={IC_navDetail} />
+                    <td className={styles.col}>
+                      <p>View Full Detail </p>
+                      <img className="pl-2" src={IC_navDetail} />
                     </td>
                   </tr>
                 );

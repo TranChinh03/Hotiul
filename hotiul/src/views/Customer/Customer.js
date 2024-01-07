@@ -8,8 +8,14 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input, Spin, message } from 'antd';
 import { IMG_logo } from '../../assets/imgs';
 import { getData } from '../../controller/getData.ts';
+import ProfileCustomer from '../../components/profileCustomer/ProfileCustomer.js';
 
 export const Customer = () => {
+	//show add customer
+	const [isShowed, setIsShowed] = useState(false);
+
+	const [selectedCustomer, setSelectedCustomer] = useState(null);
+
 	const items = [
 		{
 			label: (
@@ -123,11 +129,13 @@ export const Customer = () => {
 	const [totalPage, setTotalPage] = useState();
 
 	const [isLoading, setIsLoading] = useState(true);
+	const [fullData, setFullData] = useState([]);
 	const [data, setData] = useState([]);
 
 	const fetchData = async () => {
 		await Promise.all([
 			getData('/CUSTOMER').then(data => {
+				setFullData(data);
 				setData(
 					data.map(item => {
 						return {
@@ -185,7 +193,10 @@ export const Customer = () => {
 						items={items}
 						item={item}
 					/>
-					<ButtonAdd text={'Add Customer'} />
+					<ButtonAdd
+						onClick={() => setIsShowed(true)}
+						text={'Add Customer'}
+					/>
 				</div>
 				<div className={styles.con2}>
 					<table
@@ -216,10 +227,19 @@ export const Customer = () => {
 										key={key}>
 										{column.slice(0, -1).map(({ accessor }) => {
 											const tData = val[accessor] ? val[accessor] : '——';
-											return <td className={styles.col}>{tData}</td>;
+											return (
+												<td className={styles.col}>
+													<button>{tData}</button>
+												</td>
+											);
 										})}
-										<td className={styles.colDetail}>
-											View Full Detail{' '}
+										<td
+											onClick={() => {
+												setSelectedCustomer(fullData.find(x => x.ID === val.id));
+												setIsShowed(true);
+											}}
+											className={styles.col}>
+											<p>View Full Detail </p>
 											<img
 												className="pl-2"
 												src={IC_navDetail}
@@ -256,6 +276,19 @@ export const Customer = () => {
 					</div>
 				</div>
 			</div>
+			{isShowed ? (
+				<div className={styles.dialog}>
+					<div className={styles.condialog}>
+						<ProfileCustomer
+							data={selectedCustomer}
+							onClose={() => {
+								setIsShowed(false);
+								setSelectedCustomer(null);
+							}}
+						/>
+					</div>
+				</div>
+			) : null}
 		</Spin>
 	);
 };

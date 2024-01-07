@@ -144,8 +144,9 @@ export const Booking = () => {
                     const tData = val[accessor] ? val[accessor] : "——";
                     return <td className={styles.col}>{tData}</td>;
                   })}
-                  <td className={styles.colDetail}>
-                    View Full Detail <img className="pl-2" src={IC_navDetail} />
+                  <td className={styles.col}>
+                  <p>View Full Detail </p>
+                    <img className="pl-2" src={IC_navDetail} />
                   </td>
                 </tr>
               );

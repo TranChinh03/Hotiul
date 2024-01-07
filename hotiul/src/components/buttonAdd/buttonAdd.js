@@ -5,8 +5,8 @@ import { IC_add } from '../../assets/icons';
 const ButtonAdd = props => {
 	return (
 		<div
-			className={styles.container}
-			onClick={props.onClick}>
+			onClick={props.onClick}
+			className={styles.container}>
 			<img src={IC_add} />
 			<p className={styles.text}>{props.text}</p>
 		</div>

@@ -16,6 +16,10 @@
 .col {
 	@apply text-center px-5 items-center text-mainColor text-sm font-normal py-3 justify-center;
 }
+.col p,
+.col img {
+	@apply inline-block cursor-pointer hover:opacity-70;
+}
 .colDetail {
 	@apply px-5 items-center text-mainColor text-sm font-normal py-2 flex justify-center;
 }

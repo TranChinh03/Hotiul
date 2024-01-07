@@ -240,11 +240,11 @@ export const Staff = () => {
         </div>
       </div>
       
-      <Modal centered={true} width="80%" closeIcon={null} open={isAddOpen} footer={null} onCancel={() => setIsAddOpen(false)}>
-        <AddStaff open={isAddOpen} setOpen={setIsAddOpen} fetchData={() => fetchData()}/>
+      <Modal centered={true} width="70%" closeIcon={null} open={isAddOpen} footer={null} onCancel={() => setIsAddOpen(false)}>
+        <AddStaff setIsLoading={() => setIsLoading()} fullData={fullData} open={isAddOpen} setOpen={setIsAddOpen} fetchData={() => fetchData()}/>
       </Modal>
-      <Modal centered={true} width="80%" closeIcon={null} open={isDetailOpen} footer={null} onCancel={() => setIsAddOpen(false)}>
-        <ProfileStaff open={isDetailOpen} setOpen={setIsDetailOpen} data={selectedData} fetchData={() => fetchData()}/>
+      <Modal centered={true} width="70%" closeIcon={null} open={isDetailOpen} footer={null} onCancel={() => setIsDetailOpen(false)}>
+        <ProfileStaff setIsLoading={() => setIsLoading()} fullData={fullData} open={isDetailOpen} setOpen={setIsDetailOpen} data={selectedData} fetchData={() => fetchData()}/>
       </Modal>
 
     </Spin>

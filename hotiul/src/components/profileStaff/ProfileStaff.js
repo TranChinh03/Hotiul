@@ -1,13 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styles from './profilestaff.module.scss';
-import { IC_closebutton } from '../../assets/icons/index.js';
-import { Select } from 'antd';
+import { IC_CircleCheck, IC_closebutton } from '../../assets/icons/index.js';
+import { Select, message } from 'antd';
 import { addData, updateData } from '../../controller/addData.ts';
 import { deleteData } from '../../controller/deleteData.ts';
+import { useTranslation } from "react-i18next"
+import {
+	deleteObject,
+	getDownloadURL,
+	ref,
+	uploadBytes,
+  } from "firebase/storage";
+import { storage } from "../../firebaseConfig.js";
+import { IM_Camera } from '../../assets/imgs/index.js';
+import { FaRegUserCircle } from "react-icons/fa";
 
 function ProfileStaff(props) {
 	const [action, setAction] = useState(true);
 	const [state, setState] = useState({});
+	const { t } = useTranslation();
+	const [selectedImage, setSelectedImage] = useState(null);
+	const [selectedImageFile, setSelectedImageFile] = useState(null);
+	const fileInputRef = useRef(null);
+
+	const handleImageSelected = (event) => {
+		if (event.target.files && event.target.files[0]) {
+		  setSelectedImageFile(event.target.files[0]);
+		  setSelectedImage(URL.createObjectURL(event.target.files[0]));
+		}
+	  };	
 
 	useEffect(() => { 
 		setState({
@@ -18,6 +39,7 @@ function ProfileStaff(props) {
 			address: props.data.Address,
 			salary: props.data.Salary
 		})
+		console.log("props.data:", props.data)
 	}, [props.data])
 
 	const [edit, setEdit] = useState({
@@ -62,18 +84,41 @@ function ProfileStaff(props) {
 		props.fetchData()
 	}
 
-	function handleSave() {
+	async function handleSave() {
+		if (edit.name === "" || edit.ctzId === "" || edit.phone === "" || edit.gender === ""){
+			message.error("Please fill full information!")
+			return
+		}
 		try {
 			const newData = {
-					Name: edit.name,
-					CitizenID: edit.ctzId,
-					Phone: edit.phone,
-					Gender: edit.gender,
-					Address: edit.address,
-					Salary: Number(edit.salary),
-					Username: props.data.Username,
-					Password: props.data.Password,
+				Name: edit.name,
+				CitizenID: edit.ctzId,
+				Phone: edit.phone,
+				Gender: edit.gender,
+				Address: edit.address,
+				Salary: Number(edit.salary),
+			}
+			if (selectedImage) {
+				if (selectedImageFile !== null) {
+					if (props.data.Image !== "") {
+						const refimg = ref(storage, props.data.Image);
+						deleteObject(refimg).then(() => {
+							console.log("Image deleted")
+						}).catch((error) => {
+							console.log("No image existed")
+						})
+					}
+					var imageLink = "";
+					const storageRef = ref(
+						storage,
+						`Images/Staff/${props.data.ID}`
+					);
+					const snapshot = await uploadBytes(storageRef, selectedImageFile);
+					imageLink = await getDownloadURL(snapshot.ref)
+					newData.Image = imageLink
 				}
+			}
+
 				console.log(newData)
 			updateData({data: newData, table: "STAFF", id: props.data.ID});
 		}
@@ -81,12 +126,19 @@ function ProfileStaff(props) {
 			console.log("Error updating data", err)
 			return
 		 }
+		message.success("Edit staff successfully!")
 		assignInfo(state, edit);
 		handleAction();
+		setSelectedImage(null)
+		setSelectedImageFile(null)
+		props.setOpen(false)
+		props.fetchData()
 	}
 
 	function handleCancel() {
 		handleAction();
+		setSelectedImage(null)
+		setSelectedImageFile(null)
 	}
 	return (
 		<>
@@ -138,6 +190,8 @@ function ProfileStaff(props) {
 									onClick={() => {
 										props.setOpen(false)
 										handleAction()
+										setSelectedImage(null)
+										setSelectedImageFile(null)
 									}}>
 									<img
 										src={IC_closebutton}
@@ -149,8 +203,60 @@ function ProfileStaff(props) {
 				</div>
 				<div className={styles.infoContainer}>
 					<div className={styles.avatarContainer}>
-						<div className={styles.avatar}></div>
-						<div></div>
+							{action ? (
+								        <div className="px-2 mt-2 col-span-3 inline-block w-full">
+											<div
+											style={{
+												padding: "5px",
+												border: "1px solid gray",
+												borderRadius: "10px",
+												width: "fit-content",
+											}}
+											className="m-auto"
+											>
+											{selectedImage || props.data.Image !== "" ? (
+												<img
+													src={selectedImage ? selectedImage : props.data.Image}
+													alt="Selected"
+													style={{ width: "100%", maxHeight: "200px" }}
+												/>
+											) : (
+												<FaRegUserCircle size={150}/>
+											)}
+											</div>
+										</div>
+							) : (
+								<div className="px-2 mt-2 col-span-3 inline-block">
+											<div
+											onClick={() => fileInputRef.current.click()}
+											style={{
+												padding: "5px",
+												border: "1px solid gray",
+												borderRadius: "10px",
+												width: "fit-content",
+											}}
+											className="cursor-pointer m-auto"
+											>
+											{selectedImage || props.data.Image !== "" ? (
+												<img
+													src={selectedImage ? selectedImage : props.data.Image}
+													alt="Selected"
+													style={{ width: "100%", maxHeight: "200px" }}
+												/>
+											) : (
+												<img src={IM_Camera} />
+											)}
+											<input
+												type="file"
+												accept="image/*"
+												ref={fileInputRef}
+												style={{ display: "none" }}
+												onChange={handleImageSelected}
+											/>
+											</div>
+										</div>
+							)}
+						
 					</div>
 					<div className={styles.infoDetail}>
 						<div className={styles.innfo}>
@@ -173,6 +279,7 @@ function ProfileStaff(props) {
 												textTransform: 'uppercase',
 												color: '#023e8a',
 												marginBottom: '20px',
+												marginLeft: '20px'
 											}}>
 											{state.name}
 										</div>

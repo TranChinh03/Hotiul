@@ -165,6 +165,7 @@ const ProfileCustomer = (props) => {
         phone: "",
         ctzId: "",
       });
+      props.onClose();
     } catch (err) {
       console.log("Error adding data", err);
       return;
@@ -210,7 +211,6 @@ const ProfileCustomer = (props) => {
                 <button
                   onClick={() => {
                     handleAdd();
-                    props.onClose();
                   }}
                   className={styles.button}
                   style={{ backgroundColor: "#66EB8B" }}
@@ -262,9 +262,6 @@ const ProfileCustomer = (props) => {
                   style={{ backgroundColor: "#66EB8B" }}
                 >
                   Save
-                </button>
-                <button>
-                  <img src={IC_closebutton} alt="CloseButton"></img>
                 </button>
               </div>
             </>
@@ -420,7 +417,7 @@ const ProfileCustomer = (props) => {
                 })}
               </tr>
             </thead>
-            <tbody className="h-96">
+            <tbody className=" h-48">
               {bookings
                 .slice(pageIndex * 9 - 9, pageIndex * 9)
                 .map((val, key) => {
@@ -430,7 +427,7 @@ const ProfileCustomer = (props) => {
                         const tData = val[accessor] ? val[accessor] : "——";
                         return <td className={styles.col}>{tData}</td>;
                       })}
-                      <td className={styles.colDetail}>
+                      <td className={styles.col}>
                         <button onClick={() => {}}>
                           <div className={styles.tableInfo}>
                             View Detail{" "}

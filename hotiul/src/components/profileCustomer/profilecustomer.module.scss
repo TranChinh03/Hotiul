@@ -1,12 +1,13 @@
 .container {
-  width: 80%;
   height: fit-content;
   background-color: white;
   border-radius: 25px;
   padding: 45px;
-  padding-top: 20px;
-  margin: auto;
-  margin-top: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  //padding-top: 20px;
+  //margin: auto;
+  //margin-top: 20px;
   box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.15);
 }
 
@@ -166,10 +167,10 @@ thead[class="ant-table-thead"] th {
   @apply text-mainColor text-sm font-normal;
 }
 .col {
-  @apply text-center px-5 items-center text-secondColor text-sm font-normal py-3 justify-center;
+  @apply text-center px-5 items-center text-secondColor text-sm font-normal py-1 justify-center;
 }
 .colDetail {
-  @apply px-5  items-center text-secondColor text-sm font-normal py-2 flex justify-center align-middle;
+  @apply px-2  items-center text-secondColor text-sm font-normal py-2 flex justify-center align-middle;
 }
 .tableData {
   @apply table-auto w-full;

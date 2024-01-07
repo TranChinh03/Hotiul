@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./search.module.scss";
-const Search = () => {
+const Search = ({ onChange }) => {
   return (
     <search>
       <form>
@@ -9,6 +9,7 @@ const Search = () => {
           className={styles.txtSearch}
           name="search"
           placeholder="Search..."
+          onChange={onChange}
         />
       </form>
     </search>

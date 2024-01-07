@@ -3,6 +3,17 @@
     font-family: "Inter", sans-serif
 }
 
+
+.container {
+    height: fit-content;
+    width: 500px;
+    background-color: white;
+    border-radius: 25px;
+    padding-right: 45px;
+    padding-left: 45px;
+    box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.15);
+}
+
 .con1 {
     @apply flex w-full items-end justify-between px-5;
 }
@@ -36,7 +47,7 @@
 }
 
 .rowTbl {
-    @apply border-t-[0.75px] border-t-secondColor border-opacity-20;
+    @apply border-t-[0.75px] border-t-secondColor border-opacity-10;
 }
 
 .modal-heading {

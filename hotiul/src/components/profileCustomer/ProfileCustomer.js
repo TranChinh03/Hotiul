@@ -23,7 +23,7 @@ const column = [
   { label: "RoomID", accessor: "room" },
   { label: "CheckIn", accessor: "checkin" },
   { label: "CheckOut", accessor: "checkout" },
-  { label: "Detail", accessor: "detail" },
+  { label: "Detail", accessor: "detail" }
 ];
 
 // const columns = [

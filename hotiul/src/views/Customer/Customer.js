@@ -1,131 +1,132 @@
-import React, { useEffect, useState } from "react";
-import styles from "../Booking/booking.module.scss";
-import Search from "../../components/search/search";
-import ButtonAdd from "../../components/buttonAdd/buttonAdd";
-import {
-  IC_backArrow,
-  IC_navDetail,
-  IC_nextArrow,
-  IC_sort,
-} from "../../assets/icons";
-import Combobox from "../../components/combobox/combobox";
-import { LoadingOutlined } from "@ant-design/icons";
-import { Button, Input, Spin, message } from "antd";
-import { IMG_logo } from "../../assets/imgs";
-import { getData } from "../../controller/getData.ts";
-import ProfileCustomer from "../../components/profileCustomer/ProfileCustomer.js";
+import React, { useEffect, useState } from 'react';
+import styles from '../Booking/booking.module.scss';
+import Search from '../../components/search/search';
+import ButtonAdd from '../../components/buttonAdd/buttonAdd';
+import { IC_backArrow, IC_navDetail, IC_nextArrow, IC_sort } from '../../assets/icons';
+import Combobox from '../../components/combobox/combobox';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Button, Input, Spin, message } from 'antd';
+import { IMG_logo } from '../../assets/imgs';
+import { getData } from '../../controller/getData.ts';
+import ProfileCustomer from '../../components/profileCustomer/ProfileCustomer.js';
 
 export const Customer = () => {
-  //show add customer
-  const [isShowed, setIsShowed] = useState(false);
+	//show add customer
+	const [isShowed, setIsShowed] = useState(false);
 
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
+	const [selectedCustomer, setSelectedCustomer] = useState(null);
 
-  const items = [
-    {
-      label: (
-        <button className="w-20" onClick={() => setItem(" - - All - -")}>
-          All
-        </button>
-      ),
-      key: "1",
-    },
-    {
-      label: (
-        <button className="w-20" onClick={() => setItem("Male")}>
-          Male
-        </button>
-      ),
-      key: "2",
-    },
-    {
-      label: (
-        <button className="w-20" onClick={() => setItem("Female")}>
-          Female
-        </button>
-      ),
-      key: "3",
-    },
-  ];
-  const [item, setItem] = useState(" -- All --");
-  const column = [
-    { label: "ID", accessor: "id" },
-    { label: "Customer Name", accessor: "name" },
-    { label: "Phone", accessor: "phone" },
-    { label: "Gender", accessor: "gender" },
-    { label: "Detail", accessor: "detail" },
-  ];
-  // const data = [
-  //   {
-  //     id: "001",
-  //     name: "Anom",
-  //     phone: "01234567",
-  //     gender: "Male",
-  //   },
-  //   {
-  //     id: "001",
-  //     name: "Anom",
-  //     phone: "01234567",
-  //     gender: "Male",
-  //   },
-  //   {
-  //     id: "001",
-  //     name: "Anom",
-  //     phone: "01234567",
-  //     gender: "Male",
-  //   },
-  //   {
-  //     id: "001",
-  //     name: "Anom",
-  //     phone: "01234567",
-  //     gender: "Male",
-  //   },
-  //   {
-  //     id: "001",
-  //     name: "Anom",
-  //     phone: "01234567",
-  //     gender: "Male",
-  //   },
-  //   {
-  //     id: "001",
-  //     name: "Anom",
-  //     phone: "01234567",
-  //     gender: "Male",
-  //   },
-  //   {
-  //     id: "001",
-  //     name: "Anom",
-  //     phone: "01234567",
-  //     gender: "Male",
-  //   },
-  //   {
-  //     id: "001",
-  //     name: "Anom",
-  //     phone: "01234567",
-  //     gender: "Male",
-  //   },
-  //   {
-  //     id: "001",
-  //     name: "Anom",
-  //     phone: "01234567",
-  //     gender: "Male",
-  //   },
-  //   {
-  //     id: "001",
-  //     name: "Anom",
-  //     phone: "01234567",
-  //     gender: "Male",
-  //   },
-  //   {
-  //     id: "001",
-  //     name: "Anom",
-  //     phone: "01234567",
-  //     gender: "Male",
-  //   },
-  // ];
+	const items = [
+		{
+			label: (
+				<button
+					className="w-20"
+					onClick={() => setItem(' - - All - -')}>
+					All
+				</button>
+			),
+			key: '1',
+		},
+		{
+			label: (
+				<button
+					className="w-20"
+					onClick={() => setItem('Male')}>
+					Male
+				</button>
+			),
+			key: '2',
+		},
+		{
+			label: (
+				<button
+					className="w-20"
+					onClick={() => setItem('Female')}>
+					Female
+				</button>
+			),
+			key: '3',
+		},
+	];
+	const [item, setItem] = useState(' -- All --');
+	const column = [
+		{ label: 'ID', accessor: 'id' },
+		{ label: 'Customer Name', accessor: 'name' },
+		{ label: 'Phone', accessor: 'phone' },
+		{ label: 'Gender', accessor: 'gender' },
+		{ label: 'Detail', accessor: 'detail' },
+	];
+	// const data = [
+	//   {
+	//     id: "001",
+	//     name: "Anom",
+	//     phone: "01234567",
+	//     gender: "Male",
+	//   },
+	//   {
+	//     id: "001",
+	//     name: "Anom",
+	//     phone: "01234567",
+	//     gender: "Male",
+	//   },
+	//   {
+	//     id: "001",
+	//     name: "Anom",
+	//     phone: "01234567",
+	//     gender: "Male",
+	//   },
+	//   {
+	//     id: "001",
+	//     name: "Anom",
+	//     phone: "01234567",
+	//     gender: "Male",
+	//   },
+	//   {
+	//     id: "001",
+	//     name: "Anom",
+	//     phone: "01234567",
+	//     gender: "Male",
+	//   },
+	//   {
+	//     id: "001",
+	//     name: "Anom",
+	//     phone: "01234567",
+	//     gender: "Male",
+	//   },
+	//   {
+	//     id: "001",
+	//     name: "Anom",
+	//     phone: "01234567",
+	//     gender: "Male",
+	//   },
+	//   {
+	//     id: "001",
+	//     name: "Anom",
+	//     phone: "01234567",
+	//     gender: "Male",
+	//   },
+	//   {
+	//     id: "001",
+	//     name: "Anom",
+	//     phone: "01234567",
+	//     gender: "Male",
+	//   },
+	//   {
+	//     id: "001",
+	//     name: "Anom",
+	//     phone: "01234567",
+	//     gender: "Male",
+	//   },
+	//   {
+	//     id: "001",
+	//     name: "Anom",
+	//     phone: "01234567",
+	//     gender: "Male",
+	//   },
+	// ];
 
-  const [pageIndex, setPageIndex] = useState(1);
-  const [totalPage, setTotalPage] = useState();
+	const [pageIndex, setPageIndex] = useState(1);
+	const [totalPage, setTotalPage] = useState();
 
   const [isLoading, setIsLoading] = useState(true);
   const [fullData, setFullData] = useState([]);
@@ -154,9 +155,10 @@ export const Customer = () => {
     fetchData();
   });
 
-  useEffect(() => {
-    setTotalPage(Math.ceil(data.length / 9));
-  }, [data]);
+	useEffect(() => {
+		setTotalPage(Math.ceil(data.length / 9));
+	}, [data]);
+
 
   return (
     <Spin
@@ -275,4 +277,5 @@ export const Customer = () => {
       ) : null}
     </Spin>
   );
+
 };

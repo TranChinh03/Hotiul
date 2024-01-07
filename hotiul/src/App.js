@@ -19,11 +19,13 @@ import ProfileStaff from './components/profileStaff/ProfileStaff';
 import { Draft } from './views/Draft/Draft';
 import LoginScreen from './views/Authentication/LoginScreen';
 import RootRoutes from './routes/route/RootRoutes';
+import FeeInformation from './components/feeInformation/feeInformation';
+import FeeCard from './components/feeInformation/feeCard';
 
 const App = () => {
-  return (
-    <RootRoutes/>
-  )
-}
+	return <RootRoutes />;
+	// return <FeeInformation></FeeInformation>;
+	// return <FeeCard></FeeCard>;
+};
 
 export default App;

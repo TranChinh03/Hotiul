@@ -17,6 +17,7 @@ import { storage } from "../../../firebaseConfig.js";
 
 function AddStaff(props) {
 
+
 	const { t } = useTranslation();
 	const [selectedImage, setSelectedImage] = useState(null);
 	const [selectedImageFile, setSelectedImageFile] = useState(null);
@@ -50,6 +51,7 @@ function AddStaff(props) {
 		});
 	}
 
+
 	async function handleSave() {
 		if (edit.name === "" || edit.ctzId === "" || edit.phone === "" || edit.gender === ""){
 			message.error("Please fill full information!")
@@ -61,6 +63,7 @@ function AddStaff(props) {
 			message.error("User Existed!")
 			return
 		}
+
 		try {
 			
 			var imageLink = "";
@@ -83,12 +86,14 @@ function AddStaff(props) {
 				Salary: Number(edit.salary),
 				Username: edit.username,
 				Password: edit.password,
+
 				Role: "Staff",
 				Image: imageLink,
 			}
 			console.log(newData)
 			addData({ data: newData, table: "STAFF", id: staffID });
 			message.success("Add new user successfully!")
+
 			setEdit({
 				name: '',
 				gender: '',
@@ -98,21 +103,22 @@ function AddStaff(props) {
 				salary: '',
 				username: '',
 				password: '',
+
 				image: '',
 			})
 			setSelectedImage(null)
 			setSelectedImageFile(null)
+
 			props.setOpen(false);
 			props.fetchData();
-		}
-		catch (err) {
-			console.log("Error updating data", err)
-			return
+		} catch (err) {
+			console.log('Error updating data', err);
+			return;
 		}
 	}
 
 	function handleCancel() {
-		props.setOpen(false)
+		props.setOpen(false);
 		setEdit({
 			name: '',
 			gender: '',
@@ -122,10 +128,12 @@ function AddStaff(props) {
 			salary: '',
 			username: '',
 			password: '',
+
 			image: ''
 		})
 		setSelectedImage(null)
 		setSelectedImageFile(null)
+
 	}
 	return (
 		<>
@@ -222,13 +230,14 @@ function AddStaff(props) {
 									type="text"
 									name="gender"
 									value={edit.gender}
-									style={{ width: "20vw", height: "50px", padding: 0 }}
-									options={[{ value: "Female" }, { value: "Male" }]}
+									style={{ width: '20vw', height: '50px', padding: 0 }}
+									options={[{ value: 'Female' }, { value: 'Male' }]}
 									onChange={e =>
 										setEdit({
 											...edit,
 											gender: e,
-										})}
+										})
+									}
 								/>
 								{/* <input
 										className={styles.inputInfo}

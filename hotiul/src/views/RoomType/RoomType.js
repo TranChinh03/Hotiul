@@ -152,9 +152,12 @@ function RoomType(props) {
                                                 const tData = val[accessor] ? val[accessor] : "——";
                                                 return <td className={styles.col}>{tData}</td>;
                                             })}
-                                            <td className={styles.colDetail}
+                                            <td className={styles.col}
                                                 onClick={() => handleViewDetail(val)}>
-                                                View Full Detail <img className="pl-2" src={IC_navDetail} />
+                                                <p>
+                                                    View Full Detail
+                                                </p>
+                                                <img className="pl-2" src={IC_navDetail} />
                                             </td>
                                         </tr>
                                     );

@@ -128,167 +128,154 @@ export const Customer = () => {
 	const [pageIndex, setPageIndex] = useState(1);
 	const [totalPage, setTotalPage] = useState();
 
-	const [isLoading, setIsLoading] = useState(true);
-	const [fullData, setFullData] = useState([]);
-	const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [fullData, setFullData] = useState([]);
+  const [data, setData] = useState([]);
 
-	const fetchData = async () => {
-		await Promise.all([
-			getData('/CUSTOMER').then(data => {
-				setFullData(data);
-				setData(
-					data.map(item => {
-						return {
-							id: item.ID,
-							name: item.Name,
-							phone: item.Phone,
-							gender: item.Gender,
-						};
-					}),
-				);
-			}),
-		]);
-		setIsLoading(false);
-	};
+  const fetchData = async () => {
+    await Promise.all([
+      getData("/CUSTOMER").then((data) => {
+        setFullData(data);
+        setData(
+          data.map((item) => {
+            return {
+              id: item.ID,
+              name: item.Name,
+              phone: item.Phone,
+              gender: item.Gender,
+            };
+          })
+        );
+      }),
+    ]);
+    setIsLoading(false);
+  };
 
-	useEffect(() => {
-		fetchData();
-	}, []);
+  useEffect(() => {
+    fetchData();
+  });
 
 	useEffect(() => {
 		setTotalPage(Math.ceil(data.length / 9));
 	}, [data]);
 
-	return (
-		<Spin
-			spinning={isLoading}
-			indicator={
-				<div
-					style={{
-						transform: 'translate(-50%, -50%)',
-						backgroundColor: '#909090',
-						opacity: 0.8,
-						width: '50%',
-						height: '50%',
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						flexDirection: 'column',
-					}}>
-					<img
-						style={{ width: '50%' }}
-						src={IMG_logo}
-					/>
-					<LoadingOutlined
-						style={{ fontSize: 24 }}
-						spin
-					/>
-				</div>
-			}>
-			<div className={styles.maincontainer}>
-				<div className={styles.con1}>
-					<Search />
-					<Combobox
-						label={'Gender'}
-						items={items}
-						item={item}
-					/>
-					<ButtonAdd
-						onClick={() => setIsShowed(true)}
-						text={'Add Customer'}
-					/>
-				</div>
-				<div className={styles.con2}>
-					<table
-						id="my-table"
-						class={styles.tableData}>
-						<thead>
-							<tr className={styles.tbHeading}>
-								{column.map(headding => {
-									return (
-										<th>
-											<div className="pl-5 pb-3 pt-5 flex justify-center w-full ">
-												<p> {headding.label}</p>
-												<img
-													className="px-2"
-													src={IC_sort}
-												/>
-											</div>
-										</th>
-									);
-								})}
-							</tr>
-						</thead>
-						<tbody className="h-96">
-							{data.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
-								return (
-									<tr
-										className={styles.rowTbl}
-										key={key}>
-										{column.slice(0, -1).map(({ accessor }) => {
-											const tData = val[accessor] ? val[accessor] : '——';
-											return (
-												<td className={styles.col}>
-													<button>{tData}</button>
-												</td>
-											);
-										})}
-										<td
-											onClick={() => {
-												setSelectedCustomer(fullData.find(x => x.ID === val.id));
-												setIsShowed(true);
-											}}
-											className={styles.col}>
-											<p>View Full Detail </p>
-											<img
-												className="pl-2"
-												src={IC_navDetail}
-											/>
-										</td>
-									</tr>
-								);
-							})}
-						</tbody>
-					</table>
-				</div>
-				<div className={styles.con1}>
-					<p className=" text-mainColor pt-5">
-						Showing <strong> 1 - {totalPage} </strong> results of <strong>{data.length}</strong>
-					</p>
-					<div className="flex justify-around">
-						<button
-							onClick={() => {
-								if (pageIndex > 1) setPageIndex(pageIndex - 1);
-							}}
-							className={styles.btnnav}>
-							<img src={IC_backArrow} />
-						</button>
-						<p className="text-mainColor px-3">
-							Page <strong>{pageIndex}</strong>
-						</p>
-						<button
-							onClick={() => {
-								if (pageIndex < totalPage) setPageIndex(pageIndex + 1);
-							}}
-							className={styles.btnnav}>
-							<img src={IC_nextArrow} />
-						</button>
-					</div>
-				</div>
-			</div>
-			{isShowed ? (
-				<div className={styles.dialog}>
-					<div className={styles.condialog}>
-						<ProfileCustomer
-							data={selectedCustomer}
-							onClose={() => {
-								setIsShowed(false);
-								setSelectedCustomer(null);
-							}}
-						/>
-					</div>
-				</div>
-			) : null}
-		</Spin>
-	);
+
+  return (
+    <Spin
+      spinning={isLoading}
+      indicator={
+        <div
+          style={{
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#909090",
+            opacity: 0.8,
+            width: "50%",
+            height: "50%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <img style={{ width: "50%" }} src={IMG_logo} />
+          <LoadingOutlined style={{ fontSize: 24 }} spin />
+        </div>
+      }
+    >
+      <div className={styles.maincontainer}>
+        <div className={styles.con1}>
+          <Search />
+          <Combobox label={"Gender"} items={items} item={item} />
+          <ButtonAdd onClick={() => setIsShowed(true)} text={"Add Customer"} />
+        </div>
+        <div className={styles.con2}>
+          <table id="my-table" class={styles.tableData}>
+            <thead>
+              <tr className={styles.tbHeading}>
+                {column.map((headding) => {
+                  return (
+                    <th>
+                      <div className="pl-5 pb-3 pt-5 flex justify-center w-full ">
+                        <p> {headding.label}</p>
+                        <img className="px-2" src={IC_sort} />
+                      </div>
+                    </th>
+                  );
+                })}
+              </tr>
+            </thead>
+            <tbody className="h-96">
+              {data.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
+                return (
+                  <tr className={styles.rowTbl} key={key}>
+                    {column.slice(0, -1).map(({ accessor }) => {
+                      const tData = val[accessor] ? val[accessor] : "——";
+                      return (
+                        <td className={styles.col}>
+                          <button>{tData}</button>
+                        </td>
+                      );
+                    })}
+                    <td
+                      onClick={() => {
+                        setSelectedCustomer(
+                          fullData.find((x) => x.ID === val.id)
+                        );
+                        setIsShowed(true);
+                      }}
+                      className={styles.col}
+                    >
+                      <p>View Full Detail </p>
+                      <img className="pl-2" src={IC_navDetail} />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div className={styles.con1}>
+          <p className=" text-mainColor pt-5">
+            Showing <strong> 1 - {totalPage} </strong> results of{" "}
+            <strong>{data.length}</strong>
+          </p>
+          <div className="flex justify-around">
+            <button
+              onClick={() => {
+                if (pageIndex > 1) setPageIndex(pageIndex - 1);
+              }}
+              className={styles.btnnav}
+            >
+              <img src={IC_backArrow} />
+            </button>
+            <p className="text-mainColor px-3">
+              Page <strong>{pageIndex}</strong>
+            </p>
+            <button
+              onClick={() => {
+                if (pageIndex < totalPage) setPageIndex(pageIndex + 1);
+              }}
+              className={styles.btnnav}
+            >
+              <img src={IC_nextArrow} />
+            </button>
+          </div>
+        </div>
+      </div>
+      {isShowed ? (
+        <div className={styles.dialog}>
+          <div className={styles.condialog}>
+            <ProfileCustomer
+              data={selectedCustomer}
+              onClose={() => {
+                setIsShowed(false);
+                setSelectedCustomer(null);
+              }}
+            />
+          </div>
+        </div>
+      ) : null}
+    </Spin>
+  );
+
 };

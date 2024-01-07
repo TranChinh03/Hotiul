@@ -1,32 +1,16 @@
 import React, { useState } from 'react';
 import styles from './fee.module.scss';
 import { IC_closebutton } from '../../assets/icons';
-import { DatePicker } from 'antd';
+import { createID } from '../../utils/appUtils.js';
 
 function FeeCard(props) {
-	const [action, setAction] = useState(true);
-	const [state, setState] = useState({
-		name: '',
-		price: '',
-		date: '',
-	});
+	const detailValue = props.detailValue;
 
 	const [edit, setEdit] = useState({
 		name: '',
 		price: '',
 		date: '',
 	});
-
-	function assignInfo(state, edit) {
-		state.name = edit.name;
-		state.price = edit.price;
-		state.date = edit.date;
-	}
-
-	function handleAction() {
-		assignInfo(edit, state);
-		setAction(!action);
-	}
 
 	function handleChange(evt) {
 		const value = evt.target.value;
@@ -36,13 +20,37 @@ function FeeCard(props) {
 		});
 	}
 
-	function handleSave() {
-		assignInfo(state, edit);
-		handleAction();
-	}
+	const handleSave = () => {
+		const feeID = createID({ prefix: 'DF' });
+		try {
+			const newData = {
+				ID: feeID,
+				Name: edit.name,
+				Price: edit.price,
+				Date: edit.date,
+			};
+			console.log(newData);
+			props.handleSaveFeeCard(newData); // Pass the new data to FeeInformation
+			setEdit({
+				name: '',
+				price: '',
+				date: '',
+			});
+			props.fetchData();
+			props.closeEvt();
+		} catch (err) {
+			console.log('Error updating data', err);
+			return;
+		}
+	};
 
 	function handleCancel() {
-		handleAction();
+		props.setOpen(false);
+		setEdit({
+			name: '',
+			price: '',
+			date: '',
+		});
 	}
 
 	return (
@@ -57,7 +65,7 @@ function FeeCard(props) {
 							Delete
 						</button>
 						<button
-							onClick={() => {}}
+							onClick={() => handleSave()}
 							className={styles.button}
 							style={{ backgroundColor: '#66EB8B' }}>
 							Save

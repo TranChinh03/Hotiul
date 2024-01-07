@@ -8,8 +8,8 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input, Spin, message } from 'antd';
 import { IMG_logo } from '../../assets/imgs';
 import { getData } from '../../controller/getData.ts';
-import Modal from 'antd/es/modal/Modal';
 import FeeInformation from '../../components/feeInformation/feeInformation.js';
+import Modal from 'antd/es/modal/Modal';
 import FeeCard from '../../components/feeInformation/feeCard.js';
 
 export const MonthlyFee = () => {
@@ -30,6 +30,16 @@ export const MonthlyFee = () => {
 
 	const [isOpenModal, setIsOpenModal] = useState(false);
 	const [isOpenFee, setIsOpenFee] = useState(false);
+
+	const handleOpenFeeInformation = () => {
+		setIsOpenModal(true);
+		setSelectedData(null);
+	};
+
+	const handleSaveFeeInformation = () => {
+		fetchData();
+		setIsOpenModal(false);
+	};
 
 	const fetchData = async () => {
 		await Promise.all([
@@ -64,7 +74,10 @@ export const MonthlyFee = () => {
 					<Search />
 					<ButtonAdd
 						text={'Add Fee'}
-						onClick={() => setIsOpenModal(true)}
+						onClick={() => {
+							setIsOpenModal(true);
+							setSelectedData(null);
+						}}
 					/>
 				</div>
 				<div className={styles.con2}>
@@ -90,15 +103,13 @@ export const MonthlyFee = () => {
 						</thead>
 						<tbody className="h-52">
 							{data.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
-								console.log('val', val);
-								console.log('key', key);
 								return (
 									<tr
 										className={styles.rowTbl}
 										key={key}>
 										{column.slice(0, -1).map(({ accessor }) => {
 											const tData = val[accessor] ? val[accessor] : '——';
-											console.log('?', column);
+
 											return <td className={styles.col}>{tData}</td>;
 										})}
 										<td
@@ -153,22 +164,9 @@ export const MonthlyFee = () => {
 				style={{ backgroundColor: 'transparent' }}>
 				<FeeInformation
 					data={selectedData}
+					fetchData={() => fetchData()}
 					closeEvt={() => setIsOpenModal(false)}
-					clickDetail={() => {
-						setIsOpenModal(false);
-						setIsOpenFee(true);
-					}}></FeeInformation>
-			</Modal>
-			<Modal
-				open={isOpenFee}
-				width={'90%'}
-				closeIcon={false}
-				footer={false}
-				style={{ backgroundColor: 'transparent' }}>
-				<FeeCard
-					closeEvt={() => {
-						setIsOpenFee(false);
-					}}></FeeCard>
+					clickDetail={() => setIsOpenFee(true)}></FeeInformation>
 			</Modal>
 		</>
 	);

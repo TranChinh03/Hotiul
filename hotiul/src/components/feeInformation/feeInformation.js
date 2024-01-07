@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import styles from './fee.module.scss';
 import ButtonAdd from '../../components/buttonAdd/buttonAdd';
+import { addData, updateData } from '../../controller/addData.ts';
+import { createID } from '../../utils/appUtils.js';
+import Modal from 'antd/es/modal/Modal';
+import FeeCard from '../../components/feeInformation/feeCard.js';
 
 import {
 	IC_backArrow,
@@ -22,10 +26,69 @@ const column = [
 
 function FeeInformation(props) {
 	const dataValue = props.data;
+
+	const [detailValue, setDetailValue] = useState([]);
+
 	console.log('dv', dataValue);
 
+	const [isOpenFee, setIsOpenFee] = useState(false);
+
+	function handleOpenFeeCard() {
+		setIsOpenFee(true);
+	}
+
+	const [edit, setEdit] = useState({
+		fee: '',
+		detail: [],
+	});
+
+	function handleChange(evt) {
+		const value = evt.target.value;
+		setEdit({
+			...edit,
+			[evt.target.name]: value,
+		});
+	}
+
+	function handleSave() {
+		const feeID = createID({ prefix: 'F' });
+		try {
+			const newData = {
+				ID: feeID,
+				Name: edit.fee,
+				Detail: edit.detail,
+			};
+			console.log(newData);
+			addData({ data: newData, table: 'FEE', id: feeID });
+			setEdit({
+				fee: '',
+				detail: [],
+			});
+			props.setOpen(false);
+			props.fetchData();
+		} catch (err) {
+			console.log('Error updating data', err);
+			return;
+		}
+	}
+
+	function handleSaveFeeCard(newData) {
+		console.log('New data from FeeCard:', newData);
+		// setDataValue(...dataValue, newData);
+		//console.log('ra cai qq gi z', dataValue);
+	}
+
+	function handleCancel() {
+		props.setOpen(false);
+		setEdit({
+			fee: '',
+			price: '',
+			date: '',
+		});
+	}
+
 	const [pageIndex, setPageIndex] = useState(1);
-	const [totalPage, setTotalPage] = useState(Math.ceil(dataValue.length / 9));
+	const [totalPage, setTotalPage] = useState(dataValue ? Math.ceil(dataValue.length / 9) : 0);
 
 	return (
 		<>
@@ -39,7 +102,7 @@ function FeeInformation(props) {
 							Delete
 						</button>
 						<button
-							onClick={() => {}}
+							onClick={() => handleSave()}
 							className={styles.button}
 							style={{ backgroundColor: '#66EB8B' }}>
 							Save
@@ -52,15 +115,30 @@ function FeeInformation(props) {
 						</button>
 					</div>
 				</div>
-				<div
-					style={{
-						fontSize: '25px',
-						marginTop: '10px',
-						color: 'var(--2, #023e8a)',
-						fontWeight: 'normal',
-					}}>
-					{dataValue.fee}
-				</div>
+				{dataValue ? (
+					<div
+						style={{
+							fontSize: '25px',
+							marginTop: '10px',
+							color: 'var(--2, #023e8a)',
+							fontWeight: 'normal',
+						}}>
+						{dataValue.fee}
+					</div>
+				) : (
+					<div
+						className={styles.info}
+						style={{}}>
+						<input
+							className={styles.inputInfo}
+							type="text"
+							name="fee"
+							value={edit.fee}
+							onChange={e => handleChange(e)}
+							required></input>
+					</div>
+				)}
+
 				<div className={styles.con2}>
 					<table
 						id="my-table"
@@ -84,67 +162,91 @@ function FeeInformation(props) {
 							</tr>
 						</thead>
 						<tbody className="h-52">
-							{dataValue.detail.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
-								return (
-									<tr
-										className={styles.rowTbl}
-										key={key}>
-										{column.slice(0, -1).map(({ accessor }) => {
-											const tData = val[accessor] ? val[accessor] : '——';
-											console.log('ttt', tData);
-											return <td className={styles.col}>{tData}</td>;
-										})}
-										<td className={styles.colDetail}>
-											<button onClick={() => {}}>
-												<div
-													className={styles.tableInfo}
-													onClick={props.clickDetail}>
-													View Detail{' '}
-													<img
-														style={{ justifySelf: 'center', alignSelf: 'center' }}
-														className="pl-2"
-														src={IC_navDetail}
-													/>
-												</div>
-											</button>
-										</td>
-									</tr>
-								);
-							})}
+							{dataValue ? (
+								dataValue.detail.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
+									return (
+										<tr
+											className={styles.rowTbl}
+											key={key}>
+											{column.slice(0, -1).map(({ accessor }) => {
+												const tData = val[accessor] ? val[accessor] : '——';
+
+												return <td className={styles.col}>{tData}</td>;
+											})}
+											<td className={styles.colDetail}>
+												<button onClick={() => {}}>
+													<div
+														className={styles.tableInfo}
+														onClick={props.clickDetail}>
+														View Detail{' '}
+														<img
+															style={{ justifySelf: 'center', alignSelf: 'center' }}
+															className="pl-2"
+															src={IC_navDetail}
+														/>
+													</div>
+												</button>
+											</td>
+										</tr>
+									);
+								})
+							) : (
+								<div>Chua co cai qq gi het</div>
+							)}
 						</tbody>
 					</table>
 				</div>
 				<div className={styles.con1}>
-					<p className=" text-mainColor pt-5">
-						Showing <strong> 1 - {totalPage} </strong> results of{' '}
-						<strong>{dataValue.length}</strong>
-					</p>
-					<div className="flex justify-around">
-						<button
-							onClick={() => {
-								if (pageIndex > 1) setPageIndex(pageIndex - 1);
-							}}
-							className={styles.btnnav}>
-							<img src={IC_backArrow} />
-						</button>
-						<p className="text-mainColor px-3">
-							Page <strong>{pageIndex}</strong>
-						</p>
-						<button
-							onClick={() => {
-								if (pageIndex < totalPage) setPageIndex(pageIndex + 1);
-							}}
-							className={styles.btnnav}>
-							<img src={IC_nextArrow} />
-						</button>
-					</div>
+					{dataValue ? (
+						<>
+							<p className=" text-mainColor pt-5">
+								Showing <strong> 1 - {totalPage} </strong> results of{' '}
+								<strong>{dataValue.length}</strong>
+							</p>
+							<div className="flex justify-around">
+								<button
+									onClick={() => {
+										if (pageIndex > 1) setPageIndex(pageIndex - 1);
+									}}
+									className={styles.btnnav}>
+									<img src={IC_backArrow} />
+								</button>
+								<p className="text-mainColor px-3">
+									Page <strong>{pageIndex}</strong>
+								</p>
+								<button
+									onClick={() => {
+										if (pageIndex < totalPage) setPageIndex(pageIndex + 1);
+									}}
+									className={styles.btnnav}>
+									<img src={IC_nextArrow} />
+								</button>
+							</div>
+						</>
+					) : (
+						<></>
+					)}
 				</div>
 				<div
 					style={{ justifyContent: 'end', marginTop: '20px' }}
 					className="flex w-full items-start justify-between px-5">
-					<ButtonAdd text={'Add Fee'} />
+					<ButtonAdd
+						onClick={() => handleOpenFeeCard()}
+						text={'Add Fee'}
+					/>
 				</div>
 			</div>
+			<Modal
+				open={isOpenFee}
+				width={'90%'}
+				closeIcon={false}
+				footer={false}
+				style={{ backgroundColor: 'transparent' }}>
+				<FeeCard
+					fetchData={props.fetchData}
+					closeEvt={() => setIsOpenFee(false)}
+					handleSaveFeeCard={handleSaveFeeCard}></FeeCard>
+			</Modal>
 		</>
 	);
 }

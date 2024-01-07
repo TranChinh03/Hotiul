@@ -130,7 +130,7 @@ export const Room = () => {
             </div>
           </div>
         </div>
-        <div className="grid sm:grid-cols-2 md:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-4 xl:gap-8 mt-8">
+        <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-4 lg:gap-8 xl:gap-12 mt-8">
           {listRoom.map((item, index) => (
             <RoomItem
               key={index}

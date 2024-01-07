@@ -1,5 +1,6 @@
 .maincontainer {
     @apply m-5 mt-0;
+    font-family: "Inter", sans-serif
 }
 
 .con1 {
@@ -23,7 +24,7 @@
 }
 
 .colDetail {
-    @apply px-5 items-center text-mainColor text-sm font-normal py-2 flex justify-center;
+    @apply px-5 items-center text-mainColor text-sm font-normal py-2 flex justify-center cursor-pointer hover:underline;
 }
 
 .tableData {
@@ -36,4 +37,9 @@
 
 .rowTbl {
     @apply border-t-[0.75px] border-t-secondColor border-opacity-20;
+}
+
+.modal-heading {
+    color: #023E8A;
+    font-size: medium;
 }

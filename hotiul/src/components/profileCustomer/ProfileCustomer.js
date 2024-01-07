@@ -80,13 +80,7 @@ const ProfileCustomer = (props) => {
   const [bookings, setBookings] = useState([]);
   const [totalPage, setTotalPage] = useState(Math.ceil(bookings.length / 9));
   const [action, setAction] = useState(true);
-  const [state, setState] = useState({
-    name: "",
-    gender: "",
-    phone: "",
-    ctzId: "",
-    booking: [],
-  });
+  const [state, setState] = useState({});
 
   console.log("props.data", props.data);
 
@@ -127,37 +121,24 @@ const ProfileCustomer = (props) => {
   }
 
   //get data customer
-
-  const fetchData = async () => {
-    await Promise.all([
-      getOne("CUSTOMER", props.data).then((data) => {
-        console.log("customer", data);
-
-        //setCustomer(data);
-        setState({
-          name: data.Name,
-          gender: data.Gender,
-          phone: data.Phone,
-          ctzId: data.CitizenID,
-          booking: data.Booking,
-        });
-
-        // setBookings([]);
-        // data.Booking.forEach((element) => {
-        //   console.log("element", element);
-        //   getOne("BOOKING", element.ID).then((bk) => {
-        //     console.log(bk);
-        //     setBookings((bookings) => [...bookings, bk]);
-        //   });
-        // });
-      }),
-    ]);
-  };
+  useEffect(() => {
+    setState({
+      name: props.data.Name,
+      gender: props.data.Gender,
+      phone: props.data.Phone,
+      ctzId: props.data.CitizenID,
+    })
+    setBookings(props.data.Booking.map(value => {
+      return {
+        id: value.ID,
+        room: value.RoomID,
+        checkin: value.CheckIn,
+        checkout: value.CheckOut
+      }
+    }))
+  }, [props.data])
 
   console.log("bookings", bookings);
-  useEffect(() => {
-    fetchData();
-  }, []);
   return (
     <>
       <div className={styles.container}>

@@ -128,11 +128,13 @@ export const Customer = () => {
   const [totalPage, setTotalPage] = useState();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [fullData, setFullData] = useState([])
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
     await Promise.all([
       getData("/CUSTOMER").then((data) => {
+        setFullData(data)
         setData(
           data.map((item) => {
             return {
@@ -208,19 +210,18 @@ export const Customer = () => {
                       const tData = val[accessor] ? val[accessor] : "——";
                       return (
                         <td className={styles.col}>
-                          <button
-                            onClick={() => {
-                              setSelectedCustomer(data[key].id);
-                              setIsShowed(true);
-                            }}
-                          >
+                          <button>
                             {tData}
                           </button>
                         </td>
                       );
                     })}
-                    <td className={styles.colDetail}>
-                      View Full Detail{" "}
+                    <td 
+                      onClick={() => {
+                              setSelectedCustomer(fullData.find(x=>x.ID === val.id));
+                              setIsShowed(true);
+                            }} className={styles.col}>
+                      <p>View Full Detail{" "}</p>
                       <img className="pl-2" src={IC_navDetail} />
                     </td>
                   </tr>

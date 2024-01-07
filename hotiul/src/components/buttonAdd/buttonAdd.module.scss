@@ -1,5 +1,5 @@
 .container {
-  @apply cursor-pointer px-5 bg-mainColor flex rounded-2xl items-center h-14;
+  @apply px-5 bg-mainColor flex rounded-2xl items-center h-14 cursor-pointer;
 }
 
 .text {

@@ -13,6 +13,9 @@ import { getData } from "../../controller/getData.ts";
 import { Spin } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
 import { IMG_logo } from "../../assets/imgs";
+import Modal from "antd/es/modal/Modal";
+import AddStaff from "./component/addStaff.js"
+import ProfileStaff from "../../components/profileStaff/ProfileStaff.js";
 
 export const Staff = () => {
   const items = [
@@ -51,13 +54,17 @@ export const Staff = () => {
   ];
 
 
+
   const [isLoading, setIsLoading] = useState(true)
+  const [fullData, setFullData] = useState([])
   const [data, setData] = useState([])
+  const [selectedData, setSelectedData] = useState(null)
 
   const fetchData = async () => {
     await Promise.all([
       getData('/STAFF').then(data => {
-        setData(data.map(item => {
+        setFullData(data)
+        setData(data.filter(x=>x.Role !== "Admin").map(item => {
           return {
             id: item.ID,
             name: item.Name,
@@ -147,6 +154,10 @@ export const Staff = () => {
   //   },
   // ];
 
+
+  const [isAddOpen, setIsAddOpen] = useState(false)
+  const [isDetailOpen, setIsDetailOpen] = useState(false)
+
   const [pageIndex, setPageIndex] = useState(1);
   const [totalPage, setTotalPage] = useState(Math.ceil(data.length / 9));
   return (
@@ -160,7 +171,7 @@ export const Staff = () => {
         <div className={styles.con1}>
           <Search />
           <Combobox label={"Gender"} items={items} item={item} />
-          <ButtonAdd text={"Add Staff"} />
+          <ButtonAdd onClick={() => setIsAddOpen(true)} text={"Add Staff"} />
         </div>
         <div className={styles.con2}>
           <table id="my-table" class={styles.tableData}>
@@ -186,8 +197,13 @@ export const Staff = () => {
                       const tData = val[accessor] ? val[accessor] : "——";
                       return <td className={styles.col}>{tData}</td>;
                     })}
-                    <td className={styles.colDetail}>
-                      View Full Detail <img className="pl-2" src={IC_navDetail} />
+                    <td onClick={() => {
+                      setIsDetailOpen(true)
+                      setSelectedData(fullData.find(x=>x.ID === val.id))
+                    }
+                    } className={styles.col}>
+                      <p>View Full Detail </p>
+                      <img className="pl-2" src={IC_navDetail} />
                     </td>
                   </tr>
                 );
@@ -223,6 +239,14 @@ export const Staff = () => {
           </div>
         </div>
       </div>
+      
+      <Modal centered={true} width="80%" closeIcon={null} open={isAddOpen} footer={null} onCancel={() => setIsAddOpen(false)}>
+        <AddStaff open={isAddOpen} setOpen={setIsAddOpen} fetchData={() => fetchData()}/>
+      </Modal>
+      <Modal centered={true} width="80%" closeIcon={null} open={isDetailOpen} footer={null} onCancel={() => setIsAddOpen(false)}>
+        <ProfileStaff open={isDetailOpen} setOpen={setIsDetailOpen} data={selectedData} fetchData={() => fetchData()}/>
+      </Modal>
+
     </Spin>
   );
 };

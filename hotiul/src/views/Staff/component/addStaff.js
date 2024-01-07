@@ -1,11 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './addStaff.module.scss';
 import { IC_closebutton } from '../../../assets/icons/index.js';
-import { Select } from 'antd';
+import { Button, Select, message } from 'antd';
 import { addData, updateData } from '../../../controller/addData.ts';
 import { createID } from '../../../utils/appUtils.js';
+import { IM_Camera } from '../../../assets/imgs/index.js';
+import { useTranslation } from "react-i18next"
+import {
+	deleteObject,
+	getDownloadURL,
+	ref,
+	uploadBytes,
+  } from "firebase/storage";
+import { storage } from "../../../firebaseConfig.js";
+
 
 function AddStaff(props) {
+
+
+	const { t } = useTranslation();
+	const [selectedImage, setSelectedImage] = useState(null);
+	const [selectedImageFile, setSelectedImageFile] = useState(null);
+	const fileInputRef = useRef(null);
+
+
+	const handleImageSelected = (event) => {
+		if (event.target.files && event.target.files[0]) {
+		  setSelectedImageFile(event.target.files[0]);
+		  setSelectedImage(URL.createObjectURL(event.target.files[0]));
+		}
+	  };	  
 
 	const [edit, setEdit] = useState({
 		name: '',
@@ -16,6 +40,7 @@ function AddStaff(props) {
 		salary: '',
 		username: '',
 		password: '',
+		image: '',
 	});
 
 	function handleChange(evt) {
@@ -26,9 +51,31 @@ function AddStaff(props) {
 		});
 	}
 
-	function handleSave() {
+
+	async function handleSave() {
+		if (edit.name === "" || edit.ctzId === "" || edit.phone === "" || edit.gender === ""){
+			message.error("Please fill full information!")
+			return
+		}
 		const staffID = createID({ prefix: "S" })
+		if (props.fullData.findIndex(x => x.CitizenID === edit.ctzId || x.Phone === edit.phone) !== -1)
+		{
+			message.error("User Existed!")
+			return
+		}
+
 		try {
+			
+			var imageLink = "";
+			const storageRef = ref(
+				storage,
+				`Images/Staff/${staffID}`
+			  );
+			  if (selectedImageFile !== null) {
+				const snapshot = await uploadBytes(storageRef, selectedImageFile);
+				imageLink = await getDownloadURL(snapshot.ref)
+			}
+
 			const newData = {
 				ID: staffID,
 				Name: edit.name,
@@ -38,10 +85,15 @@ function AddStaff(props) {
 				Address: edit.address,
 				Salary: Number(edit.salary),
 				Username: edit.username,
-				Password: edit.password
+				Password: edit.password,
+
+				Role: "Staff",
+				Image: imageLink,
 			}
 			console.log(newData)
 			addData({ data: newData, table: "STAFF", id: staffID });
+			message.success("Add new user successfully!")
+
 			setEdit({
 				name: '',
 				gender: '',
@@ -51,18 +103,22 @@ function AddStaff(props) {
 				salary: '',
 				username: '',
 				password: '',
+
+				image: '',
 			})
+			setSelectedImage(null)
+			setSelectedImageFile(null)
+
 			props.setOpen(false);
 			props.fetchData();
-		}
-		catch (err) {
-			console.log("Error updating data", err)
-			return
+		} catch (err) {
+			console.log('Error updating data', err);
+			return;
 		}
 	}
 
 	function handleCancel() {
-		props.setOpen(false)
+		props.setOpen(false);
 		setEdit({
 			name: '',
 			gender: '',
@@ -72,7 +128,12 @@ function AddStaff(props) {
 			salary: '',
 			username: '',
 			password: '',
+
+			image: ''
 		})
+		setSelectedImage(null)
+		setSelectedImageFile(null)
+
 	}
 	return (
 		<>
@@ -106,8 +167,44 @@ function AddStaff(props) {
 				</div>
 				<div className={styles.infoContainer}>
 					<div className={styles.avatarContainer}>
-						<div className={styles.avatar}></div>
-						<div></div>
+						<div className="px-2 mt-2 col-span-3 inline-block">
+						<div
+							onClick={() => fileInputRef.current.click()}
+							style={{
+							padding: "5px",
+							border: "1px solid gray",
+							borderRadius: "10px",
+							width: "fit-content",
+							}}
+							className="cursor-pointer m-auto"
+						>
+							{selectedImage ? (
+								<img
+								src={selectedImage}
+								alt="Selected"
+								style={{ width: "100%", maxHeight: "200px" }}
+								/>
+							) : (
+							<img src={IM_Camera}/>
+							)}
+							<input
+							type="file"
+							accept="image/*"
+							ref={fileInputRef}
+							style={{ display: "none" }}
+							onChange={handleImageSelected}
+							/>
+						</div>
+						{selectedImage ? (
+							<Button
+							onClick={() => {
+								setSelectedImage(null)
+								setSelectedImageFile(null)
+							}}
+							style={{ margin: "10px auto" }}
+						>{t("button.deleteImg")}</Button>) : null
+						}  
+						</div>
 					</div>
 					<div className={styles.infoDetail}>
 						<div className={styles.innfo}>
@@ -133,13 +230,14 @@ function AddStaff(props) {
 									type="text"
 									name="gender"
 									value={edit.gender}
-									style={{ width: "20vw", height: "50px", padding: 0 }}
-									options={[{ value: "Female" }, { value: "Male" }]}
+									style={{ width: '20vw', height: '50px', padding: 0 }}
+									options={[{ value: 'Female' }, { value: 'Male' }]}
 									onChange={e =>
 										setEdit({
 											...edit,
 											gender: e,
-										})}
+										})
+									}
 								/>
 								{/* <input
 										className={styles.inputInfo}

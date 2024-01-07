@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./sidebar.module.scss";
 import { IMG_logo } from "../../assets/imgs";
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,17 @@ import { NAV_LINK } from "../../routes/components/NAV_LINK";
 
 const SideBar = ({ handleChange }) => {
   const navigate = useNavigate();
-  const tabs = [
+  const currentUser = localStorage.getItem('currentUser');
+  const role = currentUser ? JSON.parse(currentUser).Role : '';
+
+  const staffTab = role === "Manager" ? 
+    {
+      tabname: "Staff",
+      tab: "staff",
+      icon: IC_staff,
+      nav: NAV_LINK.STAFF
+    } : null
+  const initialTabs = [
     {
       tabname: "Home",
       tab: "home",
@@ -69,18 +79,18 @@ const SideBar = ({ handleChange }) => {
       nav: NAV_LINK.SERVICES
     },
     {
-      tabname: "Staff",
-      tab: "staff",
-      icon: IC_staff,
-      nav: NAV_LINK.STAFF
-    },
-    {
       tabname: "Statistic",
       tab: "statistic",
       icon: IC_statistic,
       nav: NAV_LINK.STATISTIC
     },
   ];
+
+  if (staffTab) {
+    initialTabs.splice(8, 0, staffTab);
+  }
+
+  const [tabs, setTabs] = useState(initialTabs);
 
   const createList = tabs.map((map) => {
     return (

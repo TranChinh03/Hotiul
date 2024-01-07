@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../Booking/booking.module.scss';
+import styles from '../MonthlyFee/monthlyfee.module.scss';
 import Search from '../../components/search/search';
 import ButtonAdd from '../../components/buttonAdd/buttonAdd';
 import { IC_backArrow, IC_navDetail, IC_nextArrow, IC_sort } from '../../assets/icons';
-import Combobox from '../../components/combobox/combobox';
-import { LoadingOutlined } from '@ant-design/icons';
-import { Button, Input, Spin, message } from 'antd';
-import { IMG_logo } from '../../assets/imgs';
 import { getData } from '../../controller/getData.ts';
 import FeeInformation from '../../components/feeInformation/feeInformation.js';
 import Modal from 'antd/es/modal/Modal';
-import FeeCard from '../../components/feeInformation/feeCard.js';
 
 export const MonthlyFee = () => {
 	const column = [
@@ -68,6 +63,7 @@ export const MonthlyFee = () => {
 						onClick={() => {
 							setIsOpenModal(true);
 							setSelectedData(null);
+							console.log(selectedData);
 						}}
 					/>
 				</div>
@@ -85,6 +81,7 @@ export const MonthlyFee = () => {
 												<img
 													className="px-2"
 													src={IC_sort}
+													alt="ok"
 												/>
 											</div>
 										</th>
@@ -104,10 +101,9 @@ export const MonthlyFee = () => {
 											return <td className={styles.col}>{tData}</td>;
 										})}
 										<td
-											className={styles.colDetail}
+											className={styles.col}
 											onClick={() => {
 												setIsOpenModal(true);
-												console.log('cai gi z', val);
 												setSelectedData(val);
 											}}>
 											View Full Detail{' '}
@@ -156,7 +152,11 @@ export const MonthlyFee = () => {
 				<FeeInformation
 					data={selectedData}
 					fetchData={() => fetchData()}
-					closeEvt={() => setIsOpenModal(false)}
+					//setOpen={() => setIsOpenModal(false)}
+					closeEvt={() => {
+						setSelectedData(null);
+						setIsOpenModal(false);
+					}}
 					clickDetail={() => setIsOpenFee(true)}></FeeInformation>
 			</Modal>
 		</>

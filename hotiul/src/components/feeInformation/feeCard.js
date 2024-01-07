@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './fee.module.scss';
 import { IC_closebutton } from '../../assets/icons';
 import { createID } from '../../utils/appUtils.js';
 
 function FeeCard(props) {
-	const detailValue = props.detailValue;
+	const [detailValue, setDetailValue] = useState(props.detailValue);
+	const [state, setState] = useState({});
+	const [action, setAction] = useState(true);
+
+	console.log('detail value', props.detailValue);
+
+	useEffect(() => {
+		setState({
+			name: props.detailValue.Name || '',
+			price: props.detailValue.Price || '',
+			date: props.detailValue.Date || '',
+		});
+	}, [props.detailValue]);
 
 	const [edit, setEdit] = useState({
 		name: '',
@@ -14,8 +26,8 @@ function FeeCard(props) {
 
 	function handleChange(evt) {
 		const value = evt.target.value;
-		setEdit({
-			...edit,
+		setState({
+			...state,
 			[evt.target.name]: value,
 		});
 	}
@@ -26,23 +38,35 @@ function FeeCard(props) {
 			const newData = {
 				ID: feeID,
 				Name: edit.name,
-				Price: edit.price,
+				Price: Number(edit.price),
 				Date: edit.date,
 			};
-			console.log(newData);
-			props.handleSaveFeeCard(newData); // Pass the new data to FeeInformation
-			setEdit({
-				name: '',
-				price: '',
-				date: '',
-			});
+			if (detailValue && detailValue.Id) {
+				assignInfo(state, edit);
+			} else {
+				setEdit({
+					name: '',
+					price: '',
+					date: '',
+				});
+				props.handleSaveFeeCard(newData); // Pass the new data to FeeInformation
+				assignInfo(edit, state);
+			}
+
 			props.fetchData();
 			props.closeEvt();
 		} catch (err) {
 			console.log('Error updating data', err);
 			return;
 		}
+
+		//handleAction();
 	};
+
+	// function handleAction() {
+	//
+	// 	setAction(!action);
+	// }
 
 	function handleCancel() {
 		props.setOpen(false);
@@ -98,7 +122,7 @@ function FeeCard(props) {
 							className={styles.inputInfo}
 							type="text"
 							name="name"
-							value={edit.name}
+							value={state.name}
 							onChange={e => handleChange(e)}
 							required></input>
 					</div>
@@ -110,7 +134,7 @@ function FeeCard(props) {
 							className={styles.inputInfo}
 							type="text"
 							name="price"
-							value={edit.price}
+							value={state.price}
 							onChange={e => handleChange(e)}
 							required></input>
 					</div>
@@ -122,7 +146,7 @@ function FeeCard(props) {
 							className={styles.inputInfo}
 							type="date"
 							name="date"
-							value={edit.date}
+							value={state.date}
 							onChange={e => handleChange(e)}
 							required></input>
 					</div>

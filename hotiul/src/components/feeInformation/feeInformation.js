@@ -25,19 +25,25 @@ const column = [
 ];
 
 function FeeInformation(props) {
+	//feecard
+	const [selectedData, setSelectedData] = useState(null);
+
 	//const dataValue = props.data;
 	const [dataValue, setDataValue] = useState(props.data);
-
 	const [tableData, setTableData] = useState([]);
-
 	console.log('dv', dataValue);
 
 	const [isOpenFee, setIsOpenFee] = useState(false);
-
 	useEffect(() => {
-		// Update tableData when dataValue changes
-		if (dataValue && dataValue.detail) {
-			const newTableData = dataValue.detail.map(item => ({
+		setDataValue(props.data);
+		console.log('UE2', props.data);
+		//Update tableData when dataValue changes
+		if (!props.data) {
+			setTableData([]);
+			return;
+		}
+		if (props.data.detail) {
+			const newTableData = props.data.detail.map(item => ({
 				Id: item.Id || '——',
 				Name: item.Name || '——',
 				Date: item.Date || '——',
@@ -45,8 +51,17 @@ function FeeInformation(props) {
 			}));
 			setTableData(newTableData);
 		}
-	}, [dataValue]);
+	}, [props.data]);
 
+	function UpdateTable() {
+		const newTableData = dataValue.detail.map(item => ({
+			Id: item.Id || '——',
+			Name: item.Name || '——',
+			Date: item.Date || '——',
+			Price: item.Price || '——',
+		}));
+		setTableData(newTableData);
+	}
 	function handleOpenFeeCard() {
 		setIsOpenFee(true);
 	}
@@ -58,10 +73,11 @@ function FeeInformation(props) {
 
 	function handleChange(evt) {
 		const value = evt.target.value;
-		setEdit({
-			...edit,
-			[evt.target.name]: value,
+		setDataValue({
+			...dataValue,
+			fee: value,
 		});
+		setEdit({ ...edit, fee: dataValue.fee });
 	}
 
 	function handleSave() {
@@ -70,18 +86,15 @@ function FeeInformation(props) {
 			const newData = {
 				ID: feeID,
 				Name: edit.fee,
-				Details: edit.detail,
+				Details: dataValue.detail,
 			};
-
-			if (dataValue) {
-				// If dataValue is not null, update existing data
+			if (dataValue && dataValue.id) {
 				updateData({
-					data: { Name: edit.fee, Details: edit.detail },
+					data: { Name: edit.fee, Details: dataValue.detail },
 					table: 'FEE',
 					id: dataValue.id,
 				});
 			} else {
-				// If dataValue is null, add new data
 				addData({ data: newData, table: 'FEE', id: feeID });
 				setEdit({
 					fee: '',
@@ -89,7 +102,7 @@ function FeeInformation(props) {
 				});
 			}
 			props.fetchData();
-			props.setOpen(false);
+			props.closeEvt();
 		} catch (err) {
 			console.log('Error updating data', err);
 			return;
@@ -98,11 +111,8 @@ function FeeInformation(props) {
 
 	function handleSaveFeeCard(newData) {
 		console.log('New data from FeeCard:', newData);
-
-		setDataValue(prevDataValue => {
-			const updatedDetail = [...(prevDataValue.detail || []), newData];
-			return { ...prevDataValue, detail: updatedDetail };
-		});
+		setDataValue({ ...dataValue, detail: [...(dataValue?.detail ?? []), newData] });
+		UpdateTable();
 	}
 
 	function handleCancel() {
@@ -113,9 +123,10 @@ function FeeInformation(props) {
 			date: '',
 		});
 	}
-
 	const [pageIndex, setPageIndex] = useState(1);
-	const [totalPage, setTotalPage] = useState(dataValue ? Math.ceil(dataValue.length / 9) : 0);
+	const [totalPage, setTotalPage] = useState(
+		dataValue ? Math.ceil(dataValue.detail.length / 9) : 0,
+	);
 
 	return (
 		<>
@@ -142,30 +153,19 @@ function FeeInformation(props) {
 						</button>
 					</div>
 				</div>
-				{dataValue ? (
-					<div
-						style={{
-							fontSize: '25px',
-							marginTop: '10px',
-							color: 'var(--2, #023e8a)',
-							fontWeight: 'normal',
-						}}>
-						{dataValue.fee}
-					</div>
-				) : (
-					<div
-						className={styles.info}
-						style={{}}>
-						<input
-							className={styles.inputInfo}
-							type="text"
-							name="fee"
-							value={edit.fee}
-							onChange={e => handleChange(e)}
-							required></input>
-					</div>
-				)}
 
+				<div
+					className={styles.info}
+					style={{}}>
+					<input
+						className={styles.inputInfo}
+						type="text"
+						name="fee"
+						value={dataValue.fee}
+						onChange={e => handleChange(e)}
+						required></input>
+				</div>
+				{/* )} */}
 				<div className={styles.con2}>
 					<table
 						id="my-table"
@@ -204,19 +204,17 @@ function FeeInformation(props) {
 												</td>
 											);
 										})}
-										<td className={styles.colDetail}>
-											<button onClick={() => {}}>
-												<div
-													className={styles.tableInfo}
-													onClick={props.clickDetail}>
-													View Detail{' '}
-													<img
-														style={{ justifySelf: 'center', alignSelf: 'center' }}
-														className="pl-2"
-														src={IC_navDetail}
-													/>
-												</div>
-											</button>
+										<td
+											className={styles.col}
+											onClick={() => {
+												setIsOpenFee(true);
+												setSelectedData(val);
+											}}>
+											View Full Detail{' '}
+											<img
+												className="pl-2"
+												src={IC_navDetail}
+											/>
 										</td>
 									</tr>
 								);
@@ -229,7 +227,7 @@ function FeeInformation(props) {
 						<>
 							<p className=" text-mainColor pt-5">
 								Showing <strong> 1 - {totalPage} </strong> results of{' '}
-								<strong>{dataValue.length}</strong>
+								<strong>{dataValue.detail.length}</strong>
 							</p>
 							<div className="flex justify-around">
 								<button
@@ -237,7 +235,10 @@ function FeeInformation(props) {
 										if (pageIndex > 1) setPageIndex(pageIndex - 1);
 									}}
 									className={styles.btnnav}>
-									<img src={IC_backArrow} />
+									<img
+										src={IC_backArrow}
+										alt="vl"
+									/>
 								</button>
 								<p className="text-mainColor px-3">
 									Page <strong>{pageIndex}</strong>
@@ -247,7 +248,10 @@ function FeeInformation(props) {
 										if (pageIndex < totalPage) setPageIndex(pageIndex + 1);
 									}}
 									className={styles.btnnav}>
-									<img src={IC_nextArrow} />
+									<img
+										src={IC_nextArrow}
+										alt="zlzlz"
+									/>
 								</button>
 							</div>
 						</>
@@ -259,15 +263,12 @@ function FeeInformation(props) {
 					style={{ justifyContent: 'end', marginTop: '20px' }}
 					className="flex w-full items-start justify-between px-5">
 					<ButtonAdd
-						onClick={() => handleOpenFeeCard()}
+						onClick={() => {
+							handleOpenFeeCard();
+							setSelectedData(null);
+						}}
 						text={'Add Fee'}
 					/>
-					<Button
-						onClick={() => {
-							console.log('okeoke', dataValue);
-						}}>
-						Nhan do coi
-					</Button>
 				</div>
 			</div>
 			<Modal
@@ -277,6 +278,7 @@ function FeeInformation(props) {
 				footer={false}
 				style={{ backgroundColor: 'transparent' }}>
 				<FeeCard
+					detailValue={selectedData}
 					fetchData={props.fetchData}
 					closeEvt={() => setIsOpenFee(false)}
 					handleSaveFeeCard={handleSaveFeeCard}></FeeCard>

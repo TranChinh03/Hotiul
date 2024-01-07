@@ -13,134 +13,19 @@ import {
 import { Table } from 'antd';
 
 const column = [
-	{ label: 'ID', accessor: 'id' },
-	{ label: 'Room', accessor: 'room' },
-	{ label: 'Checkin', accessor: 'checkin' },
-	{ label: 'Checkout', accessor: 'checkout' },
-	{ label: 'Detail', accessor: 'detail' },
-];
-
-const data = [
-	{
-		id: '001',
-		room: 'R1.02',
-		checkin: '20/11/2023',
-		checkout: '25/11/2023',
-	},
-	{
-		id: '002',
-		room: 'R2.03',
-		checkin: '20/11/2023',
-		checkout: '25/11/2023',
-	},
-	{
-		id: '003',
-		room: 'R3.01',
-		checkin: '20/11/2023',
-		checkout: '25/11/2023',
-	},
-	{
-		id: '004',
-		room: 'R4.05',
-		checkin: '20/11/2023',
-		checkout: '25/11/2023',
-	},
-	{
-		id: '001',
-		room: 'R1.02',
-		checkin: '20/11/2023',
-		checkout: '25/11/2023',
-	},
-	{
-		id: '002',
-		room: 'R2.03',
-		checkin: '20/11/2023',
-		checkout: '25/11/2023',
-	},
-	{
-		id: '003',
-		room: 'R3.01',
-		checkin: '20/11/2023',
-		checkout: '25/11/2023',
-	},
-	{
-		id: '004',
-		room: 'R4.05',
-		checkin: '20/11/2023',
-		checkout: '25/11/2023',
-	},
-	{
-		id: '001',
-		room: 'R1.02',
-		checkin: '20/11/2023',
-		checkout: '25/11/2023',
-	},
-	{
-		id: '002',
-		room: 'R2.03',
-		checkin: '20/11/2023',
-		checkout: '25/11/2023',
-	},
-	{
-		id: '003',
-		room: 'R3.01',
-		checkin: '20/11/2023',
-		checkout: '25/11/2023',
-	},
-	{
-		id: '004',
-		room: 'R4.05',
-		checkin: '20/11/2023',
-		checkout: '25/11/2023',
-	},
+	{ label: 'ID', accessor: 'Id' },
+	{ label: 'Bill', accessor: 'Name' },
+	{ label: 'Date', accessor: 'Date' },
+	{ label: 'Price', accessor: 'Price' },
+	{ label: 'Detail', accessor: 'Detail' },
 ];
 
 function FeeInformation(props) {
+	const dataValue = props.data;
+	console.log('dv', dataValue);
+
 	const [pageIndex, setPageIndex] = useState(1);
-	const [totalPage, setTotalPage] = useState(Math.ceil(data.length / 9));
-	const [action, setAction] = useState(true);
-	const [state, setState] = useState({
-		name: '',
-		gender: '',
-		phone: '',
-		ctzId: '',
-	});
-
-	const [edit, setEdit] = useState({
-		name: '',
-		gender: '',
-		phone: '',
-		ctzId: '',
-	});
-
-	function assignInfo(state, edit) {
-		state.name = edit.name;
-		state.gender = edit.gender;
-		state.phone = edit.phone;
-		state.ctzId = edit.ctzId;
-	}
-
-	function handleAction() {
-		assignInfo(edit, state);
-		setAction(!action);
-	}
-
-	function handleChange(evt) {
-		const value = evt.target.value;
-		setEdit({
-			...edit,
-			[evt.target.name]: value,
-		});
-	}
-
-	function handleSave() {
-		assignInfo(state, edit);
-		handleAction();
-	}
-
-	function handleCancel() {
-		handleAction();
-	}
+	const [totalPage, setTotalPage] = useState(Math.ceil(dataValue.length / 9));
 
 	return (
 		<>
@@ -154,13 +39,14 @@ function FeeInformation(props) {
 							Delete
 						</button>
 						<button
-							onClick={() => handleAction()}
+							onClick={() => {}}
 							className={styles.button}
 							style={{ backgroundColor: '#66EB8B' }}>
 							Save
 						</button>
 						<button>
 							<img
+								onClick={props.closeEvt}
 								src={IC_closebutton}
 								alt="CloseButton"></img>
 						</button>
@@ -173,7 +59,7 @@ function FeeInformation(props) {
 						color: 'var(--2, #023e8a)',
 						fontWeight: 'normal',
 					}}>
-					Monthly /de ten do/
+					{dataValue.fee}
 				</div>
 				<div className={styles.con2}>
 					<table
@@ -197,14 +83,15 @@ function FeeInformation(props) {
 								})}
 							</tr>
 						</thead>
-						<tbody className="h-96">
-							{data.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
+						<tbody className="h-52">
+							{dataValue.detail.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
 								return (
 									<tr
 										className={styles.rowTbl}
 										key={key}>
 										{column.slice(0, -1).map(({ accessor }) => {
 											const tData = val[accessor] ? val[accessor] : '——';
+											console.log('ttt', tData);
 											return <td className={styles.col}>{tData}</td>;
 										})}
 										<td className={styles.colDetail}>
@@ -229,7 +116,8 @@ function FeeInformation(props) {
 				</div>
 				<div className={styles.con1}>
 					<p className=" text-mainColor pt-5">
-						Showing <strong> 1 - {totalPage} </strong> results of <strong>{data.length}</strong>
+						Showing <strong> 1 - {totalPage} </strong> results of{' '}
+						<strong>{dataValue.length}</strong>
 					</p>
 					<div className="flex justify-around">
 						<button

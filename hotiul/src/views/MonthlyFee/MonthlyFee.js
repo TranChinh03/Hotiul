@@ -20,6 +20,8 @@ export const MonthlyFee = () => {
 		{ label: 'Detail', accessor: 'detail' },
 	];
 
+	const [selectedData, setSelectedData] = useState(null);
+
 	const [pageIndex, setPageIndex] = useState(1);
 	const [totalPage, setTotalPage] = useState();
 
@@ -38,6 +40,7 @@ export const MonthlyFee = () => {
 							id: item.ID,
 							fee: item.Name,
 							total: item.Details.reduce((acc, curr) => acc + curr.Price, 0),
+							detail: item.Details,
 						};
 					}),
 				);
@@ -85,17 +88,26 @@ export const MonthlyFee = () => {
 								})}
 							</tr>
 						</thead>
-						<tbody className="h-96">
+						<tbody className="h-52">
 							{data.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
+								console.log('val', val);
+								console.log('key', key);
 								return (
 									<tr
 										className={styles.rowTbl}
 										key={key}>
 										{column.slice(0, -1).map(({ accessor }) => {
 											const tData = val[accessor] ? val[accessor] : '——';
+											console.log('?', column);
 											return <td className={styles.col}>{tData}</td>;
 										})}
-										<td className={styles.colDetail}>
+										<td
+											className={styles.colDetail}
+											onClick={() => {
+												setIsOpenModal(true);
+												console.log('cai gi z', val);
+												setSelectedData(val);
+											}}>
 											View Full Detail{' '}
 											<img
 												className="pl-2"
@@ -140,6 +152,8 @@ export const MonthlyFee = () => {
 				footer={false}
 				style={{ backgroundColor: 'transparent' }}>
 				<FeeInformation
+					data={selectedData}
+					closeEvt={() => setIsOpenModal(false)}
 					clickDetail={() => {
 						setIsOpenModal(false);
 						setIsOpenFee(true);
@@ -151,7 +165,10 @@ export const MonthlyFee = () => {
 				closeIcon={false}
 				footer={false}
 				style={{ backgroundColor: 'transparent' }}>
-				<FeeCard></FeeCard>
+				<FeeCard
+					closeEvt={() => {
+						setIsOpenFee(false);
+					}}></FeeCard>
 			</Modal>
 		</>
 	);

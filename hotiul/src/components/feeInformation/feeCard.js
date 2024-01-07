@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 import styles from './fee.module.scss';
 import { IC_closebutton } from '../../assets/icons';
+import { DatePicker } from 'antd';
 
-function FeeCard() {
+function FeeCard(props) {
 	const [action, setAction] = useState(true);
 	const [state, setState] = useState({
 		name: '',
-		gender: '',
-		phone: '',
+		price: '',
+		date: '',
 	});
 
 	const [edit, setEdit] = useState({
 		name: '',
-		gender: '',
-		phone: '',
+		price: '',
+		date: '',
 	});
 
 	function assignInfo(state, edit) {
 		state.name = edit.name;
-		state.gender = edit.gender;
-		state.phone = edit.phone;
+		state.price = edit.price;
+		state.date = edit.date;
 	}
 
 	function handleAction() {
@@ -43,6 +44,7 @@ function FeeCard() {
 	function handleCancel() {
 		handleAction();
 	}
+
 	return (
 		<>
 			<div className={styles.container}>
@@ -60,7 +62,7 @@ function FeeCard() {
 							style={{ backgroundColor: '#66EB8B' }}>
 							Save
 						</button>
-						<button>
+						<button onClick={props.closeEvt}>
 							<img
 								src={IC_closebutton}
 								alt="CloseButton"></img>

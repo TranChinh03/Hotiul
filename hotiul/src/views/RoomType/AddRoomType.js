@@ -152,7 +152,11 @@ function AddRoomType(props) {
                                         size="large"
                                     />
                                 </div>
-                                <div className="text-right text-sm text-yellow-400 ">$/ night</div>
+                                <div
+                                    style={{
+                                        color: "#F8DD4E"
+                                    }}
+                                    className="text-right text-sm">$/ night</div>
                             </div>
                         </div>
                     </div>

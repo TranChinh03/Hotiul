@@ -216,7 +216,7 @@ export const Room = () => {
   const [rerenderFlag, setRerenderFlag] = useState(false);
   return (
     <div className="flex justify-center label-input-field">
-      <div className="w-full mx-8">
+      <div className="w-full mx-16">
         <div className="flex flex-row justify-between">
           <div className="search flex-1">
             <div className="label-input-field font-medium">Search</div>

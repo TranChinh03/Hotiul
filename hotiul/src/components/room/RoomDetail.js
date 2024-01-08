@@ -69,7 +69,13 @@ function RoomDetail(props) {
 
     }
     const handleFixing = () => {
-
+        const roomData = {
+            Status: "Fixing",
+        }
+        console.log("update", roomData);
+        updateData({ data: roomData, table: "ROOM", id: props.roomId });
+        handleCloseDetailModal();
+        props.updateStatus("Fixing");
     }
     return (
         <div>

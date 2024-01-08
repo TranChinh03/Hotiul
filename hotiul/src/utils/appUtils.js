@@ -9,5 +9,10 @@ const formatCurrency = (value) => {
 const removeCommas = (inputString) => {
   return inputString.replace(/,/g, '');
 }
+function convertStringToDate(dateString) {
+  const [day, month, year] = dateString.split('/');
+  const convertedDate = new Date(year, month - 1, day);
+  return convertedDate;
+}
 
-module.exports = { createID, formatCurrency, removeCommas };
+module.exports = { createID, formatCurrency, removeCommas, convertStringToDate };

@@ -35,8 +35,8 @@ const BOOKING = [
 		ID: 'B004',
 		CustomerID: 'C01',
 		RoomID: 'R101',
-		CheckIn: '17/01/2024',
-		CheckOut: '20/01/2024',
+		CheckIn: '06/01/2024',
+		CheckOut: '10/01/2024',
 		isCanceled: false,
 		PaymentStatus: 'Paid Fully',
 		Price: 2500000,
@@ -95,13 +95,13 @@ const BOOKING = [
 
 export const addDbBooking = async () => {
 	BOOKING.map(async (b) => {
-	  await setDoc(
-		doc(
-		  db,
-		  "BOOKING",
-		  b.ID
-		),
-		b
-	  );
+		await setDoc(
+			doc(
+				db,
+				"BOOKING",
+				b.ID
+			),
+			b
+		);
 	});
-  };
+};

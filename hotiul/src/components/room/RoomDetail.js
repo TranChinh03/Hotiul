@@ -1,0 +1,131 @@
+import React from 'react';
+import Modal from '@mui/material/Modal';
+import { Box } from '@mui/material';
+import { Button } from 'antd';
+const style = {
+    position: 'absolute',
+    top: '30%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 700,
+    bgcolor: 'background.paper',
+    borderRadius: '20px',
+    boxShadow: 24,
+};
+function RoomDetail(props) {
+    const handleCloseDetailModal = () => {
+        props.onCloseModal();
+    }
+    return (
+        <div>
+            <Modal
+                open={props.isDisplay}
+                onClose={handleCloseDetailModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description">
+                <Box sx={style} className="pb-10">
+                    <div
+                        className="text-[28px] text-center font-bold mt-4 mb-4"
+                        style={{
+                            color: "#023E8A",
+                            fontFamily: "Inter",
+                        }}>{props.roomId}</div>
+                    <div className='flex flex-row mx-12'>
+                        {(props.roomStatus === 'In Use' || props.roomStatus === 'Confirm Checkin' || props.roomStatus === 'Confirm Checkout')
+                            && <div div
+                                className='flex-1 rounded-xl w-max p-4'
+                                style={{
+                                    color: "#023E8A",
+                                    boxShadow: "0px 4px 25px 0px rgba(0, 0, 0, 0.15)"
+                                }}>
+                                <div className='mt-2'>
+                                    <div className='inline font-semibold'>Customer ID:</div>
+                                    <div className='inline'>{ }</div>
+                                </div>
+                                <div className='mt-2'>
+                                    <div className='inline font-semibold'>Customer name:</div>
+                                    <div className='inline'>{ }</div>
+                                </div>
+                                <div className='mt-2'>
+                                    <div className='inline font-semibold'>Customer phone:</div>
+                                    <div className='inline'>{ }</div>
+                                </div>
+                            </div>
+                        }
+                        <div className='flex-1 rounded-xl w-max p-4 ml-4 text-center align-middle'
+                            style={{
+                                color: "#023E8A",
+                                boxShadow: "0px 4px 25px 0px rgba(0, 0, 0, 0.15)",
+                                display: "flex",           // Thêm display: flex
+                                alignItems: "center",
+                                justifyContent: "center"     // Thêm align-items: center
+                            }}>
+                            {props.roomStatus}
+                        </div>
+
+                    </div>
+                    <div className=''>
+                        {props.roomStatus === 'Confirm Checkout'
+                            &&
+                            <button className="flex float-right">
+                                <div
+
+                                    style={{
+                                        backgroundColor: "#FA923B"
+                                    }}
+                                    className="cursor-pointer px-5 bg-mainColor flex rounded-2xl items-center h-12 mt-4 mr-8">
+                                    <div className="text-white font-bold text-base px-2 whitespace-nowrap">Check-out</div>
+                                </div>
+                            </button>}
+                        {props.roomStatus === 'Confirm Checkin'
+                            && <button className="flex float-right">
+                                <div
+
+                                    style={{
+                                        backgroundColor: "#00B4D8"
+                                    }}
+                                    className="cursor-pointer px-5 bg-mainColor flex rounded-2xl items-center h-12 mt-4 mr-8">
+                                    <div className="text-white font-bold text-base px-2 whitespace-nowrap">Check-in</div>
+                                </div>
+                            </button>}
+                        {props.roomStatus === 'Cleaning'
+                            && <button className="flex float-right">
+                                <div
+
+                                    style={{
+                                        backgroundColor: "#D3B505"
+                                    }}
+                                    className="cursor-pointer px-5 bg-mainColor flex rounded-2xl items-center h-12 mt-4 mr-8">
+                                    <div className="text-white font-bold text-base px-2 whitespace-nowrap">Complete Cleaning</div>
+                                </div>
+                            </button>}
+                        {props.roomStatus === 'Fixing'
+                            && <button className="flex float-right">
+                                <div
+
+                                    style={{
+                                        backgroundColor: "#88DDFF"
+                                    }}
+                                    className="cursor-pointer px-5 bg-mainColor flex rounded-2xl items-center h-12 mt-4 mr-8">
+                                    <div className="text-white font-bold text-base px-2 whitespace-nowrap">Complete Fixing</div>
+                                </div>
+                            </button>}
+                        {props.roomStatus === 'In Use'
+                            && <button className="flex float-right">
+                                <div
+
+                                    style={{
+                                        backgroundColor: "#FF9C9C"
+                                    }}
+                                    className="cursor-pointer px-5 bg-mainColor flex rounded-2xl items-center h-12 mt-4 mr-8">
+                                    <div className="text-white font-bold text-base px-2 whitespace-nowrap">Return soon</div>
+                                </div>
+                            </button>}
+                    </div>
+                </Box>
+            </Modal>
+        </div >
+    );
+}
+
+export default RoomDetail;

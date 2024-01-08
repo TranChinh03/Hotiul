@@ -105,8 +105,7 @@ function RoomType(props) {
             <div style={{ transform: 'translate(-50%, -50%)', backgroundColor: "#909090", opacity: 0.8, width: "50%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
                 <img style={{ width: "50%" }} src={IMG_logo} />
                 <LoadingOutlined style={{ fontSize: 24 }} spin />
-            </div>
-        }>
+            </div>}>
             <div className="relative">
                 <AddRoomType
                     isDisplay={isAddModalDisplay}

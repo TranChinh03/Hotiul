@@ -135,7 +135,6 @@ export const Customer = () => {
   const [fullData, setFullData] = useState([]);
   const [data, setData] = useState([]);
 
-  console.log("gender", gender);
   const fetchData = async () => {
     await Promise.all([
       getData("/CUSTOMER").then((customer) => {

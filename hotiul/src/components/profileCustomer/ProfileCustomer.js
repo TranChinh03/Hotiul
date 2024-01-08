@@ -23,7 +23,7 @@ const column = [
   { label: "RoomID", accessor: "room" },
   { label: "CheckIn", accessor: "checkin" },
   { label: "CheckOut", accessor: "checkout" },
-  { label: "Detail", accessor: "detail" }
+  { label: "Detail", accessor: "detail" },
 ];
 
 // const columns = [
@@ -85,8 +85,6 @@ const ProfileCustomer = (props) => {
   const [totalPage, setTotalPage] = useState(Math.ceil(bookings?.length / 9));
   const [action, setAction] = useState(true);
   const [state, setState] = useState({});
-
-  console.log("props.data", props.data);
 
   const [edit, setEdit] = useState({
     name: "",

@@ -18,7 +18,7 @@ import ProfileCustomer from "../../components/profileCustomer/ProfileCustomer.js
 export const Customer = () => {
   //search and filter
   const [keywords, setKeywords] = useState("");
-  const [gender, setGender] = useState("");
+  const [gender, setGender] = useState("All");
 
   //show add customer
   const [isShowed, setIsShowed] = useState(false);
@@ -131,7 +131,7 @@ export const Customer = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const [totalPage, setTotalPage] = useState();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [fullData, setFullData] = useState([]);
   const [data, setData] = useState([]);
 

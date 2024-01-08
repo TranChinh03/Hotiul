@@ -9,12 +9,13 @@ import { getData } from '../../controller/getData.ts';
 import { convertStringToDate } from '../../utils/appUtils.js';
 import RoomDetail from './RoomDetail.js';
 function RoomItem(props) {
-    const roomStatus = props.roomStatus;
+    const [roomStatus, setRoomStatus] = useState(props.roomStatus);
     const roomId = props.roomId;
     const roomType = props.roomType;
     useEffect(() => {
         fetchBooking();
     }, []);
+    useEffect(() => { }, [])
     const [listBooking, setListBooking] = useState([]);
     const fetchBooking = async () => {
         await Promise.all([
@@ -29,14 +30,17 @@ function RoomItem(props) {
     const handleClick = () => {
         setIsRoomDetailDisplay(true);
         const curentDate = new Date();
-        const bookingOfSelectedRoom = listBooking.filter(item => convertStringToDate(item.CheckIn) <= curentDate && convertStringToDate(item.CheckOut) >= curentDate && item.RoomID === roomId);
-        if (bookingOfSelectedRoom.length > 0) {
-            setBookingOfRoom(bookingOfSelectedRoom[0]);
+        const bookingOfSelectedRoom = listBooking.find(item => convertStringToDate(item.CheckIn) <= curentDate && convertStringToDate(item.CheckOut) >= curentDate && item.RoomID === roomId);
+        if (bookingOfSelectedRoom) {
+            setBookingOfRoom(bookingOfSelectedRoom);
             console.log(bookingOfSelectedRoom);
         }
     };
     const handleCloseDetailModal = () => {
         setIsRoomDetailDisplay(false);
+    }
+    const handleUpdateStatus = (newStatus) => {
+        setRoomStatus(newStatus)
     }
     // Render the appropriate component based on roomStatus
     const renderRoomComponent = () => {
@@ -61,6 +65,7 @@ function RoomItem(props) {
     return (
         <div>
             <RoomDetail
+                updateStatus={handleUpdateStatus}
                 bookingOfRoom={bookingOfRoom}
                 roomId={roomId}
                 roomType={roomType}

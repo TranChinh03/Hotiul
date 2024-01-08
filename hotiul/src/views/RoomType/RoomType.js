@@ -5,24 +5,14 @@ import {
     IC_add,
     IC_backArrow,
     IC_navDetail,
-    IC_delete,
-    IC_edit,
     IC_nextArrow,
     IC_sort,
 } from "../../assets/icons";
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import { InputNumber, Spin } from 'antd';
+import { Spin } from 'antd';
 import { IMG_logo } from "../../assets/imgs";
 import { LoadingOutlined } from '@ant-design/icons';
 
 import { getData } from "../../controller/getData.ts";
-import { Button, TextField } from "@mui/material";
-import Input from "antd/es/input/Input";
-import { createID } from '../../utils/appUtils.js';
-import { addData, updateData } from '../../controller/addData.ts';
-import { create } from "@mui/material/styles/createTransitions";
 import AddRoomType from "./AddRoomType.js";
 import DetailRoomType from "./DetailRoomType.js";
 

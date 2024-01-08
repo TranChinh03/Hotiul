@@ -9,12 +9,13 @@ import { getData } from '../../controller/getData.ts';
 import { convertStringToDate } from '../../utils/appUtils.js';
 import RoomDetail from './RoomDetail.js';
 function RoomItem(props) {
-    const roomStatus = props.roomStatus;
+    const [roomStatus, setRoomStatus] = useState(props.roomStatus);
     const roomId = props.roomId;
     const roomType = props.roomType;
     useEffect(() => {
         fetchBooking();
     }, []);
+    useEffect(() => { }, [])
     const [listBooking, setListBooking] = useState([]);
     const fetchBooking = async () => {
         await Promise.all([
@@ -38,6 +39,9 @@ function RoomItem(props) {
     const handleCloseDetailModal = () => {
         setIsRoomDetailDisplay(false);
     }
+    const handleUpdateStatus = (newStatus) => {
+        setRoomStatus(newStatus)
+    }
     // Render the appropriate component based on roomStatus
     const renderRoomComponent = () => {
         switch (roomStatus) {
@@ -58,9 +62,11 @@ function RoomItem(props) {
                 return null;
         }
     };
+    console.log("Room status in RoomItem", roomStatus);
     return (
         <div>
             <RoomDetail
+                updateStatus={handleUpdateStatus}
                 bookingOfRoom={bookingOfRoom}
                 roomId={roomId}
                 roomType={roomType}

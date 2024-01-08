@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from '@mui/material/Modal';
 import { Box } from '@mui/material';
 import { Button } from 'antd';
+import { updateData } from '../../controller/addData.ts';
 const style = {
     position: 'absolute',
     top: '30%',
@@ -15,6 +16,60 @@ const style = {
 function RoomDetail(props) {
     const handleCloseDetailModal = () => {
         props.onCloseModal();
+    }
+    // handle Update Room
+    const handleConfirmCheckin = () => {
+        const roomData = {
+            Status: "In Use",
+        }
+        console.log("update", roomData);
+        updateData({ data: roomData, table: "ROOM", id: props.roomId });
+        handleCloseDetailModal();
+        props.updateStatus("In Use");
+    }
+
+    const handleConfirmCheckout = () => {
+        const roomData = {
+            Status: "Cleaning",
+        }
+        console.log("update", roomData);
+        updateData({ data: roomData, table: "ROOM", id: props.roomId });
+        handleCloseDetailModal();
+        props.updateStatus("Cleaning");
+
+    }
+    const handleCompleteCleaning = () => {
+        const roomData = {
+            Status: "Available",
+        }
+        console.log("update", roomData);
+        updateData({ data: roomData, table: "ROOM", id: props.roomId });
+        handleCloseDetailModal();
+        props.updateStatus("Available");
+
+    }
+    const handleCompleteFixing = () => {
+        const roomData = {
+            Status: "Available",
+        }
+        console.log("update", roomData);
+        updateData({ data: roomData, table: "ROOM", id: props.roomId });
+        handleCloseDetailModal();
+        props.updateStatus("Available");
+    }
+    const handleReturnSoon = () => {
+        // update booking
+        // find booking for that room
+        //      CheckIn < currentDate
+        //      CheckOut > currentDate
+        //      RoomId = props.roomId
+        // update booking
+        //      CheckOut = currentDate
+        //      (?) What about Price
+
+    }
+    const handleFixing = () => {
+
     }
     return (
         <div>
@@ -65,9 +120,25 @@ function RoomDetail(props) {
 
                     </div>
                     <div className=''>
+                        {
+                            props.roomStatus === 'Available'
+                            &&
+                            <button className="flex float-right"
+                                onClick={handleFixing}>
+                                <div
+
+                                    style={{
+                                        backgroundColor: "#88DDFF"
+                                    }}
+                                    className="cursor-pointer px-5 bg-mainColor flex rounded-2xl items-center h-12 mt-4 mr-8">
+                                    <div className="text-white font-bold text-base px-2 whitespace-nowrap">Need Fixing</div>
+                                </div>
+                            </button>
+                        }
                         {props.roomStatus === 'Confirm Checkout'
                             &&
-                            <button className="flex float-right">
+                            <button className="flex float-right"
+                                onClick={handleConfirmCheckout}>
                                 <div
 
                                     style={{
@@ -78,7 +149,8 @@ function RoomDetail(props) {
                                 </div>
                             </button>}
                         {props.roomStatus === 'Confirm Checkin'
-                            && <button className="flex float-right">
+                            && <button className="flex float-right"
+                                onClick={handleConfirmCheckin}>
                                 <div
 
                                     style={{
@@ -89,33 +161,35 @@ function RoomDetail(props) {
                                 </div>
                             </button>}
                         {props.roomStatus === 'Cleaning'
-                            && <button className="flex float-right">
+                            && <button className="flex float-right"
+                                onClick={handleCompleteCleaning}>
                                 <div
 
                                     style={{
-                                        backgroundColor: "#D3B505"
+                                        backgroundColor: "#49E17C"
                                     }}
                                     className="cursor-pointer px-5 bg-mainColor flex rounded-2xl items-center h-12 mt-4 mr-8">
                                     <div className="text-white font-bold text-base px-2 whitespace-nowrap">Complete Cleaning</div>
                                 </div>
                             </button>}
                         {props.roomStatus === 'Fixing'
-                            && <button className="flex float-right">
+                            && <button className="flex float-right"
+                                onClick={handleCompleteFixing}>
                                 <div
-
                                     style={{
-                                        backgroundColor: "#88DDFF"
+                                        backgroundColor: "#49E17C"
                                     }}
                                     className="cursor-pointer px-5 bg-mainColor flex rounded-2xl items-center h-12 mt-4 mr-8">
                                     <div className="text-white font-bold text-base px-2 whitespace-nowrap">Complete Fixing</div>
                                 </div>
                             </button>}
                         {props.roomStatus === 'In Use'
-                            && <button className="flex float-right">
+                            && <button className="flex float-right"
+                                onClick={handleReturnSoon}>
                                 <div
 
                                     style={{
-                                        backgroundColor: "#FF9C9C"
+                                        backgroundColor: "#49E17C"
                                     }}
                                     className="cursor-pointer px-5 bg-mainColor flex rounded-2xl items-center h-12 mt-4 mr-8">
                                     <div className="text-white font-bold text-base px-2 whitespace-nowrap">Return soon</div>

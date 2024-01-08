@@ -10,6 +10,9 @@ import {
 } from "../../assets/icons";
 
 export const Booking = () => {
+  // search
+  const [keywords, setKeywords] = useState("");
+
   const column = [
     { label: "ID", accessor: "id" },
     { label: "Customer Name", accessor: "name" },
@@ -117,7 +120,7 @@ export const Booking = () => {
   return (
     <div className={styles.maincontainer}>
       <div className={styles.con1}>
-        <Search />
+        <Search onChange={(e) => setKeywords(e.target.value)} />{" "}
         <ButtonAdd text={"Add Refund"} />
       </div>
       <div className={styles.con2}>
@@ -138,18 +141,23 @@ export const Booking = () => {
           </thead>
           <tbody className="h-96">
             {data.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
-              return (
-                <tr className={styles.rowTbl} key={key}>
-                  {column.slice(0, -1).map(({ accessor }) => {
-                    const tData = val[accessor] ? val[accessor] : "——";
-                    return <td className={styles.col}>{tData}</td>;
-                  })}
-                  <td className={styles.col}>
-                  <p>View Full Detail </p>
-                    <img className="pl-2" src={IC_navDetail} />
-                  </td>
-                </tr>
-              );
+              if (
+                val.name.toLowerCase().includes(keywords.toLowerCase()) ||
+                val.id.toLowerCase().includes(keywords.toLowerCase()) ||
+                val.room.toString().includes(keywords)
+              )
+                return (
+                  <tr className={styles.rowTbl} key={key}>
+                    {column.slice(0, -1).map(({ accessor }) => {
+                      const tData = val[accessor] ? val[accessor] : "——";
+                      return <td className={styles.col}>{tData}</td>;
+                    })}
+                    <td className={styles.col}>
+                      <p>View Full Detail </p>
+                      <img className="pl-2" src={IC_navDetail} />
+                    </td>
+                  </tr>
+                );
             })}
           </tbody>
         </table>

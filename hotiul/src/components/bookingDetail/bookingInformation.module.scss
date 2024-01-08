@@ -1,0 +1,93 @@
+.container {
+  @apply w-full h-full bg-slate-50;
+}
+
+.header {
+  @apply flex justify-between;
+}
+.txtheader {
+  color: var(--2, #023e8a);
+  font-size: 40px;
+  font-style: normal;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.button {
+  width: 160px;
+  height: 45px;
+  border-radius: 25px;
+  box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.15);
+  color: var(--0, #fff);
+  text-align: center;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-right: 15px;
+}
+.buttonClose {
+  @apply mt-0 p-0 h-fit;
+}
+.info {
+  @apply flex justify-between;
+}
+.detailInfo {
+  @apply flex flex-col justify-around px-10 py-5 bg-white rounded-3xl shadow-md w-1/2 mx-3 h-60;
+}
+
+.title {
+  color: var(--2, #023e8a);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.valueInfo {
+  font-size: 18px;
+  color: var(--2, #023e8a);
+}
+.titleFee {
+  color: var(--2, #fff);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.valueInfoFee {
+  font-size: 18px;
+  color: var(--2, #fff);
+}
+.checkin {
+  @apply flex items-center px-5 z-10 bg-white shadow-md w-2/5 h-20 rounded-3xl mt-3;
+}
+.checkout {
+  @apply flex items-center px-5  z-30 bg-white shadow-md -mx-20 w-2/5 h-20 rounded-3xl mt-3;
+}
+.fee {
+  @apply flex items-center px-5  z-50 bg-secondColor shadow-2xl   w-1/5 h-20 rounded-3xl mt-3;
+}
+.content {
+  @apply flex w-10/12 items-center justify-between;
+}
+.contentFee {
+  @apply flex w-full items-center justify-between;
+}
+.btnCalendar {
+  @apply bg-mainColor rounded-full p-3 mx-4 shadow-lg;
+}
+.rowTbl {
+  @apply border-t-[0.75px] border-t-secondColor border-opacity-20;
+}
+.tableData {
+  @apply table-auto w-full;
+}
+.tbHeading {
+  @apply text-mainColor text-sm font-medium;
+}
+.data {
+  @apply text-mainColor text-sm font-normal;
+}
+
+.col {
+  @apply text-center px-5 items-center text-mainColor text-sm font-normal py-3 justify-center;
+}

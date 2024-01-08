@@ -8,14 +8,17 @@ import {
   IC_sort,
   IC_closebutton,
   IC_line,
+  IC_add,
 } from "../../assets/icons";
-import { Select, Table, message } from "antd";
+import { Modal, Select, Table, message } from "antd";
 import { getOne } from "../../controller/getOne.ts";
 import { getData } from "../../controller/getData.ts";
 import { UpdateCustomer } from "../../controller/updateCustomer.ts";
 import { createID } from "../../utils/appUtils.js";
 import { addData } from "../../controller/addData.ts";
 import { deleteData } from "../../controller/deleteData.ts";
+import ButtonAdd from "../buttonAdd/buttonAdd.js";
+import { BookingInfo } from "../bookingDetail/bookingInformation.js";
 // import { getData } from "../../controller/getData";
 
 const column = [
@@ -26,65 +29,15 @@ const column = [
   { label: "Detail", accessor: "detail" },
 ];
 
-// const columns = [
-// 	{
-// 		title: () => <div className={styles.tableTitle}>ID</div>,
-// 		dataIndex: 'id',
-// 		width: '100px',
-// 		render: text => <div className={styles.tableInfo}>{text}</div>,
-// 	},
-// 	{
-// 		title: () => <div className={styles.tableTitle}>Room</div>,
-// 		dataIndex: 'room',
-// 		width: '200px',
-// 		render: text => <div className={styles.tableInfo}>{text}</div>,
-// 	},
-// 	{
-// 		title: () => <div className={styles.tableTitle}>Check-in</div>,
-// 		dataIndex: 'checkin',
-// 		width: '150px',
-// 		render: text => <div className={styles.tableInfo}>{text}</div>,
-// 	},
-// 	{
-// 		title: () => <div className={styles.tableTitle}>Check-out</div>,
-// 		dataIndex: 'checkout',
-// 		width: '150px',
-// 		render: text => <div className={styles.tableInfo}>{text}</div>,
-// 	},
-// 	{
-// 		title: () => <div className={styles.tableTitle}>Price</div>,
-// 		dataIndex: 'price',
-// 		width: '150px',
-// 		render: text => <div className={styles.tableInfo}>{text}</div>,
-// 	},
-// 	{
-// 		title: () => <div className={styles.tableTitle}>Detail >></div>,
-// 		dataIndex: '',
-// 		render: () => (
-// 			<button onClick={() => {}}>
-// 				<div className={styles.tableInfo}>View detail >></div>
-// 			</button>
-// 		),
-// 	},
-// ];
-// const data = [];
-// for (let i = 0; i < 100; i++) {
-// 	data.push({
-// 		key: i,
-// 		id: i,
-// 		room: `Room ${i}`,
-// 		checkin: `Date ${i}`,
-// 		checkout: `Date ${i + 1}`,
-// 		price: `10000000`,
-// 	});
-// }
-
 const ProfileCustomer = (props) => {
   const [pageIndex, setPageIndex] = useState(1);
   const [bookings, setBookings] = useState([]);
   const [totalPage, setTotalPage] = useState(Math.ceil(bookings?.length / 9));
   const [action, setAction] = useState(true);
   const [state, setState] = useState({});
+
+  const [openDetailBooking, setOpenDetail] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   const [edit, setEdit] = useState({
     name: "",
@@ -200,7 +153,10 @@ const ProfileCustomer = (props) => {
             <>
               <div className={styles.buttonContainer}>
                 <button
-                  onClick={props.onClose}
+                  onClick={() => {
+                    props.onClose();
+                    setBookings([]);
+                  }}
                   className={styles.button}
                   style={{ backgroundColor: "#FF9A9A" }}
                 >
@@ -224,6 +180,7 @@ const ProfileCustomer = (props) => {
                   onClick={() => {
                     handleDelete();
                     props.onClose();
+                    setBookings([]);
                   }}
                   className={styles.button}
                   style={{ backgroundColor: "#FF9A9A" }}
@@ -239,7 +196,12 @@ const ProfileCustomer = (props) => {
                 >
                   Edit
                 </button>
-                <button onClick={props.onClose}>
+                <button
+                  onClick={() => {
+                    props.onClose();
+                    setBookings([]);
+                  }}
+                >
                   <img src={IC_closebutton} alt="CloseButton"></img>
                 </button>
               </div>
@@ -386,22 +348,21 @@ const ProfileCustomer = (props) => {
             </div>
           </>
         )}
-        {/* <Table
-						title={() => <div className={styles.titleHistory}>Booking History</div>}
-						columns={columns}
-						dataSource={data}
-						pagination={{
-							pageSize: 3,
-							style: { marginRight: '100px' },
-						}}
-						// scroll={{
-						// 	y: 200,
-						// }}
-					/> */}
+
         <div className={styles.con2}>
           <table id="my-table" class={styles.tableData}>
-            <thead>
-              <tr className={styles.titleHistory}>BOOKING HISTORY</tr>
+            <thead className="w-full">
+              <tr>
+                <td className={styles.titleHistory}>BOOKING HISTORY</td>
+                <td colSpan={3} />
+                <td className=" justify-end flex">
+                  <button className={styles.btn}>
+                    <img src={IC_add} />
+                    <p className={styles.text}>Add Booking</p>
+                  </button>
+                </td>
+              </tr>
+
               <tr className={styles.tbHeading}>
                 {column.map((headding) => {
                   return (
@@ -426,9 +387,17 @@ const ProfileCustomer = (props) => {
                         return <td className={styles.col}>{tData}</td>;
                       })}
                       <td className={styles.col}>
-                        <button onClick={() => {}}>
+                        <button
+                          onClick={() => {
+                            setOpenDetail(true);
+                            setSelectedBooking(
+                              props.data.Booking.find((x) => x.ID === val.id)
+                            );
+                            console.log("seleted", selectedBooking);
+                          }}
+                        >
                           <div className={styles.tableInfo}>
-                            View Detail{" "}
+                            View detail
                             <img
                               style={{
                                 justifySelf: "center",
@@ -473,6 +442,20 @@ const ProfileCustomer = (props) => {
             </button>
           </div>
         </div>
+        <Modal
+          centered={true}
+          width="75%"
+          closeIcon={null}
+          open={openDetailBooking}
+          footer={null}
+          onCancel={() => setOpenDetail(false)}
+        >
+          <BookingInfo
+            onClose={() => setOpenDetail(false)}
+            customer={props.data}
+            booking={selectedBooking}
+          />
+        </Modal>
       </div>
     </>
   );

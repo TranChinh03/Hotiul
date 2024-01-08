@@ -23,5 +23,12 @@ function areDatesEqualIgnoringTime(date1, date2) {
 
   return strippedDate1.getTime() === strippedDate2.getTime();
 }
+function formatDateToDDMMYYYY(date) {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Lưu ý rằng tháng bắt đầu từ 0
+  const year = date.getFullYear();
 
-module.exports = { createID, formatCurrency, removeCommas, convertStringToDate, areDatesEqualIgnoringTime };
+  return `${day}/${month}/${year}`;
+}
+
+module.exports = { createID, formatCurrency, removeCommas, convertStringToDate, areDatesEqualIgnoringTime, formatDateToDDMMYYYY };

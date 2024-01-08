@@ -30,9 +30,9 @@ function RoomItem(props) {
     const handleClick = () => {
         setIsRoomDetailDisplay(true);
         const curentDate = new Date();
-        const bookingOfSelectedRoom = listBooking.filter(item => convertStringToDate(item.CheckIn) <= curentDate && convertStringToDate(item.CheckOut) >= curentDate && item.RoomID === roomId);
-        if (bookingOfSelectedRoom.length > 0) {
-            setBookingOfRoom(bookingOfSelectedRoom[0]);
+        const bookingOfSelectedRoom = listBooking.find(item => convertStringToDate(item.CheckIn) <= curentDate && convertStringToDate(item.CheckOut) >= curentDate && item.RoomID === roomId);
+        if (bookingOfSelectedRoom) {
+            setBookingOfRoom(bookingOfSelectedRoom);
             console.log(bookingOfSelectedRoom);
         }
     };

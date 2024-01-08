@@ -3,6 +3,8 @@ import Modal from '@mui/material/Modal';
 import { Box } from '@mui/material';
 import { Button } from 'antd';
 import { updateData } from '../../controller/addData.ts';
+import { getData } from '../../controller/getData.ts';
+import { convertStringToDate, formatDateToDDMMYYYY } from '../../utils/appUtils.js';
 const style = {
     position: 'absolute',
     top: '30%',
@@ -57,7 +59,7 @@ function RoomDetail(props) {
         handleCloseDetailModal();
         props.updateStatus("Available");
     }
-    const handleReturnSoon = () => {
+    const handleReturnSoon = async () => {
         // update booking
         // find booking for that room
         //      CheckIn < currentDate
@@ -65,8 +67,14 @@ function RoomDetail(props) {
         //      RoomId = props.roomId
         // update booking
         //      CheckOut = currentDate
-        //      (?) What about Price
-
+        const listBooking = await getData("/BOOKING");
+        const currentDate = new Date();
+        const bookingOfRoom = listBooking.find((item) => (item.RoomID == props.roomId && convertStringToDate(item.CheckIn) < currentDate && convertStringToDate(item.CheckOut) > currentDate));
+        console.log("booking of room", bookingOfRoom);
+        updateData({ data: { CheckOut: formatDateToDDMMYYYY(currentDate) }, table: "BOOKING", id: bookingOfRoom.ID });
+        updateData({ data: { Status: "Cleaning" }, table: "ROOM", id: props.roomId });
+        handleCloseDetailModal();
+        props.updateStatus("Cleaning");
     }
     const handleFixing = () => {
         const roomData = {

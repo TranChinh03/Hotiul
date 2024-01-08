@@ -85,7 +85,6 @@ export const Room = () => {
   const fetchData = async () => {
     await Promise.all([
       getData('/ROOM').then(data => {
-        console.log(data)
         setListRoom(data.map(item => {
           return {
             roomId: item.ID,

@@ -14,5 +14,14 @@ function convertStringToDate(dateString) {
   const convertedDate = new Date(year, month - 1, day);
   return convertedDate;
 }
+function areDatesEqualIgnoringTime(date1, date2) {
+  const strippedDate1 = new Date(date1);
+  const strippedDate2 = new Date(date2);
 
-module.exports = { createID, formatCurrency, removeCommas, convertStringToDate };
+  strippedDate1.setHours(0, 0, 0, 0);
+  strippedDate2.setHours(0, 0, 0, 0);
+
+  return strippedDate1.getTime() === strippedDate2.getTime();
+}
+
+module.exports = { createID, formatCurrency, removeCommas, convertStringToDate, areDatesEqualIgnoringTime };

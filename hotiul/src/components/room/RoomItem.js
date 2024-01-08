@@ -62,7 +62,6 @@ function RoomItem(props) {
                 return null;
         }
     };
-    console.log("Room status in RoomItem", roomStatus);
     return (
         <div>
             <RoomDetail

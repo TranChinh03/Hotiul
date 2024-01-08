@@ -4,7 +4,8 @@ import { Input, Select } from 'antd';
 import { FaSearch } from "react-icons/fa";
 import '../../../src/components/room/Room.scss';
 import { getData } from "../../controller/getData.ts";
-
+import { updateData } from '../../controller/addData.ts';
+import { areDatesEqualIgnoringTime, convertStringToDate } from "../../utils/appUtils.js";
 // const listRoom = [
 //   {
 //     roomId: '101',
@@ -60,15 +61,17 @@ export const Room = () => {
   const [listRoom, setListRoom] = useState([])
   const [listRoomFiltered, setListRoomFiltered] = useState([]);
   const [listRoomType, setListRoomType] = useState([]);
+
   // load list room with true status
-  // Confirm Checkin 
+  // Available -> Confirm Checkin 
   //    find booking where roomId = currentRoomId
   //    where currentDate = CheckIn
   //          status != need clean && != fixing
-  // Confirm Checkout
+  // In Use -> Confirm Checkout
   //    find booking where roomId = currentRoomId
   //    where currentDate = CheckOut
-  //          
+
+
   // Need Clean
   //    find booking where roomId = currentRoomId
   //    is need clean
@@ -111,10 +114,43 @@ export const Room = () => {
     ]))
     setIsLoading(false)
   }
-
+  const getRoomById = (listRoom, roomId) => {
+    const foundRoom = listRoom.find(room => room.ID === roomId);
+    if (foundRoom) {
+      return foundRoom;
+    } else {
+      console.warn(`Room with ID ${roomId} not found.`);
+      return null;
+    }
+  };
+  const [loadingCheck, setLoadingCheck] = useState(true);
+  const SetConfirmRoomStatus = async () => {
+    const listBooking = await getData('/BOOKING');
+    const listRoom = await getData('/ROOM');
+    const currentDate = new Date();
+    listBooking.forEach(async (item) => {
+      if (areDatesEqualIgnoringTime(convertStringToDate(item.CheckIn), currentDate)) {
+        const checkRoom = getRoomById(listRoom, item.RoomID);
+        if (checkRoom.Status == 'Available') {
+          console.log('checkRoom', checkRoom);
+          await updateData({ data: { Status: "Confirm Checkin" }, table: "ROOM", id: checkRoom.ID });
+        }
+      }
+      else if (areDatesEqualIgnoringTime(convertStringToDate(item.CheckOut), currentDate)) {
+        const checkRoom = getRoomById(listRoom, item.RoomID);
+        if (checkRoom.Status == 'In Use') {
+          console.log('checkRoom', checkRoom);
+          await updateData({ data: { Status: "Confirm Checkout" }, table: "ROOM", id: checkRoom.ID });
+        }
+      }
+    })
+    fetchData();
+  }
   useEffect(() => {
-    fetchData()
-  }, [])
+    SetConfirmRoomStatus();
+  }, [loadingCheck])
+
+
   useEffect(() => { }, [listRoomFiltered])
   const [typeFilter, setTypeFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -180,8 +216,8 @@ export const Room = () => {
   const [rerenderFlag, setRerenderFlag] = useState(false);
   return (
     <div className="flex justify-center label-input-field">
-      <div className="w-max mx-8">
-        <div className="flex flex-row">
+      <div className="w-full mx-8">
+        <div className="flex flex-row justify-between">
           <div className="search flex-1">
             <div className="label-input-field font-medium">Search</div>
             <Input

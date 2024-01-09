@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../Booking/booking.module.scss';
+import styles from '../Services/service.module.scss';
 import Search from '../../components/search/search';
 import ButtonAdd from '../../components/buttonAdd/buttonAdd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input, Spin, message } from 'antd';
 import { IMG_logo } from '../../assets/imgs';
+import { addData, updateData } from '../../controller/addData.ts';
+import { deleteData } from '../../controller/deleteData.ts';
+import { createID } from '../../utils/appUtils.js';
+import Modal from 'antd/es/modal/Modal';
+import AddService from '../../components/service/AddService.js';
 
-import {
-	IC_backArrow,
-	IC_delete,
-	IC_edit,
-	IC_navDetail,
-	IC_nextArrow,
-	IC_sort,
-} from '../../assets/icons';
+import { IC_backArrow, IC_delete, IC_edit, IC_nextArrow, IC_sort } from '../../assets/icons';
 import Combobox from '../../components/combobox/combobox';
 import { getData } from '../../controller/getData.ts';
 
@@ -26,12 +24,16 @@ export const Services = () => {
 		{ label: 'Detail', accessor: 'detail' },
 	];
 
+	const [selectedData, setSelectedData] = useState(null);
+
 	const [pageIndex, setPageIndex] = useState(1);
 	const [row, setRow] = useState();
 	const [totalPage, setTotalPage] = useState();
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [data, setData] = useState([]);
+
+	const [isOpen, setIsOpen] = useState(false);
 
 	const fetchData = async () => {
 		await Promise.all([
@@ -60,6 +62,24 @@ export const Services = () => {
 		setRow(data.length < 9 ? data.length : 9);
 		setTotalPage(Math.ceil(data.length / row));
 	}, [data, row]);
+
+	function handleClose() {
+		setIsOpen(false);
+		setSelectedData(null);
+	}
+
+	async function handleDelete(value) {
+		try {
+			await deleteData({ id: value.id, table: 'SERVICE' });
+			// Update the state after successful deletion
+			const newData = data.filter(item => item.id !== value.id);
+			setData(newData);
+			message.success('Record deleted successfully.');
+		} catch (err) {
+			console.log('Error deleting data', err);
+			message.error('Error deleting record.');
+		}
+	}
 
 	return (
 		<Spin
@@ -90,7 +110,13 @@ export const Services = () => {
 			<div className={styles.maincontainer}>
 				<div className={styles.con1}>
 					<Search />
-					<ButtonAdd text={'Add Service'} />
+					<ButtonAdd
+						onClick={() => {
+							setSelectedData({ service: '', price: '', available: '' });
+							setIsOpen(true);
+						}}
+						text={'Add Service'}
+					/>
 				</div>
 				<div className={styles.con2}>
 					<table
@@ -113,7 +139,7 @@ export const Services = () => {
 								})}
 							</tr>
 						</thead>
-						<tbody className="h-96">
+						<tbody className="h-52">
 							{data.slice((pageIndex - 1) * row, pageIndex * row).map((val, key) => {
 								return (
 									<tr
@@ -123,14 +149,24 @@ export const Services = () => {
 											const tData = val[accessor] ? val[accessor] : '——';
 											return <td className={styles.col}>{tData}</td>;
 										})}
-										<td className={styles.colDetail}>
+										<td className={styles.col}>
 											<img
+												onClick={() => {
+													setIsOpen(true);
+													setSelectedData(val);
+													console.log('gi day', val);
+												}}
 												className="pr-5"
 												src={IC_edit}
+												alt="update"
 											/>
 											<img
+												onClick={() => {
+													handleDelete(val);
+												}}
 												className="pl-2"
 												src={IC_delete}
+												alt="delete"
 											/>
 										</td>
 									</tr>
@@ -149,7 +185,10 @@ export const Services = () => {
 								if (pageIndex > 1) setPageIndex(pageIndex - 1);
 							}}
 							className={styles.btnnav}>
-							<img src={IC_backArrow} />
+							<img
+								src={IC_backArrow}
+								alt="a"
+							/>
 						</button>
 						<p className="text-mainColor px-3">
 							Page <strong>{pageIndex}</strong>
@@ -159,11 +198,25 @@ export const Services = () => {
 								if (pageIndex < totalPage) setPageIndex(pageIndex + 1);
 							}}
 							className={styles.btnnav}>
-							<img src={IC_nextArrow} />
+							<img
+								src={IC_nextArrow}
+								alt="a"
+							/>
 						</button>
 					</div>
 				</div>
 			</div>
+			<Modal
+				open={isOpen}
+				width={'90%'}
+				closeIcon={false}
+				footer={false}
+				style={{ backgroundColor: 'transparent' }}>
+				<AddService
+					detailValue={selectedData}
+					fetchData={fetchData}
+					closeEvt={handleClose}></AddService>
+			</Modal>
 		</Spin>
 	);
 };

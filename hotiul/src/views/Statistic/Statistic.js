@@ -1,3 +1,4 @@
+
 import React, {useState, useEffect} from "react";
 import styles from "./statistic.module.scss"
 import { PieChart } from '@mui/x-charts/PieChart';
@@ -11,6 +12,24 @@ import { getData } from "../../controller/getData.ts";
 
 
 export const Statistic = () => {
+	const xLabels = [
+		'JAN',
+		'FEB',
+		'MAR',
+		'APR',
+		'MAY',
+		'JUN',
+		'JUL',
+		'AUG',
+		'SEP',
+		'OCT',
+		'NOV',
+		'DEC',
+	];
+	const [revenueData, setRevenueData] = useState([
+		600, 800, 700, 350, 140, 770, 346, 746, 550, 980, 990, 1220,
+	]);
+
 
   const [isLoading, setIsLoading] = useState(true);
   const [todayCheckIn, setTodayCheckIn] = useState([])
@@ -311,34 +330,38 @@ export const Statistic = () => {
                 <div style={{width: "100%", display: "flex", justifyContent:"space-around"}}>
                   <p className={styles.title}>Revenue dynamics</p>
                   <Select
+
 										type="text"
-                    bordered={false}
+										bordered={false}
 										name="revenueYear"
 										value={revenueYear}
+
 										style={{ width: "5vw", height: "50px" }}
 										options={[{ value: 2023 }, { value: 2024 }]}
+
 										onChange={e => setRevenueYear(e)}
 									/>
-                </div>
-                <BarChart
-                  width={600}
-                  height={300}
-                  series={[
-                    { data: revenueData, label: 'Revenue', id: 'revenue', color: '#00B4D8' },
-                  ]}
-                  xAxis={[{ data: xLabels, scaleType: 'band' }]}
-                />
-              </div>
-            </td>
-            <td colspan="2">
-              <div className={styles.overallSales}>
-              <div style={{width: "100%", display: "flex", justifyContent:"space-around"}}>
-                  <p className={styles.title}>Overall sales</p>
-                  <Select
+								</div>
+								<BarChart
+									width={600}
+									height={300}
+									series={[
+										{ data: revenueData, label: 'Revenue', id: 'revenue', color: '#00B4D8' },
+									]}
+									xAxis={[{ data: xLabels, scaleType: 'band' }]}
+								/>
+							</div>
+						</td>
+						<td colspan="2">
+							<div className={styles.overallSales}>
+								<div style={{ width: '100%', display: 'flex', justifyContent: 'space-around' }}>
+									<p className={styles.title}>Overall sales</p>
+									<Select
 										type="text"
-                    bordered={false}
+										bordered={false}
 										name="overallYear"
 										value={overallYear}
+
 										style={{ width: "5vw", height: "50px"}}
 										options={[{ value: 2023 }, { value: 2024 }]}
 										onChange={e => setOverallYear(e)}
@@ -361,4 +384,5 @@ export const Statistic = () => {
     </div>
     </Spin>
   );
+
 };

@@ -4,6 +4,8 @@ import Search from '../../components/search/search';
 import ButtonAdd from '../../components/buttonAdd/buttonAdd';
 import { IC_backArrow, IC_navDetail, IC_nextArrow, IC_sort } from '../../assets/icons';
 import { useTranslation } from 'react-i18next';
+import { getData } from '../../controller/getData.ts';
+import { convertStringToDate } from '../../utils/appUtils';
 
 export const Booking = () => {
 	const { t } = useTranslation();
@@ -111,7 +113,16 @@ export const Booking = () => {
 			checkout: '25/11/2023',
 		},
 	];
-
+	useEffect(() => {
+		fetchInUseBooking();
+	}, [])
+	const fetchInUseBooking = async () => {
+		const listBooking = await getData('/BOOKING');
+		const currentDate = new Date();
+		const checkInUse = listBooking.filter((item) => convertStringToDate(item.CheckIn) < currentDate && convertStringToDate(item.CheckOut) > currentDate);
+		const roomInUse = checkInUse.map((item) => (item.RoomID));
+		console.log(roomInUse);
+	}
 	const [pageIndex, setPageIndex] = useState(1);
 	const [totalPage, setTotalPage] = useState(Math.ceil(data.length / 9));
 	return (

@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 
 export const Statistic = () => {
+  const { t } = useTranslation()
 
   const [isLoading, setIsLoading] = useState(true);
   const [todayCheckIn, setTodayCheckIn] = useState([])
@@ -56,37 +57,70 @@ export const Statistic = () => {
         }),
 
       getData('/ROOM').then(data => {
-        const roomStatusMap = data.map(x => x.Status)
-        setRoomData([
-          { label: 'Available', value: roomStatusMap.filter(x => x === "Available").length, color: "#49E17C" },
-          { label: 'Confirm Checkin ', value: roomStatusMap.filter(x => x === "Confirm Checkin").length, color: "#90F56C" },
-          { label: 'In Use', value:  roomStatusMap.filter(x => x === "In Use").length, color: "#FF9C9C" },
-          { label: 'Confirm Checkout', value: roomStatusMap.filter(x => x === "Confirm Checkout").length, color: "#FF973F" },
-          { label: 'Cleaning', value: roomStatusMap.filter(x => x === "Cleaning"), color: "#F8DD4E" },
-          { label: 'Fixing', value: roomStatusMap.filter(x => x === "Fixing").length, color: "#88DDFF" },
-        ])
-      }),
+          const roomStatusMap = data.map(x => x.Status);
+          setRoomData([
+            {
+              label: t('statistic.available'),
+              value: roomStatusMap.filter(x => x === 'Available').length,
+              color: '#49E17C',
+            },
+            {
+              label: t('statistic.confirmCheckin'),
+              value: roomStatusMap.filter(x => x === 'Confirm Checkin').length,
+              color: '#90F56C',
+            },
+            {
+              label: t('statistic.inUse'),
+              value: roomStatusMap.filter(x => x === 'In Use').length,
+              color: '#FF9C9C',
+            },
+            {
+              label: t('statistic.confirmCheckout'),
+              value: roomStatusMap.filter(x => x === 'Confirm Checkout').length,
+              color: '#FF973F',
+            },
+            {
+              label: t('statistic.Cleaning'),
+              value: roomStatusMap.filter(x => x === 'Cleaning'),
+              color: '#F8DD4E',
+            },
+            {
+              label: t('statistic.fixing'),
+              value: roomStatusMap.filter(x => x === 'Fixing').length,
+              color: '#88DDFF',
+            },
+          ]);
+        }),
       getData('/FEE').then(data => {
-        setFEE(data)
-        const findFee = data.find(x=>x.Year === parseInt(localStorage.getItem("currentYear")) && x.Month === parseInt(localStorage.getItem("currentMonth"))).Details
-        setFeeThisMonth(findFee.map(x=>x.Price).reduce((accumulator, currentValue) => accumulator + currentValue, 0))
-        const newFeeData = []
-        for (let i = 1; i <= 12; i++) {
-          const findFee = data.find(x=>x.Year === overallYear && x.Month === i).Details
-          const tempFee = findFee.map(x=>x.Price).reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-          newFeeData.push(tempFee)
-        }
-        setOverallFee(newFeeData)
-      })
-    ])
-    setIsLoading(false)
-  }
+          setFEE(data);
+          const findFee = data.find(
+            x =>
+              x.Year === parseInt(localStorage.getItem('currentYear')) &&
+              x.Month === parseInt(localStorage.getItem('currentMonth')),
+          ).Details;
+          setFeeThisMonth(
+            findFee
+              .map(x => x.Price)
+              .reduce((accumulator, currentValue) => accumulator + currentValue, 0),
+          );
+          const newFeeData = [];
+          for (let i = 1; i <= 12; i++) {
+            const findFee = data.find(x => x.Year === overallYear && x.Month === i).Details;
+            const tempFee = findFee
+              .map(x => x.Price)
+              .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            newFeeData.push(tempFee);
+          }
+          setOverallFee(newFeeData);
+        }),
+      ])
+      setIsLoading(false);
+    };
 
   useEffect(() => {
       fetchData()
   }, [])
 
-  const xLabels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
   
   const [overallRevenue, setOverallRevenue] = useState([0])
   const [overallFee, setOverallFee] = useState([0])
@@ -129,70 +163,6 @@ export const Statistic = () => {
     }
     setOverallFee(newFeeData)
   }, [overallYear])
-
-
-
-
-			getData('/ROOM').then(data => {
-				const roomStatusMap = data.map(x => x.Status);
-				setRoomData([
-					{
-						label: t('statistic.available'),
-						value: roomStatusMap.filter(x => x === 'Available').length,
-						color: '#49E17C',
-					},
-					{
-						label: t('statistic.confirmCheckin'),
-						value: roomStatusMap.filter(x => x === 'Confirm Checkin').length,
-						color: '#90F56C',
-					},
-					{
-						label: t('statistic.inUse'),
-						value: roomStatusMap.filter(x => x === 'In Use').length,
-						color: '#FF9C9C',
-					},
-					{
-						label: t('statistic.confirmCheckout'),
-						value: roomStatusMap.filter(x => x === 'Confirm Checkout').length,
-						color: '#FF973F',
-					},
-					{
-						label: t('statistic.Cleaning'),
-						value: roomStatusMap.filter(x => x === 'Cleaning'),
-						color: '#F8DD4E',
-					},
-					{
-						label: t('statistic.fixing'),
-						value: roomStatusMap.filter(x => x === 'Fixing').length,
-						color: '#88DDFF',
-					},
-				]);
-			}),
-			getData('/FEE').then(data => {
-				setFEE(data);
-				const findFee = data.find(
-					x =>
-						x.Year === parseInt(localStorage.getItem('currentYear')) &&
-						x.Month === parseInt(localStorage.getItem('currentMonth')),
-				).Details;
-				setFeeThisMonth(
-					findFee
-						.map(x => x.Price)
-						.reduce((accumulator, currentValue) => accumulator + currentValue, 0),
-				);
-				const newFeeData = [];
-				for (let i = 1; i <= 12; i++) {
-					const findFee = data.find(x => x.Year === overallYear && x.Month === i).Details;
-					const tempFee = findFee
-						.map(x => x.Price)
-						.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-					newFeeData.push(tempFee);
-				}
-				setOverallFee(newFeeData);
-			}),
-		]);
-		setIsLoading(false);
-	};
 
 
 	const xLabels = [
@@ -521,16 +491,6 @@ export const Statistic = () => {
 										xAxis={[{ scaleType: 'point', data: xLabels }]}
 									/>
                 </div>
-                <LineChart
-                  width={700}
-                  height={300}
-                  series={[
-                    { data: overallRevenue, label: 'Revenue', color: "#00B4D8" },
-                    { data: overallFee, label: 'Fee', color: "#FF973F" },
-                  ]}
-                  xAxis={[{ scaleType: 'point', data: xLabels }]}
-                />
-              </div>
             </td>
           </tr>
         </tbody>
@@ -538,4 +498,4 @@ export const Statistic = () => {
     </div>
     </Spin>
   );
-};
+}

@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import { Button } from 'antd';
 import { updateData } from '../../controller/addData.ts';
 import { getData } from '../../controller/getData.ts';
-import { convertStringToDate, formatDateToDDMMYYYY } from '../../utils/appUtils.js';
+import { areDatesEqualIgnoringTime, convertStringToDate, formatDateToDDMMYYYY } from '../../utils/appUtils.js';
 const style = {
     position: 'absolute',
     top: '30%',
@@ -31,6 +31,10 @@ function RoomDetail(props) {
     }
 
     const handleConfirmCheckout = () => {
+        // PRINT INVOICE
+
+
+        //
         const roomData = {
             Status: "Cleaning",
         }
@@ -72,9 +76,9 @@ function RoomDetail(props) {
         const bookingOfRoom = listBooking.find((item) => (item.RoomID == props.roomId && convertStringToDate(item.CheckIn) < currentDate && convertStringToDate(item.CheckOut) > currentDate));
         console.log("booking of room", bookingOfRoom);
         updateData({ data: { CheckOut: formatDateToDDMMYYYY(currentDate) }, table: "BOOKING", id: bookingOfRoom.ID });
-        updateData({ data: { Status: "Cleaning" }, table: "ROOM", id: props.roomId });
+        updateData({ data: { Status: "Confirm Checkout" }, table: "ROOM", id: props.roomId });
         handleCloseDetailModal();
-        props.updateStatus("Cleaning");
+        props.updateStatus("Confirm Checkout");
     }
     const handleFixing = () => {
         const roomData = {
@@ -92,13 +96,40 @@ function RoomDetail(props) {
             fetchCustomerAndBookingForRoom();
         }
     }, []);
+    useEffect(() => { }, [bookingOfRoom, customerOfRoom]);
     const fetchCustomerAndBookingForRoom = async () => {
         const listBooking = await getData("/BOOKING");
+        const listCustomer = await getData("/CUSTOMER");
         const currentDate = new Date();
-        const bookingOfRoom = listBooking.find((item) => (item.RoomID == props.roomId && convertStringToDate(item.CheckIn) < currentDate && convertStringToDate(item.CheckOut) > currentDate));
-        if (bookingOfRoom) {
+        console.log("ID", props.roomId);
+        if (props.roomStatus === 'In Use') {
+            const bookingOfRoom = listBooking.find((item) => (item.RoomID == props.roomId && convertStringToDate(item.CheckIn) < currentDate && convertStringToDate(item.CheckOut) > currentDate));
             console.log('bookingOfRoom', bookingOfRoom);
+            const customerOfRoom = listCustomer.find((item) => (item.ID == bookingOfRoom?.CustomerID));
+            console.log('customerOfRoom', customerOfRoom);
+            setBookingOfRoom(bookingOfRoom);
+            setCustomerOfRoom(customerOfRoom);
         }
+        else if (props.roomStatus === 'Confirm Checkin') {
+            const bookingOfRoom = listBooking.find((item) => (item.RoomID == props.roomId && areDatesEqualIgnoringTime(convertStringToDate(item.CheckIn), currentDate)));
+            console.log('bookingOfRoom', bookingOfRoom);
+            const customerOfRoom = listCustomer.find((item) => (item.ID == bookingOfRoom?.CustomerID));
+            console.log('customerOfRoom', customerOfRoom);
+            setBookingOfRoom(bookingOfRoom);
+            setCustomerOfRoom(customerOfRoom);
+        }
+        else if (props.roomStatus === 'Confirm Checkout') {
+            const bookingOfRoom = listBooking.find((item) => (item.RoomID == props.roomId && areDatesEqualIgnoringTime(convertStringToDate(item.CheckOut), currentDate)));
+            console.log('bookingOfRoom', bookingOfRoom);
+            const customerOfRoom = listCustomer.find((item) => (item.ID == bookingOfRoom?.CustomerID));
+            console.log('customerOfRoom', customerOfRoom);
+            setBookingOfRoom(bookingOfRoom);
+            setCustomerOfRoom(customerOfRoom);
+        }
+
+    }
+    const handlePrintInvoice = () => {
+        // open Invoice and Print
     }
     return (
         <div>
@@ -123,16 +154,20 @@ function RoomDetail(props) {
                                     boxShadow: "0px 4px 25px 0px rgba(0, 0, 0, 0.15)"
                                 }}>
                                 <div className='mt-2'>
+                                    <div className='inline font-semibold'>Booking ID:</div>
+                                    <div className='inline ml-2'>{bookingOfRoom?.ID}</div>
+                                </div>
+                                <div className='mt-2'>
                                     <div className='inline font-semibold'>Customer ID:</div>
-                                    <div className='inline'>{ }</div>
+                                    <div className='inline ml-2'>{customerOfRoom?.ID}</div>
                                 </div>
                                 <div className='mt-2'>
                                     <div className='inline font-semibold'>Customer name:</div>
-                                    <div className='inline'>{ }</div>
+                                    <div className='inline ml-2'>{customerOfRoom?.Name}</div>
                                 </div>
                                 <div className='mt-2'>
                                     <div className='inline font-semibold'>Customer phone:</div>
-                                    <div className='inline'>{ }</div>
+                                    <div className='inline ml-2'>{customerOfRoom?.Phone}</div>
                                 </div>
                             </div>
                         }
@@ -164,19 +199,34 @@ function RoomDetail(props) {
                                 </div>
                             </button>
                         }
-                        {props.roomStatus === 'Confirm Checkout'
+                        {
+                            props.roomStatus === 'Confirm Checkout'
                             &&
-                            <button className="flex float-right"
-                                onClick={handleConfirmCheckout}>
-                                <div
+                            <>
+                                <button className="flex float-right"
+                                    onClick={handleConfirmCheckout}>
+                                    <div
 
-                                    style={{
-                                        backgroundColor: "#FA923B"
-                                    }}
-                                    className="cursor-pointer px-5 bg-mainColor flex rounded-2xl items-center h-12 mt-4 mr-8">
-                                    <div className="text-white font-bold text-base px-2 whitespace-nowrap">Check-out</div>
-                                </div>
-                            </button>}
+                                        style={{
+                                            backgroundColor: "#FA923B"
+                                        }}
+                                        className="cursor-pointer px-5 bg-mainColor flex rounded-2xl items-center h-12 mt-4 mr-8">
+                                        <div className="text-white font-bold text-base px-2 whitespace-nowrap">Check-out</div>
+                                    </div>
+                                </button>
+                                <button className="flex float-right"
+                                    onClick={handlePrintInvoice}>
+                                    <div
+
+                                        style={{
+                                            backgroundColor: "#0096C7"
+                                        }}
+                                        className="cursor-pointer px-5 bg-mainColor flex rounded-2xl items-center h-12 mt-4 mr-8">
+                                        <div className="text-white font-bold text-base px-2 whitespace-nowrap">Print Invoice</div>
+                                    </div>
+                                </button>
+                            </>
+                        }
                         {props.roomStatus === 'Confirm Checkin'
                             && <button className="flex float-right"
                                 onClick={handleConfirmCheckin}>

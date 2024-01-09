@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './fee.module.scss';
 import ButtonAdd from '../../components/buttonAdd/buttonAdd';
 import { addData, updateData } from '../../controller/addData.ts';
+import { deleteData } from '../../controller/deleteData.ts';
 import { createID } from '../../utils/appUtils.js';
 import Modal from 'antd/es/modal/Modal';
 import FeeCard from '../../components/feeInformation/feeCard.js';
@@ -42,7 +43,6 @@ function FeeInformation(props) {
 	};
 
 	//year
-	//month
 	const [selectedYear, setSelectedYear] = useState(Number);
 	const years = [2023, 2024];
 
@@ -62,7 +62,6 @@ function FeeInformation(props) {
 
 	useEffect(() => {
 		setDataValue(props.data);
-		console.log('UE2', props.data);
 		// Update tableData when dataValue changes
 		if (!props.data) {
 			setTableData([]);
@@ -166,14 +165,29 @@ function FeeInformation(props) {
 		UpdateTable();
 	}
 
-	function handleDelete() {
-		props.setOpen(false);
-		setEdit({
-			fee: '',
-			price: '',
-			date: '',
+	const handleDelete = () => {
+		try {
+			if (dataValue && dataValue.id) {
+				deleteData({ id: dataValue.id, table: 'FEE' });
+				props.fetchData();
+				props.closeEvt();
+			} else {
+				console.error('Invalid data or data ID');
+			}
+		} catch (err) {
+			console.log('Error delete data', err);
+		}
+	};
+
+	const handleDeleteFeeCard = deletedId => {
+		const updatedDetail = dataValue.detail.filter(item => item.ID !== deletedId);
+		setDataValue({
+			...dataValue,
+			detail: updatedDetail,
 		});
-	}
+		UpdateTable();
+	};
+
 	const [pageIndex, setPageIndex] = useState(1);
 	const [totalPage, setTotalPage] = useState(
 		dataValue ? Math.ceil(dataValue.detail?.length ?? 0 / 9) : 0,
@@ -188,6 +202,7 @@ function FeeInformation(props) {
 					<div className={styles.headerTitle}>Monthly Fee</div>
 					<div className={styles.buttonContainer}>
 						<button
+							onClick={() => handleDelete()}
 							className={styles.button}
 							style={{ backgroundColor: '#FF9A9A' }}>
 							Delete
@@ -208,7 +223,7 @@ function FeeInformation(props) {
 				</div>
 
 				<div
-					className={styles.info}
+					className={styles.infooo}
 					style={{ width: '100%' }}>
 					<input
 						className={styles.inputInfo}
@@ -415,7 +430,8 @@ function FeeInformation(props) {
 							detailValue={selectedData}
 							fetchData={props.fetchData}
 							closeEvt={handleClose}
-							handleSaveFeeCard={handleSaveFeeCard}></FeeCard>
+							handleSaveFeeCard={handleSaveFeeCard}
+							handleDeleteFeeCard={handleDeleteFeeCard}></FeeCard>
 					</Modal>
 				);
 			})}

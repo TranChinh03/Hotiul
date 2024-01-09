@@ -85,6 +85,18 @@
 	padding-right: 20px;
 }
 
+.infooo {
+	width: 60%;
+	height: 44%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	//justify-content: space-between;
+	justify-self: center;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
 .title {
 	color: var(--2, #023e8a);
 	font-size: 18px;

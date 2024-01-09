@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
-import RoomItem from "../../components/room/RoomItem";
+import React, { useState, useEffect } from 'react';
+import RoomItem from '../../components/room/RoomItem';
 import { Input, Select } from 'antd';
-import { FaSearch } from "react-icons/fa";
+import { FaSearch } from 'react-icons/fa';
 import '../../../src/components/room/Room.scss';
-import { getData } from "../../controller/getData.ts";
+import { getData } from '../../controller/getData.ts';
 import { updateData } from '../../controller/addData.ts';
-import { areDatesEqualIgnoringTime, convertStringToDate } from "../../utils/appUtils.js";
+import { areDatesEqualIgnoringTime, convertStringToDate } from '../../utils/appUtils.js';
+import { useTranslation } from 'react-i18next';
+
 // const listRoom = [
 //   {
 //     roomId: '101',
@@ -55,22 +57,21 @@ import { areDatesEqualIgnoringTime, convertStringToDate } from "../../utils/appU
 
 // ]
 export const Room = () => {
+  const { t } = useTranslation();
 
-
-  const [isLoading, setIsLoading] = useState(true)
-  const [listRoom, setListRoom] = useState([])
+  const [isLoading, setIsLoading] = useState(true);
+  const [listRoom, setListRoom] = useState([]);
   const [listRoomFiltered, setListRoomFiltered] = useState([]);
   const [listRoomType, setListRoomType] = useState([]);
 
   // load list room with true status
-  // Available -> Confirm Checkin 
+  // Available -> Confirm Checkin
   //    find booking where roomId = currentRoomId
   //    where currentDate = CheckIn
   //          status != need clean && != fixing
   // In Use -> Confirm Checkout
   //    find booking where roomId = currentRoomId
   //    where currentDate = CheckOut
-
 
   // Need Clean
   //    find booking where roomId = currentRoomId
@@ -85,34 +86,40 @@ export const Room = () => {
   const fetchData = async () => {
     await Promise.all([
       getData('/ROOM').then(data => {
-        setListRoom(data.map(item => {
-          return {
-            roomId: item.ID,
-            roomType: item.TypeName,
-            roomStatus: item.Status
-          }
-        }))
-        setListRoomFiltered(data.map(item => {
-          return {
-            roomId: item.ID,
-            roomType: item.TypeName,
-            roomStatus: item.Status
-          }
-        }));
-      })
-    ])
-    await Promise.all(([
+        setListRoom(
+          data.map(item => {
+            return {
+              roomId: item.ID,
+              roomType: item.TypeName,
+              roomStatus: item.Status,
+            };
+          }),
+        );
+        setListRoomFiltered(
+          data.map(item => {
+            return {
+              roomId: item.ID,
+              roomType: item.TypeName,
+              roomStatus: item.Status,
+            };
+          }),
+        );
+      }),
+    ]);
+    await Promise.all([
       getData('ROOM_TYPE').then(data => {
-        setListRoomType(data.map(item => {
-          return {
-            label: item.TypeName,
-            value: item.TypeName
-          }
-        }))
-      })
-    ]))
-    setIsLoading(false)
-  }
+        setListRoomType(
+          data.map(item => {
+            return {
+              label: item.TypeName,
+              value: item.TypeName,
+            };
+          }),
+        );
+      }),
+    ]);
+    setIsLoading(false);
+  };
   const getRoomById = (listRoom, roomId) => {
     const foundRoom = listRoom.find(room => room.ID === roomId);
     if (foundRoom) {
@@ -127,88 +134,126 @@ export const Room = () => {
     const listBooking = await getData('/BOOKING');
     const listRoom = await getData('/ROOM');
     const currentDate = new Date();
-    listBooking.forEach(async (item) => {
+    listBooking.forEach(async item => {
       if (areDatesEqualIgnoringTime(convertStringToDate(item.CheckIn), currentDate)) {
         const checkRoom = getRoomById(listRoom, item.RoomID);
         if (checkRoom.Status == 'Available') {
           console.log('checkRoom', checkRoom);
-          await updateData({ data: { Status: "Confirm Checkin" }, table: "ROOM", id: checkRoom.ID });
+          await updateData({
+            data: { Status: 'Confirm Checkin' },
+            table: 'ROOM',
+            id: checkRoom.ID,
+          });
         }
-      }
-      else if (areDatesEqualIgnoringTime(convertStringToDate(item.CheckOut), currentDate)) {
+      } else if (areDatesEqualIgnoringTime(convertStringToDate(item.CheckOut), currentDate)) {
         const checkRoom = getRoomById(listRoom, item.RoomID);
         if (checkRoom.Status == 'In Use') {
           console.log('checkRoom', checkRoom);
-          await updateData({ data: { Status: "Confirm Checkout" }, table: "ROOM", id: checkRoom.ID });
+          await updateData({
+            data: { Status: 'Confirm Checkout' },
+            table: 'ROOM',
+            id: checkRoom.ID,
+          });
         }
       }
-    })
+    });
     fetchData();
-  }
+  };
   useEffect(() => {
     SetConfirmRoomStatus();
-  }, [loadingCheck])
+  }, [loadingCheck]);
 
-
-  useEffect(() => { }, [listRoomFiltered])
+  useEffect(() => { }, [listRoomFiltered]);
   const [typeFilter, setTypeFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
-  const handleTypeChange = (value) => {
+  const handleTypeChange = value => {
     setTypeFilter(value);
-    console.log("Type", value);
+    console.log('Type', value);
     if (value != '') {
       if (statusFilter != '') {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase()) && item.roomStatus === statusFilter && item.roomType === value))
+        setListRoomFiltered(
+          listRoom.filter(
+            item =>
+              item.roomId.includes(searchKeyword) &&
+              item.roomStatus === statusFilter &&
+              item.roomType === value,
+          ),
+        );
+      } else {
+        setListRoomFiltered(
+          listRoom.filter(item => item.roomId.includes(searchKeyword) && item.roomType === value),
+        );
       }
-      else {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase()) && item.roomType === value))
-      }
-    }
-    else {
+    } else {
       if (statusFilter != '') {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase()) && item.roomStatus === statusFilter))
-      }
-      else {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase())))
-      }
-    }
-  }
-  const handleStatusChange = (value) => {
-    setStatusFilter(value);
-    if (value != '') {
-      if (typeFilter != '') {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase()) && item.roomStatus === value && item.roomType === typeFilter))
-      }
-      else {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase()) && item.roomStatus === value))
-      }
-    }
-    else {
-      if (typeFilter != '') {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase()) && item.roomType === typeFilter))
-      }
-      else {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase())))
+        setListRoomFiltered(
+          listRoom.filter(
+            item => item.roomId.includes(searchKeyword) && item.roomStatus === statusFilter,
+          ),
+        );
+      } else {
+        setListRoomFiltered(listRoom.filter(item => item.roomId.includes(searchKeyword)));
       }
     }
   };
-  const handleSearchKeywordChange = (event) => {
+  const handleStatusChange = value => {
+    setStatusFilter(value);
+    if (value != '') {
+      if (typeFilter != '') {
+        setListRoomFiltered(
+          listRoom.filter(
+            item =>
+              item.roomId.includes(searchKeyword) &&
+              item.roomStatus === value &&
+              item.roomType === typeFilter,
+          ),
+        );
+      } else {
+        setListRoomFiltered(
+          listRoom.filter(item => item.roomId.includes(searchKeyword) && item.roomStatus === value),
+        );
+      }
+    } else {
+      if (typeFilter != '') {
+        setListRoomFiltered(
+          listRoom.filter(
+            item => item.roomId.includes(searchKeyword) && item.roomType === typeFilter,
+          ),
+        );
+      } else {
+        setListRoomFiltered(listRoom.filter(item => item.roomId.includes(searchKeyword)));
+      }
+    }
+  };
+  const handleSearchKeywordChange = event => {
     setSearchKeyword(event.target.value);
     if (typeFilter == '' && statusFilter == '') {
-      setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(event.target.value.toLowerCase())));
+      setListRoomFiltered(listRoom.filter(item => item.roomId.includes(event.target.value)));
+    } else if (statusFilter == '') {
+      setListRoomFiltered(
+        listRoom.filter(
+          item => item.roomId.includes(event.target.value) && item.roomType === typeFilter,
+        ),
+      );
+    } else if (typeFilter == '') {
+      setListRoomFiltered(
+        listRoom.filter(
+          item => item.roomId.includes(event.target.value) && item.roomStatus === statusFilter,
+        ),
+      );
+    } else {
+      setListRoomFiltered(
+        listRoom.filter(
+          item =>
+            item.roomId.includes(event.target.value) &&
+            item.roomStatus === statusFilter &&
+            item.roomType === typeFilter,
+        ),
+      );
     }
-    else if (statusFilter == '') {
-      setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(event.target.value.toLowerCase()) && item.roomType === typeFilter));
-    }
-    else if (typeFilter == '') {
-      setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(event.target.value.toLowerCase()) && item.roomStatus === statusFilter))
-    }
-    else {
-      setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(event.target.value.toLowerCase()) && item.roomStatus === statusFilter && item.roomType === typeFilter))
-    }
-  }
-  const handleRoomClick = (room) => {
+  };
+  const handleRoomClick = room => {
     // Handle the room click event here
     console.log('Room clicked:', room);
   };
@@ -218,42 +263,48 @@ export const Room = () => {
       <div className="w-full mx-16">
         <div className="flex flex-row justify-between">
           <div className="search flex-1">
-            <div className="label-input-field font-medium">Search</div>
+            <div className="label-input-field font-medium">{t('room.search')}</div>
             <Input
               value={searchKeyword}
               onChange={handleSearchKeywordChange}
               className="w-64 drop-shadow-xl rounded-2xl border-gray-100"
               size="large"
               placeholder="Search"
-              prefix={<FaSearch className="mr-2" color="#BCBCBC" />} />
+              prefix={
+                <FaSearch
+                  className="mr-2"
+                  color="#BCBCBC"
+                />
+              }
+            />
           </div>
           <div className="float-right flex flex-row">
             <div className="flex flex-col">
-              <div className="label-input-field font-medium">Room Status</div>
+              <div className="label-input-field font-medium">{t('room.roomStatus')}</div>
               <Select
                 className="!rounded-2xl border-gray-50 drop-shadow-xl"
                 defaultValue=""
                 style={{ width: 150, height: 40 }}
                 onChange={handleStatusChange}
                 options={[
-                  { value: '', label: '- Select Status -' },
-                  { value: 'Available', label: 'Available' },
-                  { value: 'Confirm Checkin', label: 'Checkin' },
-                  { value: 'Confirm Checkout', label: 'Checkout' },
-                  { value: 'In Use', label: 'In Use' },
-                  { value: 'Fixing', label: 'Fixing' },
-                  { value: 'Cleaning', label: 'Need Clean' },
+                  { value: '', label: '-' + t('room.selectStatus') + '-' },
+                  { value: 'Available', label: t('room.available') },
+                  { value: 'Confirm Checkin', label: t('room.checkin') },
+                  { value: 'Confirm Checkout', label: t('room.checkout') },
+                  { value: 'In Use', label: t('room.inUse') },
+                  { value: 'Fixing', label: t('room.fixing') },
+                  { value: 'Cleaning', label: t('room.needClean') },
                 ]}
               />
             </div>
             <div className="flex flex-col ml-4">
-              <div className="label-input-field font-medium">Room Type</div>
+              <div className="label-input-field font-medium">{t('room.roomType')}</div>
               <Select
                 className="!rounded-2xl border-gray-50 drop-shadow-xl"
                 defaultValue=""
                 style={{ width: 150, height: 40 }}
                 onChange={handleTypeChange}
-                options={[{ label: '- Select Type -', value: '' }, ...listRoomType]}
+                options={[{ label: '-' + t('room.selectType') + '-', value: '' }, ...listRoomType]}
               />
             </div>
           </div>

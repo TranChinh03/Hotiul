@@ -13,53 +13,92 @@ import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-
-const onChange = (value) => {
-  console.log(value.format('DD-MM-YYYY'));
-};
+import { getData } from "../../controller/getData.ts";
 
 
 
 export const Home = () => {
   const xLabels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
-  const [revenueData, setRevenueData] = useState([600, 800, 700, 350, 140, 770, 346, 746, 550, 980, 990, 1220])
+  const [revenueYear, setRevenueYear] = useState(2024)
+  const [revenueData, setRevenueData] = useState([0])
+  const [guest, setGuest] = useState(0)
+  const [checkin, setCheckin] = useState(0)
+  const [checkout, setCheckout] = useState(0)
+  const [revenueToday, setRevenueToday] = useState(0)
+  const [BOOKING, setBOOKING] = useState([])
 
-  const [activities, setActivities] = useState([
-    {
-      RoomID: "R0101",
-      Type: "Confirm Checkin"
-    },
-    {
-      RoomID: "R0102",
-      Type: "Confirm Checkout"
-    },
-    {
-      RoomID: "R0102",
-      Type: "Confirm Checkout"
-    },
-    {
-      RoomID: "R0102",
-      Type: "Confirm Checkout"
-    },
-    {
-      RoomID: "R0101",
-      Type: "Confirm Checkin"
-    },
-    {
-      RoomID: "R0101",
-      Type: "Confirm Checkin"
-    },
-    {
-      RoomID: "R0101",
-      Type: "Confirm Checkin"
-    },
-  ])
+
+  const onChange = (value) => {
+    const date = value.format('DD/MM/YYYY')
+    const year = value.format('YYYY')
+    console.log(year);
+    if (year !== revenueYear) {
+      setRevenueYear(year)
+      const newRevenueData = [];
+        for (let i = 1; i <= 12; i++) {
+          const bookings = BOOKING.filter(x=> parseInt(x.CheckOut.split("/")[1]) === i && x.CheckOut.split("/")[2] === year).map(x=>x.Price)
+          const bookingfee = bookings.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+          newRevenueData.push(bookingfee)
+        }
+        setRevenueData(newRevenueData);
+    }
+    const numIn = BOOKING.filter(x=>x.CheckIn === date).length
+    setCheckin(numIn)
+    const numOut= BOOKING.filter(x=>x.CheckOut === date).length
+    setCheckout(numOut)
+    const personList = BOOKING.filter(x=>x.CheckIn === date).map(x=>x.RoomType.NumPerson)
+    setGuest(personList.reduce((accumulator, currentValue) => accumulator + currentValue, 0))
+    const revenueList = BOOKING.filter(x=>x.CheckOut === date).map(x=>x.RoomType.Price)
+    setRevenueToday(revenueList.reduce((accumulator, currentValue) => accumulator + currentValue, 0))
+
+    const act = BOOKING.filter(x => x.CheckIn === date || x.CheckOut === date).map(x=> {
+      return ({
+        RoomID: x.RoomID,
+        Type: x.CheckIn === date ? "Confirm Checkin" : "Confirm Checkout"
+      })
+    })
+    setActivities(act)
+  };
+
+  const fetchData = async () => {
+    await Promise.all([
+      getData('/BOOKING').then(data => {
+        setBOOKING(data)
+        const newRevenueData = [];
+        for (let i = 1; i <= 12; i++) {
+          const bookings = data.filter(x=> parseInt(x.CheckOut.split("/")[1]) === i && x.CheckOut.split("/")[2] === localStorage.getItem("currentYear")).map(x=>x.Price)
+          const bookingfee = bookings.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+          newRevenueData.push(bookingfee)
+        }
+        setRevenueData(newRevenueData);
+
+        const numIn = data.filter(x=>x.CheckIn === localStorage.getItem("currentDate")).length
+        setCheckin(numIn)
+        const numOut= data.filter(x=>x.CheckOut === localStorage.getItem("currentDate")).length
+        setCheckout(numOut)
+        const personList = data.filter(x=>x.CheckIn === localStorage.getItem("currentDate")).map(x=>x.RoomType.NumPerson)
+        setGuest(personList.reduce((accumulator, currentValue) => accumulator + currentValue, 0))
+        const revenueList = data.filter(x=>x.CheckOut === localStorage.getItem("currentDate")).map(x=>x.RoomType.Price)
+        setRevenueToday(revenueList.reduce((accumulator, currentValue) => accumulator + currentValue, 0))
+
+        const act = data.filter(x => x.CheckIn === localStorage.getItem("currentDate") || x.CheckOut === localStorage.getItem("currentDate")).map(x=> {
+          return ({
+            RoomID: x.RoomID,
+            Type: x.CheckIn === localStorage.getItem("currentDate") ? "Confirm Checkin" : "Confirm Checkout"
+          })
+        })
+        setActivities(act)
+      })
+    ])
+    setIsLoading(false)
+  }
+
+  const [activities, setActivities] = useState([])
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 2000)
-  })
+    setIsLoading(true)
+    fetchData()
+  }, [])
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -80,10 +119,10 @@ export const Home = () => {
         <div className={styles.todayStatistic}>
           <p className={styles.homeText}>Today's statistics</p>
           <div className={styles.statisticContainer}>
-            <StatisticBox icon={ IC_CircleCheck } title="Check-in" figure="10" unit="Bookings" backgroundColor="#0077B6"/>
-            <StatisticBox icon={ IC_CircleLogout } title="Check-out" figure="10" unit="Bookings" backgroundColor="#FF9C65"/>
-            <StatisticBox icon={ IC_CirclePerson } title="Guest" figure="55" unit="Guests" backgroundColor="#68D8D6"/>
-            <StatisticBox icon={ IC_CircleDollar } title="Revenue" figure="2000" unit="Dollars" backgroundColor="#F8DD4E"/>
+            <StatisticBox icon={ IC_CircleCheck } title="Check-in" figure={checkin} unit="Bookings" backgroundColor="#0077B6"/>
+            <StatisticBox icon={ IC_CircleLogout } title="Check-out" figure={checkout} unit="Bookings" backgroundColor="#FF9C65"/>
+            <StatisticBox icon={ IC_CirclePerson } title="Guest" figure={guest} unit="Guests" backgroundColor="#68D8D6"/>
+            <StatisticBox icon={ IC_CircleDollar } title="Revenue" figure={revenueToday} unit="Dollars" backgroundColor="#F8DD4E"/>
           </div>
         </div>
 

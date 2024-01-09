@@ -10,24 +10,6 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { getData } from '../../controller/getData.ts';
 
 export const Statistic = () => {
-	const xLabels = [
-		'JAN',
-		'FEB',
-		'MAR',
-		'APR',
-		'MAY',
-		'JUN',
-		'JUL',
-		'AUG',
-		'SEP',
-		'OCT',
-		'NOV',
-		'DEC',
-	];
-	// const [revenueData, setRevenueData] = useState([
-	// 	600, 800, 700, 350, 140, 770, 346, 746, 550, 980, 990, 1220,
-	// ]);
-
 	const [isLoading, setIsLoading] = useState(true);
 	const [todayCheckIn, setTodayCheckIn] = useState([]);
 	const [todayCheckOut, setTodayCheckOut] = useState([]);

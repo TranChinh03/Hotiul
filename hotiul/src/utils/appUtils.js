@@ -4,7 +4,12 @@ const createID = ({ prefix }) => {
   return `${prefix}${Math.floor(Math.random() * 100000)}`;
 };
 const formatCurrency = (value) => {
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if (value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  else {
+    return null;
+  }
 }
 const removeCommas = (inputString) => {
   return inputString.replace(/,/g, '');

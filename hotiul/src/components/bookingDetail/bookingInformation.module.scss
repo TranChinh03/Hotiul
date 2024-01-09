@@ -91,3 +91,17 @@
 .col {
   @apply text-center px-5 items-center text-mainColor text-sm font-normal py-3 justify-center;
 }
+
+.inputInfo {
+  width: 290px;
+  height: max-content;
+  padding: 8px;
+  padding-left: 10px;
+  border-radius: 10px;
+  //background: #caf0f859;
+  border: none;
+  font-size: 18px;
+  color: var(--2, #023e8a);
+  border: 1px solid #0077b6;
+  margin-left: 10px;
+}

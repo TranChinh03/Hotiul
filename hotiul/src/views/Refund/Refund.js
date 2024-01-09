@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../Booking/booking.module.scss';
+import styles from '../Refund/refund.module.scss';
 import Search from '../../components/search/search';
 import ButtonAdd from '../../components/buttonAdd/buttonAdd';
 import { IC_backArrow, IC_navDetail, IC_nextArrow, IC_sort } from '../../assets/icons';
 import Combobox from '../../components/combobox/combobox';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input, Spin, message } from 'antd';
-import { IMG_logo } from '../../assets/imgs';
 import { getData } from '../../controller/getData.ts';
 import { useTranslation } from 'react-i18next';
+import { IMG_logo } from '../../assets/imgs';
+
+import DetailRefund from './DetailRefund.js';
 
 export const Refund = () => {
 	const { t } = useTranslation();
@@ -43,99 +45,6 @@ export const Refund = () => {
 		{ label: t('refund.date'), accessor: 'date' },
 		{ label: t('refund.detail'), accessor: 'detail' },
 	];
-	// const data = [
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     money: 19,
-	//     status: "20/11/2023",
-	//     date: "25/11/2023",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     money: 12,
-	//     status: "20/11/2023",
-	//     date: "25/11/2023",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     money: 17,
-	//     status: "20/11/2023",
-	//     date: "25/11/2023",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     money: 17,
-	//     status: "20/11/2023",
-	//     date: "25/11/2023",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     money: 12,
-	//     status: "20/11/2023",
-	//     date: "25/11/2023",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     money: 19,
-	//     status: "20/11/2023",
-	//     date: "25/11/2023",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     money: 17,
-	//     status: "20/11/2023",
-	//     date: "25/11/2023",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     money: 12,
-	//     status: "20/11/2023",
-	//     date: "25/11/2023",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     money: 19,
-	//     status: "20/11/2023",
-	//     date: "25/11/2023",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     money: 17,
-	//     status: "20/11/2023",
-	//     date: "25/11/2023",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     money: 12,
-	//     status: "20/11/2023",
-	//     date: "25/11/2023",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     money: 19,
-	//     status: "20/11/2023",
-	//     date: "25/11/2023",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     money: 19,
-	//     status: "20/11/2023",
-	//     date: "25/11/2023",
-	//   },
-	// ];
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [data, setData] = useState([]);
@@ -146,14 +55,20 @@ export const Refund = () => {
 				setData(
 					data.map(item => {
 						return {
-							id: item.ID,
-							name: item.Name,
-							money: item.Money,
-							status: item.RefundStatus,
-							date: item.date,
+							ID: item.ID,
+							BookingID: item.BookingID,
+							CustomerName: item.CustomerName,
+							CustomerID: item.CustomerID,
+							RefundMoney: item.RefundMoney,
+							RefundStatus: item.RefundStatus,
+							RefundDate: item.RefundDate,
+							RefundReason: item.RefundReason,
+							BankName: item.BankName,
+							BankAccount: item.BankAccount,
 						};
 					}),
 				);
+				setListRefundFilter(data);
 			}),
 		]);
 		setIsLoading(false);
@@ -166,9 +81,33 @@ export const Refund = () => {
 	useEffect(() => {
 		setTotalPage(Math.ceil(data.length / 9));
 	}, [data]);
-
+	const [refundStatusFilter, setRefundStatusFilter] = useState();
+	const [refundSearchKeyword, setRefundSearchKeyword] = useState('');
+	const [listRefundFilter, setListRefundFilter] = useState(data);
+	const handleRefundSearchKeyword = event => {
+		setRefundSearchKeyword(event.target.value);
+		setListRefundFilter(
+			data.filter(
+				item =>
+					item.ID.toLowerCase().includes(event.target.value.toLowerCase()) ||
+					item.CustomerName.toLowerCase().includes(event.target.value.toLowerCase()) ||
+					item.RefundMoney.toString().includes(event.target.value) ||
+					item.RefundStatus.toLowerCase().includes(event.target.value.toLowerCase()) ||
+					item.RefundDate.includes(event.target.value),
+			),
+		);
+	};
 	const [pageIndex, setPageIndex] = useState(1);
 	const [totalPage, setTotalPage] = useState();
+	const [selectedRefund, setSelectedRefund] = useState();
+	const [isDetailModalDisplay, setIsDetailModalDisplay] = useState(false);
+	const handleViewDetail = refund => {
+		setIsDetailModalDisplay(true);
+		setSelectedRefund(refund);
+	};
+	const closeDetailModal = () => {
+		setIsDetailModalDisplay(false);
+	};
 	return (
 		<Spin
 			spinning={isLoading}
@@ -195,15 +134,19 @@ export const Refund = () => {
 					/>
 				</div>
 			}>
+			<DetailRefund
+				selectedRefund={selectedRefund}
+				isDisplay={isDetailModalDisplay}
+				onCloseModal={closeDetailModal}
+			/>
 			<div className={styles.maincontainer}>
 				<div className={styles.con1}>
-					<Search />
-					<Combobox
-						label={t('refund.refundStatus')}
-						items={items}
-						item={item}
+					<Search
+						value={refundSearchKeyword}
+						onChange={handleRefundSearchKeyword}
 					/>
-					<ButtonAdd text={t('button.addRefund')} />
+					{/* <Combobox value onChange={handleRefundStatusFilterChange} label={"Refund Status"} items={items} item={item} /> */}
+					{/* <ButtonAdd text={"Add Refund"} /> */}
 				</div>
 				<div className={styles.con2}>
 					<table
@@ -227,7 +170,7 @@ export const Refund = () => {
 							</tr>
 						</thead>
 						<tbody className="h-96">
-							{data.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
+							{listRefundFilter.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
 								return (
 									<tr
 										className={styles.rowTbl}
@@ -236,7 +179,9 @@ export const Refund = () => {
 											const tData = val[accessor] ? val[accessor] : '——';
 											return <td className={styles.col}>{tData}</td>;
 										})}
-										<td className={styles.col}>
+										<td
+											className={styles.col}
+											onClick={() => handleViewDetail(val)}>
 											<p>{t('refund.viewDetail')}</p>
 											<img
 												className="pl-2"

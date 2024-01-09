@@ -131,31 +131,90 @@
 		"totalPurchasesTo": "Total purchase to"
 	},
 
-	"fillData": "Please fill full required fields",
-	"noData": "No data",
-	"rowsPerPage": "Number of rows per page: ",
-	"alertTitle": "Are you sure?",
-	"alertContent": "Confirm you will delete this section from the system!",
-	"warningSave": "Do you want to save status of order?",
-	"notification": "Notification",
-	"header": {
-		"sale": "Sale",
-		"product": "Product",
-		"report": "Report",
-		"customer": "Customer",
-		"supplier": "Supplier",
-		"warehouse": "Warehouse",
-		"warehouseManagement": "Warehouse Management",
-		"warehouseList": "Warehouse List",
-		"importOrder": "Import Order",
-		"voucher": "Voucher",
-		"groupProduct": "Group Product",
-		"profile": "Profile",
-		"shelf": "Shelf"
-	},
-	"on": "on",
-	"profile": {
-		"changeProfile": "Change Profile",
-		"changePassword": "Change Password"
-	}
+
+  "cancel": "Cancel",
+  "accept": "Accept",
+  "report": {
+    "report": "Report",
+    "overviewReport": "Overview Report",
+    "overviewChart": "Overview Chart",
+    "outcome": "Outcome",
+    "revenue": "Revenue",
+    "profit": "Profit",
+    "numberOfOrder": "Number of Order",
+    "importOrder": "Import Order",
+    "exportOrder": "Export Order",
+    "overviewTitle": "Touch any point on screen to see detail",
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "year": "Year",
+    "reportByDate": "Report by date",
+    "reportByProduct": "Report by product",
+    "addNewOrder": "Add New Order",
+    "totalOrder": "Total Order",
+    "totalImportOrder": "Total Import Order",
+    "createdAt": "Created At",
+    "product": "Product",
+    "quantity": "Quantity",
+    "date": "Date",
+    "import": "Import",
+    "export": "Export",
+    "stock": "Stock"
+  },
+  "warningTxt": "Confirm you will delete this section from the system!",
+  "customer": {
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "address": "Address",
+    "totalBuyAmount": "Total Buy Amount",
+    "debt": "Debt",
+    "gender": "Gender",
+    "note": "Note",
+    "insertNameToSearch": "Insert name to search",
+    "importOrExportExcel": "Export Excel file",
+    "addCustomer": "Add New Customer",
+    "customerName": "Customer Name",
+    "male": "Male",
+    "female": "Female",
+    "advancedSearch": "Advanced search",
+    "debtBalanceFrom": "Debt balance from",
+    "debtBalanceTo": "Debt balance to",
+    "totalPurchasesFrom": "Total purchase from",
+    "totalPurchasesTo": "Total purchase to"
+  },
+
+
+  "fillData": "Please fill full required fields",
+  "noData": "No data",
+  "rowsPerPage": "Number of rows per page: ",
+  "alertTitle": "Are you sure?",
+  "alertContent": "Confirm you will delete this section from the system!",
+  "warningSave": "Do you want to save status of order?",
+  "notification": "Notification",
+  "header": {
+    "sale": "Sale",
+    "product": "Product",
+    "report": "Report",
+    "customer": "Customer",
+    "supplier": "Supplier",
+    "warehouse": "Warehouse",
+    "warehouseManagement": "Warehouse Management",
+    "warehouseList": "Warehouse List",
+    "importOrder": "Import Order",
+    "voucher": "Voucher",
+    "groupProduct": "Group Product",
+    "profile": "Profile",
+    "shelf": "Shelf"
+  },
+  "on": "on",
+  "profile": {
+    "changeProfile": "Change Profile",
+    "changePassword": "Change Password"
+  },
+  "dashboard": {
+    "todayStatistic": "Today's statistic"
+  },
+  "revenue": "Revenue"
+
 }

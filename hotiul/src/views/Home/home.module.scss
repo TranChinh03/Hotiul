@@ -41,3 +41,12 @@
     background-color: #00B4D8;
     margin: 10px;
 }
+
+.scrollContainer {
+    height: 45vh;
+    overflow: auto; /* Hide the scrollbar */
+}
+
+.scrollContainer::-webkit-scrollbar {
+    display: none;
+  }

@@ -20,15 +20,15 @@ import { getStorage } from 'firebase/storage';
 //   measurementId: "G-36RW5PYSM7",
 // };
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDHi_F_OOHUiYed_ImY71Fxi7VPttR45Dc",
-  authDomain: "finalniu.firebaseapp.com",
-  projectId: "finalniu",
-  storageBucket: "finalniu.appspot.com",
-  messagingSenderId: "70753497752",
-  appId: "1:70753497752:web:e5e3a9dcc58e1eea2b56ed",
-  measurementId: "G-W93FDRJ6D3",
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDHi_F_OOHUiYed_ImY71Fxi7VPttR45Dc",
+//   authDomain: "finalniu.firebaseapp.com",
+//   projectId: "finalniu",
+//   storageBucket: "finalniu.appspot.com",
+//   messagingSenderId: "70753497752",
+//   appId: "1:70753497752:web:e5e3a9dcc58e1eea2b56ed",
+//   measurementId: "G-W93FDRJ6D3",
+// };
 
 // const firebaseConfig = {
 //   apiKey: "AIzaSyB6lD_eepS8XHk9MsBO5UC75rW9RLuPOXM",
@@ -66,6 +66,50 @@ const firebaseConfig = {
 
 //Hotiul test
 
+// const firebaseConfig = {
+// 	apiKey: 'AIzaSyDlu3iJLjpCyUjJ52NG-peL5ZZGyEuvOnY',
+// 	authDomain: 'hotiul-test.firebaseapp.com',
+// 	projectId: 'hotiul-test',
+// 	storageBucket: 'hotiul-test.appspot.com',
+// 	messagingSenderId: '107175772235',
+// 	appId: '1:107175772235:web:0afe1ce3ee4ab547f9cdce',
+// 	measurementId: 'G-K0P69R1XJ3',
+// };
+
+//Hotiul 4
+// const firebaseConfig = {
+//   apiKey: "AIzaSyC_bB2WhutoHLD6TC2hLHkqmV27wz7RbZM",
+//   authDomain: "hotiul4.firebaseapp.com",
+//   projectId: "hotiul4",
+//   storageBucket: "hotiul4.appspot.com",
+//   messagingSenderId: "679546932269",
+//   appId: "1:679546932269:web:2864d19a05fc2520a5bca4",
+//   measurementId: "G-3HSSGKJNLZ"
+// };
+
+// Hotiul 5
+// const firebaseConfig = {
+//   apiKey: "AIzaSyBCJzDoazj1YyzJoIC6aiynZ6C_fk01v84",
+//   authDomain: "hotiul5-45c01.firebaseapp.com",
+//   projectId: "hotiul5-45c01",
+//   storageBucket: "hotiul5-45c01.appspot.com",
+//   messagingSenderId: "938501227061",
+//   appId: "1:938501227061:web:71c5b9405637beedbee77c",
+//   measurementId: "G-HP790ECXE3"
+// };
+
+// Hotiul 6
+const firebaseConfig = {
+  apiKey: "AIzaSyCxmoZimcGjKZSvO6qsjCvXkYLt6O3_mIA",
+  authDomain: "hotiul6.firebaseapp.com",
+  projectId: "hotiul6",
+  storageBucket: "hotiul6.appspot.com",
+  messagingSenderId: "230418311677",
+  appId: "1:230418311677:web:d74428566474828bbe9194",
+  measurementId: "G-FQS2S08H43"
+};
+
+// Initialize Firebase
 
 // const firebaseConfig = {
 // 	apiKey: 'AIzaSyAUndCxGQCWEulcqk60o7z8tft07wZVLtM',

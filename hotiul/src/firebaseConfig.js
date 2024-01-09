@@ -44,14 +44,14 @@ import { getStorage } from 'firebase/storage';
 
 //Hotiul test
 // const firebaseConfig = {
-//   apiKey: "AIzaSyBtZX9mHjIxZQiL6yqwYNk3-fnLaRH8CbU",
-//   authDomain: "hotiultest.firebaseapp.com",
-//   projectId: "hotiultest",
-//   storageBucket: "hotiultest.appspot.com",
-//   messagingSenderId: "996219006310",
-//   appId: "1:996219006310:web:4ba330d476a7e176f82ca7",
-//   measurementId: "G-LXLYSGNLDD"
-// };
+// 	apiKey: "AIzaSyBtZX9mHjIxZQiL6yqwYNk3-fnLaRH8CbU",
+// 	authDomain: "hotiultest.firebaseapp.com",
+// 	projectId: "hotiultest",
+// 	storageBucket: "hotiultest.appspot.com",
+// 	messagingSenderId: "996219006310",
+// 	appId: "1:996219006310:web:4ba330d476a7e176f82ca7",
+// 	measurementId: "G-LXLYSGNLDD"
+//   };
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDlu3iJLjpCyUjJ52NG-peL5ZZGyEuvOnY',

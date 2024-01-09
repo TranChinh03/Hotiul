@@ -113,12 +113,14 @@
 		"home": "Home",
 		"booking": "Booking",
 		"room": "Room",
+		"roomtype": "Room Type",
 		"refund": "Refund",
 		"customer": "Customer",
 		"monthlyFee": "Monthly Fee",
-		"service": "Services",
-		"Staff": "Staff",
-		"statistic": "Statistic"
+		"services": "Services",
+		"staff": "Staff",
+		"statistic": "Statistic",
+		"logout": "Log Out"
 	},
 
 	"button": {
@@ -284,8 +286,9 @@
 		"id": "ID",
 		"roomTypeName": "Room Type Name",
 		"numberRoom": "Number of room",
-		"numberPeopler": "Number of people",
+		"numberPeople": "Number of people",
 		"detail": "Detail",
+		"viewDetail": "View Full Detail",
 		"null": "Null",
 		"all": "All",
 		"page": "Page",
@@ -307,7 +310,8 @@
 		"detail": "Detail",
 		"page": "Page",
 		"result": "results of",
-		"show": "Showing"
+		"show": "Showing",
+		"viewDetail": "View Full Detail"
 	},
 
 	"home": {

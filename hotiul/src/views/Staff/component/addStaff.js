@@ -125,20 +125,20 @@ function AddStaff(props) {
 		<>
 			<div className={styles.container}>
 				<div className={styles.header}>
-					<div className={styles.headerTitle}>Add New staff</div>
+					<div className={styles.headerTitle}>{t('staff.addNewStaff')}</div>
 					<>
 						<div className={styles.buttonContainer}>
 							<button
 								onClick={() => handleCancel()}
 								className={styles.button}
 								style={{ backgroundColor: '#FF9A9A' }}>
-								Cancel
+								{t('button.cancel')}
 							</button>
 							<button
 								onClick={() => handleSave()}
 								className={styles.button}
 								style={{ backgroundColor: '#66EB8B' }}>
-								Add
+								{t('button.save')}
 							</button>
 							<button
 								onClick={() => {
@@ -197,7 +197,7 @@ function AddStaff(props) {
 							<div
 								className={styles.info}
 								style={{ marginTop: '20px', marginBottom: '10px' }}>
-								<div className={styles.title}>Name:</div>
+								<div className={styles.title}>{t('staff.name')}:</div>
 								<input
 									className={styles.inputInfo}
 									type="text"
@@ -211,7 +211,7 @@ function AddStaff(props) {
 							<div
 								className={styles.info}
 								style={{ marginBottom: '10px' }}>
-								<div className={styles.title}>Gender:</div>
+								<div className={styles.title}>{t('staff.gender')}:</div>
 								<Select
 									type="text"
 									name="gender"
@@ -236,7 +236,7 @@ function AddStaff(props) {
 							<div
 								className={styles.info}
 								style={{ marginBottom: '10px' }}>
-								<div className={styles.title}>Citizen ID:</div>
+								<div className={styles.title}>{t('staff.citizenId')}:</div>
 								<input
 									className={styles.inputInfo}
 									type="text"
@@ -248,7 +248,7 @@ function AddStaff(props) {
 							<div
 								className={styles.info}
 								style={{ marginBottom: '10px' }}>
-								<div className={styles.title}>Phone:</div>
+								<div className={styles.title}>{t('staff.phoneNumber')}:</div>
 								<input
 									className={styles.inputInfo}
 									type="text"
@@ -260,7 +260,7 @@ function AddStaff(props) {
 							<div
 								className={styles.info}
 								style={{ marginBottom: '10px' }}>
-								<div className={styles.title}>Address:</div>
+								<div className={styles.title}>{t('staff.address')}:</div>
 								<input
 									className={styles.inputInfo}
 									type="text"
@@ -272,7 +272,7 @@ function AddStaff(props) {
 							<div
 								className={styles.info}
 								style={{ marginBottom: '10px' }}>
-								<div className={styles.title}>Salary:</div>
+								<div className={styles.title}>{t('staff.salary')}:</div>
 								<input
 									className={styles.inputInfo}
 									type="text"
@@ -284,7 +284,7 @@ function AddStaff(props) {
 							<div
 								className={styles.info}
 								style={{ marginBottom: '10px' }}>
-								<div className={styles.title}>Username:</div>
+								<div className={styles.title}>{t('staff.username')}:</div>
 								<input
 									className={styles.inputInfo}
 									type="text"
@@ -296,7 +296,7 @@ function AddStaff(props) {
 							<div
 								className={styles.info}
 								style={{ marginBottom: '10px' }}>
-								<div className={styles.title}>Password:</div>
+								<div className={styles.title}>{t('staff.password')}:</div>
 								<input
 									className={styles.inputInfo}
 									type="text"

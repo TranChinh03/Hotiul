@@ -13,60 +13,54 @@ export const BookingInfo = props => {
 		{ label: 'Total Price', accessor: 'total' },
 	];
 
-	const servicesTest = [
-		{
-			service: 'Coca',
-			unit: '2$',
-			quantity: '5',
-			total: '10$',
-		},
-		{
-			service: 'Pepsi',
-			unit: '2$',
-			quantity: '5',
-			total: '10$',
-		},
-		{
-			service: '7Up',
-			unit: '2$',
-			quantity: '5',
-			total: '10$',
-		},
-	];
-	return (
-		<div className={styles.container}>
-			<div className={styles.header}>
-				<p className={styles.txtheader}>BOOKING INFORMATION</p>
-				<div className="flex items-center">
-					<button
-						//   onClick={() => {
-						//     handleDelete();
-						//     props.onClose();
-						//     setservices([]);
-						//   }}
-						className={styles.button}
-						style={{ backgroundColor: '#FF9A9A' }}>
-						Delete
-					</button>
-					<button
-						//   onClick={() => {
-						//     handleAction();
-						//   }}
-						className={styles.button}
-						style={{ backgroundColor: '#66EB8B' }}>
-						Edit
-					</button>
-					<button
-						className={styles.buttonClose}
-						onClick={() => {
-							props.onClose();
-						}}>
-						<img
-							src={IC_closebutton}
-							alt="CloseButton"></img>
-					</button>
-				</div>
-			</div>
+
+  const servicesTest = [
+    {
+      service: "Coca",
+      unit: "2$",
+      quantity: "5",
+      total: "10$",
+    },
+    {
+      service: "Pepsi",
+      unit: "2$",
+      quantity: "5",
+      total: "10$",
+    },
+    {
+      service: "7Up",
+      unit: "2$",
+      quantity: "5",
+      total: "10$",
+    },
+  ];
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <p className={styles.txtheader}>BOOKING INFORMATION</p>
+        <div className="flex items-center">
+          <button
+            onClick={() => {
+              // handleAction();
+              props.onClose();
+              props.onEdit();
+            }}
+            className={styles.button}
+            style={{ backgroundColor: "#66EB8B" }}
+          >
+            Edit
+          </button>
+          <button
+            className={styles.buttonClose}
+            onClick={() => {
+              props.onClose();
+            }}
+          >
+            <img src={IC_closebutton} alt="CloseButton"></img>
+          </button>
+        </div>
+      </div>
+
 
 			<div className={styles.info}>
 				{/* Room info */}
@@ -101,43 +95,38 @@ export const BookingInfo = props => {
 				</div>
 			</div>
 
-			{/* Calendar */}
-			<div className="flex justify-center w-full">
-				<div className={styles.checkin}>
-					<div className={styles.content}>
-						<p className={styles.title}>Checkin</p>
-						<div className="flex items-center">
-							<p className={styles.valueInfo}>{props.booking.CheckIn}</p>
-							<button className={styles.btnCalendar}>
-								<img
-									src={IC_Calendar}
-									alt="Calendar"
-								/>
-							</button>
-						</div>
-					</div>
-				</div>
-				<div className={styles.checkout}>
-					<div className={styles.content}>
-						<p className={styles.title}>Checkout</p>
-						<div className="flex items-center">
-							<p className={styles.valueInfo}>{props.booking.CheckOut}</p>
-							<button className={styles.btnCalendar}>
-								<img
-									src={IC_Calendar}
-									alt="Calendar"
-								/>
-							</button>
-						</div>
-					</div>
-				</div>
-				<div className={styles.fee}>
-					<div className={styles.contentFee}>
-						<p className={styles.titleFee}>Fee</p>
-						<p className={styles.valueInfoFee}>{props.booking.Price} $</p>
-					</div>
-				</div>
-			</div>
+      {/* Calendar */}
+      <div className="flex justify-center w-full">
+        <div className={styles.checkin}>
+          <div className={styles.content}>
+            <p className={styles.title}>Checkin</p>
+            <div className="flex items-center">
+              <p className={styles.valueInfo}>{props.booking.CheckIn}</p>
+              <button className={styles.btnCalendar}>
+                <img src={IC_Calendar} alt="Calendar" />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className={styles.checkout}>
+          <div className={styles.content}>
+            <p className={styles.title}>Checkout</p>
+            <div className="flex items-center">
+              <p className={styles.valueInfo}>{props.booking.CheckOut}</p>
+              <button className={styles.btnCalendar}>
+                <img src={IC_Calendar} alt="Calendar" />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className={styles.fee}>
+          <div className={styles.contentFee}>
+            <p className={styles.titleFee}>Total Fee</p>
+            <p className={styles.valueInfoFee}>{props.booking.Price} $</p>
+          </div>
+        </div>
+      </div>
+
 
 			{/* List service & button */}
 			<div className="py-5 pl-5">

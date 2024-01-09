@@ -19,6 +19,7 @@ import { addData } from "../../controller/addData.ts";
 import { deleteData } from "../../controller/deleteData.ts";
 import ButtonAdd from "../buttonAdd/buttonAdd.js";
 import { BookingInfo } from "../bookingDetail/bookingInformation.js";
+import { AeBooking } from "../bookingDetail/AeBooking.js";
 // import { getData } from "../../controller/getData";
 
 const column = [
@@ -36,7 +37,8 @@ const ProfileCustomer = (props) => {
   const [action, setAction] = useState(true);
   const [state, setState] = useState({});
 
-  const [openDetailBooking, setOpenDetail] = useState(false);
+  const [onDetail, setOnDetail] = useState(false);
+  const [onEdit, setOnEdit] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
 
   const [edit, setEdit] = useState({
@@ -356,7 +358,14 @@ const ProfileCustomer = (props) => {
                 <td className={styles.titleHistory}>BOOKING HISTORY</td>
                 <td colSpan={3} />
                 <td className=" justify-end flex">
-                  <button className={styles.btn}>
+                  <button
+                    className={styles.btn}
+                    onClick={() => {
+                      setSelectedBooking(null);
+
+                      setOnEdit(true);
+                    }}
+                  >
                     <img src={IC_add} />
                     <p className={styles.text}>Add Booking</p>
                   </button>
@@ -389,7 +398,7 @@ const ProfileCustomer = (props) => {
                       <td className={styles.col}>
                         <button
                           onClick={() => {
-                            setOpenDetail(true);
+                            setOnDetail(true);
                             setSelectedBooking(
                               props.data.Booking.find((x) => x.ID === val.id)
                             );
@@ -446,12 +455,34 @@ const ProfileCustomer = (props) => {
           centered={true}
           width="75%"
           closeIcon={null}
-          open={openDetailBooking}
+          open={onDetail}
           footer={null}
-          onCancel={() => setOpenDetail(false)}
+          onCancel={() => {
+            setOnDetail(false);
+            setOnEdit(false);
+          }}
         >
           <BookingInfo
-            onClose={() => setOpenDetail(false)}
+            onEdit={() => setOnEdit(true)}
+            onClose={() => setOnDetail(false)}
+            customer={props.data}
+            booking={selectedBooking}
+          />
+        </Modal>
+        <Modal
+          centered={true}
+          width="75%"
+          closeIcon={null}
+          open={onEdit}
+          footer={null}
+          onCancel={() => {
+            setOnDetail(false);
+            setOnEdit(false);
+          }}
+        >
+          <AeBooking
+            onEdit={() => setOnDetail(true)}
+            onClose={() => setOnEdit(false)}
             customer={props.data}
             booking={selectedBooking}
           />

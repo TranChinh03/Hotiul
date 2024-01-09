@@ -3,21 +3,28 @@ import styles from "./bookingInformation.module.scss";
 import { IC_Calendar, IC_closebutton, IC_delete } from "../../assets/icons";
 import BtnAdd from "../profileCustomer/btnAdd";
 import BtnSee from "../profileCustomer/btnSee";
-import { DatePicker, Select, message } from "antd";
+import { DatePicker, Modal, Select, message } from "antd";
 import { getData } from "../../controller/getData.ts";
 import dayjs from "dayjs";
 import { addData } from "../../controller/addData.ts";
 import { createID } from "../../utils/appUtils.js";
+import { DeleteService } from "../../controller/deleteInArray.ts";
 
 export const AeBooking = (props) => {
   const today = new Date().toLocaleDateString("en-GB");
-  const [isEdit, seIsEdit] = useState(props.booking ? true : false);
   var [roomTypes, setRoomTypes] = useState([]);
   var [fullData, setFullData] = useState([]);
   const [roomList, setRoomList] = useState([]);
 
   const [bookings, setBookings] = useState([]);
   const [services, setServices] = useState([]);
+  const [serviceName, setServiceName] = useState("");
+
+  //modal Add Services
+  const [openAddService, SetOpenAddService] = useState(false);
+  const [serviceList, SetServiceList] = useState([]);
+  const [allServiceList, SetAllServiceList] = useState([]);
+  const [serviceQuantity, SetServiceQuantity] = useState([]);
 
   //value
   const [roomtype, setRoomType] = useState("");
@@ -30,10 +37,10 @@ export const AeBooking = (props) => {
   const dateFormat = "DD/MM/YYYY";
 
   const [checkin, setCheckin] = useState(
-    props.booking?.CheckIn ?? dayjs(today, dateFormat)
+    dayjs(convertToDate(props.booking?.CheckIn)) ?? dayjs(today, dateFormat)
   );
   const [checkout, setCheckout] = useState(
-    props.booking?.CheckOut ?? dayjs(today, dateFormat)
+    dayjs(convertToDate(props.booking?.CheckOut)) ?? dayjs(today, dateFormat)
   );
   const [price, setPrice] = useState(props.booking?.Total ?? "");
 
@@ -42,10 +49,10 @@ export const AeBooking = (props) => {
   const [phone, setPhone] = useState("");
   const [id, setID] = useState("");
   const column = [
-    { label: "Service", accessor: "service" },
-    { label: "Unit Price", accessor: "unit" },
-    { label: "Quantity", accessor: "quantity" },
-    { label: "Total Price", accessor: "total" },
+    { label: "Service", accessor: "Service" },
+    { label: "Unit Price", accessor: "Price" },
+    { label: "Quantity", accessor: "Quantity" },
+    { label: "Date", accessor: "Date" },
   ];
 
   const servicesTest = [
@@ -86,18 +93,102 @@ export const AeBooking = (props) => {
         setBookings(data);
       }),
     ]);
+    await Promise.all([
+      getData("/SERVICE").then((data) => {
+        SetAllServiceList(data);
+        SetServiceList(
+          data.map((item) => {
+            return {
+              value: item.Service,
+            };
+          })
+        );
+      }),
+    ]);
   };
 
+  function handleDelete(id, index, idBooking) {
+    console.log("id", id);
+    console.log("idex", index);
+    console.log("idbk", idBooking);
+    var temp = services;
+    temp.splice(index, 1);
+
+    try {
+      DeleteService(id, idBooking);
+    } catch (err) {
+      console.log("Error delete data", err);
+    }
+    return temp;
+  }
   useEffect(() => {
     fetchData();
   });
 
+  //   /console.log(props.booking);
   useEffect(() => {
     setCustomer(props.customer.Name);
     setCtzID(props.customer.CitizenID);
     setPhone(props.customer.Phone);
     setID(props.customer.ID);
-  }, [props.customer]);
+    setRoomType(props.booking?.RoomType.TypeName);
+    setPeople(props.booking?.RoomType.NumPerson);
+    setRoomID(props.booking?.RoomID);
+    setServices(props.booking.Service);
+  }, [props.customer, props.booking]);
+
+  const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+
+  //add new 1 service
+  function handleAdd1Service() {
+    const temp = allServiceList.find((e) => e.Service === serviceName);
+    setServices((services) => [
+      ...services,
+      {
+        Service: serviceName,
+        Price: temp.Price,
+        Quantity: serviceQuantity,
+        Date: new Date().toLocaleDateString("en-GB", options),
+      },
+    ]);
+    console.log("service", services);
+    SetOpenAddService(false);
+    setServiceName("");
+    SetServiceQuantity("");
+  }
+
+  function handleAddService(type) {
+    switch (type) {
+      case "service":
+        SetOpenAddService(true);
+        return;
+      case "washing":
+        setServices((services) => [
+          ...services,
+          {
+            Service: "Washing",
+            Price: "7$",
+            Quantity: "1",
+            Date: new Date().toLocaleDateString("en-GB", options),
+          },
+        ]);
+        console.log("service", services);
+        return;
+      case "clean":
+        setServices((services) => [
+          ...services,
+          {
+            Service: "Clean",
+            Price: "5$",
+            Quantity: "1",
+            Date: new Date().toLocaleDateString("en-GB", options),
+          },
+        ]);
+        return;
+      default:
+        return;
+    }
+  }
 
   function convertToDate(dateString) {
     //  Convert a "dd/MM/yyyy" string into a Date object
@@ -203,7 +294,7 @@ export const AeBooking = (props) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        {isEdit ? (
+        {props.booking ? (
           <p className={styles.txtheader}>BOOKING INFORMATION</p>
         ) : (
           <p className={styles.txtheader}>ADD BOOKING</p>
@@ -404,7 +495,13 @@ export const AeBooking = (props) => {
                         return <td className={styles.col}>{tData}</td>;
                       })}
                       <td className={styles.col}>
-                        <button onClick={() => {}}>
+                        <button
+                          onClick={() => {
+                            setServices(
+                              handleDelete(val.ID, key, props.booking.ID)
+                            );
+                          }}
+                        >
                           <img
                             style={{
                               justifySelf: "center",
@@ -423,12 +520,81 @@ export const AeBooking = (props) => {
             </table>
           </div>
           <div className="w-3/12 flex flex-col pl-5 justify-around">
-            <BtnAdd text={"Add service"} />
-            <BtnAdd text={"Add clean"} />
-            <BtnAdd text={"Add washign"} />
+            <BtnAdd
+              onClick={() => handleAddService("service")}
+              text={"Add service"}
+            />
+            <BtnAdd
+              onClick={() => handleAddService("clean")}
+              text={"Add clean"}
+            />
+            <BtnAdd
+              onClick={() => handleAddService("washing")}
+              text={"Add washing"}
+            />
             <BtnSee text={"See amentity"} />
           </div>
         </div>
+        <Modal
+          centered={true}
+          width="50%"
+          closeIcon={null}
+          open={openAddService}
+          footer={null}
+          onCancel={() => {
+            SetOpenAddService(false);
+          }}
+        >
+          <div className="bg-white h-96 flex flex-col justify-around items-center w-full">
+            <p className="text-mainColor font-bold text-3xl items-center self-center flex ">
+              ADD SERVICE
+            </p>
+            <div className=" flex w-full justify-around">
+              <div>
+                <p className={styles.headding}> Searvice name</p>
+                <Select
+                  type="text"
+                  name="gender"
+                  value={serviceName}
+                  style={{
+                    width: "20vw",
+                    height: "40px",
+                    marginLeft: "10px",
+                  }}
+                  options={serviceList}
+                  onChange={(e) => setServiceName(e)}
+                />
+              </div>
+              <div>
+                <p className={styles.headding}> Quantity</p>
+                <input
+                  className={styles.inputInfo}
+                  onChange={(e) => SetServiceQuantity(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex items-center">
+              <button
+                onClick={() => {
+                  SetOpenAddService(false);
+                }}
+                className={styles.button}
+                style={{ backgroundColor: "#FF9A9A" }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  handleAdd1Service();
+                }}
+                className={styles.button}
+                style={{ backgroundColor: "#66EB8B" }}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </Modal>
       </div>
     </div>
   );

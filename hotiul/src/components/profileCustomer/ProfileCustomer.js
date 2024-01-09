@@ -158,6 +158,8 @@ const ProfileCustomer = (props) => {
                   onClick={() => {
                     props.onClose();
                     setBookings([]);
+                    setEdit({ name: "", gender: "", phone: "", ctzId: "" });
+                    setState({ name: "", gender: "", phone: "", ctzId: "" });
                   }}
                   className={styles.button}
                   style={{ backgroundColor: "#FF9A9A" }}

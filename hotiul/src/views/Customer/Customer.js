@@ -205,7 +205,13 @@ export const Customer = () => {
             options={[{ value: "All" }, { value: "Female" }, { value: "Male" }]}
             onChange={(e) => setGender(e)}
           />
-          <ButtonAdd onClick={() => setIsShowed(true)} text={"Add Customer"} />
+          <ButtonAdd
+            onClick={() => {
+              setSelectedCustomer(null);
+              setIsShowed(true);
+            }}
+            text={"Add Customer"}
+          />
         </div>
         <div className={styles.con2}>
           <table id="my-table" class={styles.tableData}>

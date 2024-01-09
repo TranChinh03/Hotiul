@@ -20,15 +20,15 @@ import { getStorage } from 'firebase/storage';
 //   measurementId: "G-36RW5PYSM7",
 // };
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDHi_F_OOHUiYed_ImY71Fxi7VPttR45Dc",
-  authDomain: "finalniu.firebaseapp.com",
-  projectId: "finalniu",
-  storageBucket: "finalniu.appspot.com",
-  messagingSenderId: "70753497752",
-  appId: "1:70753497752:web:e5e3a9dcc58e1eea2b56ed",
-  measurementId: "G-W93FDRJ6D3",
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDHi_F_OOHUiYed_ImY71Fxi7VPttR45Dc",
+//   authDomain: "finalniu.firebaseapp.com",
+//   projectId: "finalniu",
+//   storageBucket: "finalniu.appspot.com",
+//   messagingSenderId: "70753497752",
+//   appId: "1:70753497752:web:e5e3a9dcc58e1eea2b56ed",
+//   measurementId: "G-W93FDRJ6D3",
+// };
 
 // const firebaseConfig = {
 //   apiKey: "AIzaSyB6lD_eepS8XHk9MsBO5UC75rW9RLuPOXM",

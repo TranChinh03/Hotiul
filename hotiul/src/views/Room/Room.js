@@ -163,7 +163,7 @@ export const Room = () => {
     SetConfirmRoomStatus();
   }, [loadingCheck]);
 
-  useEffect(() => { }, [listRoomFiltered]);
+  useEffect(() => { }, [listRoomFiltered])
   const [typeFilter, setTypeFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');

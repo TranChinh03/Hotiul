@@ -96,7 +96,9 @@ function RoomDetail(props) {
         const listBooking = await getData("/BOOKING");
         const currentDate = new Date();
         const bookingOfRoom = listBooking.find((item) => (item.RoomID == props.roomId && convertStringToDate(item.CheckIn) < currentDate && convertStringToDate(item.CheckOut) > currentDate));
-
+        if (bookingOfRoom) {
+            console.log('bookingOfRoom', bookingOfRoom);
+        }
     }
     return (
         <div>

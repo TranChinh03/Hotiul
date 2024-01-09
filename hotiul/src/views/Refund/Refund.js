@@ -38,11 +38,11 @@ export const Refund = () => {
 	];
 	const [item, setItem] = useState('--' + t('refund.all') + '');
 	const column = [
-		{ label: 'ID', accessor: 'id' },
-		{ label: t('refund.customerName'), accessor: 'name' },
-		{ label: t('refund.money'), accessor: 'money' },
-		{ label: t('refund.status'), accessor: 'status' },
-		{ label: t('refund.date'), accessor: 'date' },
+		{ label: 'ID', accessor: 'ID' },
+		{ label: t('refund.customerName'), accessor: 'CustomerName' },
+		{ label: t('refund.money'), accessor: 'RefundMoney' },
+		{ label: t('refund.status'), accessor: 'RefundStatus' },
+		{ label: t('refund.date'), accessor: 'RefundDate' },
 		{ label: t('refund.detail'), accessor: 'detail' },
 	];
 

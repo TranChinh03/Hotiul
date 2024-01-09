@@ -39,20 +39,11 @@ export const BookingInfo = (props) => {
         <p className={styles.txtheader}>BOOKING INFORMATION</p>
         <div className="flex items-center">
           <button
-            //   onClick={() => {
-            //     handleDelete();
-            //     props.onClose();
-            //     setservices([]);
-            //   }}
-            className={styles.button}
-            style={{ backgroundColor: "#FF9A9A" }}
-          >
-            Delete
-          </button>
-          <button
-            //   onClick={() => {
-            //     handleAction();
-            //   }}
+            onClick={() => {
+              // handleAction();
+              props.onClose();
+              props.onEdit();
+            }}
             className={styles.button}
             style={{ backgroundColor: "#66EB8B" }}
           >
@@ -128,7 +119,7 @@ export const BookingInfo = (props) => {
         </div>
         <div className={styles.fee}>
           <div className={styles.contentFee}>
-            <p className={styles.titleFee}>Fee</p>
+            <p className={styles.titleFee}>Total Fee</p>
             <p className={styles.valueInfoFee}>{props.booking.Price} $</p>
           </div>
         </div>

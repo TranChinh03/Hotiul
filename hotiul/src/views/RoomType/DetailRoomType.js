@@ -25,9 +25,6 @@ const style = {
     boxShadow: 24,
 };
 function DetailRoomType(props) {
-    const handleClose = () => {
-        props.onCloseModal();
-    };
     // Create Modal
     const amenityColumn = [
         { label: 'Amenity name', accessor: 'Name' },
@@ -41,7 +38,6 @@ function DetailRoomType(props) {
         setRoomTypeName(props.selectedRoomType?.typename);
         setRoomTypePrice(props.selectedRoomType?.price);
         setRoomTypePeople(props.selectedRoomType?.numperson);
-
     }, [props.selectedRoomType])
     const handleQuantityChange = (index, newValue) => {
         setAmenityList((prevAmenityList) => {

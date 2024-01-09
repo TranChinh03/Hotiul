@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "../Booking/booking.module.scss";
+import styles from "../Refund/refund.module.scss";
 import Search from "../../components/search/search";
 import ButtonAdd from "../../components/buttonAdd/buttonAdd";
 import {
@@ -13,6 +13,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input, Spin, message } from 'antd';
 import { IMG_logo } from "../../assets/imgs";
 import { getData } from "../../controller/getData.ts";
+import DetailRefund from "./DetailRefund.js";
 
 export const Refund = () => {
   const items = [
@@ -35,11 +36,11 @@ export const Refund = () => {
   ];
   const [item, setItem] = useState(" -- All --");
   const column = [
-    { label: "ID", accessor: "id" },
-    { label: "Customer Name", accessor: "name" },
-    { label: "Money", accessor: "money" },
-    { label: "Status", accessor: "status" },
-    { label: "Date", accessor: "date" },
+    { label: "ID", accessor: "ID" },
+    { label: "Customer Name", accessor: "CustomerName" },
+    { label: "Money", accessor: "RefundMoney" },
+    { label: "Status", accessor: "RefundStatus" },
+    { label: "Date", accessor: "RefundDate" },
     { label: "Detail", accessor: "detail" },
   ];
   // const data = [
@@ -144,13 +145,19 @@ export const Refund = () => {
       getData('/REFUND').then(data => {
         setData(data.map(item => {
           return {
-            id: item.ID,
-            name: item.Name,
-            money: item.Money,
-            status: item.RefundStatus,
-            date: item.date,
+            ID: item.ID,
+            BookingID: item.BookingID,
+            CustomerName: item.CustomerName,
+            CustomerID: item.CustomerID,
+            RefundMoney: item.RefundMoney,
+            RefundStatus: item.RefundStatus,
+            RefundDate: item.RefundDate,
+            RefundReason: item.RefundReason,
+            BankName: item.BankName,
+            BankAccount: item.BankAccount
           }
         }))
+        setListRefundFilter(data);
       })
     ])
     setIsLoading(false)
@@ -163,9 +170,24 @@ export const Refund = () => {
   useEffect(() => {
     setTotalPage(Math.ceil(data.length / 9))
   }, [data])
-
+  const [refundStatusFilter, setRefundStatusFilter] = useState();
+  const [refundSearchKeyword, setRefundSearchKeyword] = useState('');
+  const [listRefundFilter, setListRefundFilter] = useState(data);
+  const handleRefundSearchKeyword = (event) => {
+    setRefundSearchKeyword(event.target.value);
+    setListRefundFilter(data.filter((item) => item.ID.toLowerCase().includes(event.target.value.toLowerCase()) || item.CustomerName.toLowerCase().includes(event.target.value.toLowerCase()) || item.RefundMoney.toString().includes(event.target.value) || item.RefundStatus.toLowerCase().includes(event.target.value.toLowerCase()) || item.RefundDate.includes(event.target.value)));
+  }
   const [pageIndex, setPageIndex] = useState(1);
   const [totalPage, setTotalPage] = useState();
+  const [selectedRefund, setSelectedRefund] = useState();
+  const [isDetailModalDisplay, setIsDetailModalDisplay] = useState(false);
+  const handleViewDetail = (refund) => {
+    setIsDetailModalDisplay(true);
+    setSelectedRefund(refund);
+  }
+  const closeDetailModal = () => {
+    setIsDetailModalDisplay(false);
+  }
   return (
     <Spin spinning={isLoading} indicator={
       <div style={{ transform: 'translate(-50%, -50%)', backgroundColor: "#909090", opacity: 0.8, width: "50%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
@@ -173,11 +195,16 @@ export const Refund = () => {
         <LoadingOutlined style={{ fontSize: 24 }} spin />
       </div>
     }>
+      <DetailRefund
+        selectedRefund={selectedRefund}
+        isDisplay={isDetailModalDisplay}
+        onCloseModal={closeDetailModal} />
       <div className={styles.maincontainer}>
         <div className={styles.con1}>
-          <Search />
-          <Combobox label={"Refund Status"} items={items} item={item} />
-          <ButtonAdd text={"Add Refund"} />
+          <Search value={refundSearchKeyword}
+            onChange={handleRefundSearchKeyword} />
+          {/* <Combobox value onChange={handleRefundStatusFilterChange} label={"Refund Status"} items={items} item={item} /> */}
+          {/* <ButtonAdd text={"Add Refund"} /> */}
         </div>
         <div className={styles.con2}>
           <table id="my-table" class={styles.tableData}>
@@ -196,14 +223,15 @@ export const Refund = () => {
               </tr>
             </thead>
             <tbody className="h-96">
-              {data.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
+              {listRefundFilter.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
                 return (
                   <tr className={styles.rowTbl} key={key}>
                     {column.slice(0, -1).map(({ accessor }) => {
                       const tData = val[accessor] ? val[accessor] : "——";
                       return <td className={styles.col}>{tData}</td>;
                     })}
-                    <td className={styles.col}>
+                    <td className={styles.col}
+                      onClick={() => handleViewDetail(val)}>
                       <p>View Full Detail </p>
                       <img className="pl-2" src={IC_navDetail} />
                     </td>

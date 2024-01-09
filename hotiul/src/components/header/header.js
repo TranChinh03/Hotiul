@@ -3,14 +3,13 @@ import { Modal, Select } from 'antd';
 import { IM_EN_Flag, IM_VN_Flag } from '../../assets/imgs';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import { FaRegUserCircle } from "react-icons/fa";
-import ProfileStaff from '../profileStaff/ProfileStaff'
+import { FaRegUserCircle } from 'react-icons/fa';
+import ProfileStaff from '../profileStaff/ProfileStaff';
 import { getData } from '../../controller/getData.ts';
 
-
 export const Header = ({ selected }) => {
-	const user = JSON.parse(localStorage.getItem('currentUser'))
-	const [isOpen, setIsOpen] = useState(false)
+	const user = JSON.parse(localStorage.getItem('currentUser'));
+	const [isOpen, setIsOpen] = useState(false);
 	const [language, setLanguage] = useState(localStorage.language);
 	const { t, i18n } = useTranslation();
 	const options = [
@@ -21,16 +20,16 @@ export const Header = ({ selected }) => {
 	const updateUser = async () => {
 		await Promise.all([
 			getData('/STAFF').then(data => {
-			  const idx = data.findIndex(value => value.ID === user.ID)
-			  if (idx !== -1) {
-				console.log("idx", idx)
-				localStorage.setItem("currentUser", JSON.stringify(data[idx]))
-				// navigation(NAV_LINK.DASHBOARD)
-				window.location.reload()
-			  }
-			  })
-			])
-	} 
+				const idx = data.findIndex(value => value.ID === user.ID);
+				if (idx !== -1) {
+					console.log('idx', idx);
+					localStorage.setItem('currentUser', JSON.stringify(data[idx]));
+					// navigation(NAV_LINK.DASHBOARD)
+					window.location.reload();
+				}
+			}),
+		]);
+	};
 
 	const { Option } = Select;
 	const text = [
@@ -57,12 +56,12 @@ export const Header = ({ selected }) => {
 		{
 			id: 'refund',
 			main: 'Refund Management',
-			sub: 'Manage Check-in, check-out and Booking Status',
+			sub: 'Manage Refund',
 		},
 		{
 			id: 'customer',
 			main: 'Customer Management',
-			sub: 'Manage customer information',
+			sub: 'Manage Customer Information',
 		},
 		{
 			id: 'monthlyFee',
@@ -103,7 +102,9 @@ export const Header = ({ selected }) => {
 						localStorage.setItem('language', e);
 					}}>
 					{options.map((option, index) => (
-						<Option key={index} value={option.title}>
+						<Option
+							key={index}
+							value={option.title}>
 							<div
 								style={{
 									display: 'flex',
@@ -121,18 +122,37 @@ export const Header = ({ selected }) => {
 						</Option>
 					))}
 				</Select>
-				<div onClick={() => setIsOpen(true)} className={styles.profileContainer}>
+				<div
+					onClick={() => setIsOpen(true)}
+					className={styles.profileContainer}>
 					<div className={styles.title}>
 						<div className={styles.name}>{user.Name}</div>
 						<div className={styles.role}>{user.Role}</div>
 					</div>
 					<div className={styles.avaContainer}>
-						{user.Image ? <img src={user.Image} alt="Avatar"/> : <FaRegUserCircle size={44}/>}
+						{user.Image ? (
+							<img
+								src={user.Image}
+								alt="Avatar"
+							/>
+						) : (
+							<FaRegUserCircle size={44} />
+						)}
 					</div>
 				</div>
 			</div>
-			<Modal centered={true} width="80%" closeIcon={null} open={isOpen} footer={null} >
-				<ProfileStaff open={isOpen} setOpen={setIsOpen} data={user} fetchData={() => updateUser()}/>
+			<Modal
+				centered={true}
+				width="80%"
+				closeIcon={null}
+				open={isOpen}
+				footer={null}>
+				<ProfileStaff
+					open={isOpen}
+					setOpen={setIsOpen}
+					data={user}
+					fetchData={() => updateUser()}
+				/>
 			</Modal>
 		</div>
 	);

@@ -51,6 +51,7 @@ import { getStorage } from "firebase/storage";
 //   measurementId: "G-EXMZDDRZFP",
 // };
 
+
 // const firebaseConfig = {
 //   apiKey: "AIzaSyB6lD_eepS8XHk9MsBO5UC75rW9RLuPOXM",
 //   authDomain: "niuhotiu.firebaseapp.com",
@@ -110,6 +111,20 @@ const firebaseConfig = {
 // 	appId: '1:107175772235:web:0afe1ce3ee4ab547f9cdce',
 // 	measurementId: 'G-K0P69R1XJ3',
 // };
+
+//Hotiul 4
+const firebaseConfig = {
+  apiKey: "AIzaSyC_bB2WhutoHLD6TC2hLHkqmV27wz7RbZM",
+  authDomain: "hotiul4.firebaseapp.com",
+  projectId: "hotiul4",
+  storageBucket: "hotiul4.appspot.com",
+  messagingSenderId: "679546932269",
+  appId: "1:679546932269:web:2864d19a05fc2520a5bca4",
+  measurementId: "G-3HSSGKJNLZ"
+};
+
+
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);

@@ -18,10 +18,21 @@ import AddStaff from "./component/addStaff.js"
 import ProfileStaff from "../../components/profileStaff/ProfileStaff.js";
 
 export const Staff = () => {
+  const [keywords, setKeywords] = useState('');
   const items = [
     {
       label: (
-        <button className="w-20" onClick={() => setItem(" - - All - -")}>
+        <button className="w-20" onClick={() => {
+          setItem(" - - All - -")
+          setData(fullData.filter(x=>x.Role !== "Admin").map(item => {
+            return {
+              id: item.ID,
+              name: item.Name,
+              phone: item.Phone,
+              gender: item.Gender
+            }
+          }))
+        }}>
           All
         </button>
       ),
@@ -29,7 +40,18 @@ export const Staff = () => {
     },
     {
       label: (
-        <button className="w-20" onClick={() => setItem("Male")}>
+        <button className="w-20" onClick={() => {
+          setItem("Male")
+          setData(fullData.filter(x=>x.Role !== "Admin" && x.Gender === "Male").map(item => {
+            return {
+              id: item.ID,
+              name: item.Name,
+              phone: item.Phone,
+              gender: item.Gender
+            }
+          }))
+        }
+          }>
           Male
         </button>
       ),
@@ -37,7 +59,17 @@ export const Staff = () => {
     },
     {
       label: (
-        <button className="w-20" onClick={() => setItem("Female")}>
+        <button className="w-20" onClick={() => {
+          setItem("Female")
+          setData(fullData.filter(x=>x.Role !== "Admin" && x.Gender === "Female").map(item => {
+            return {
+              id: item.ID,
+              name: item.Name,
+              phone: item.Phone,
+              gender: item.Gender
+            }
+          }))
+          }}>
           Female
         </button>
       ),
@@ -75,6 +107,18 @@ export const Staff = () => {
       })
     ])
     setIsLoading(false)
+  }
+
+  const onSearch = (e) => {
+    setKeywords(e)
+    setData(fullData.filter(x=>x.Role !== "Admin" && ( x.Name.toLowerCase().includes(e.toLowerCase()) || (x.Phone.includes(e)))).map(item => {
+      return {
+        id: item.ID,
+        name: item.Name,
+        phone: item.Phone,
+        gender: item.Gender
+      }
+    }))
   }
 
   useEffect(() => {
@@ -169,7 +213,7 @@ export const Staff = () => {
     }>
       <div className={styles.maincontainer}>
         <div className={styles.con1}>
-          <Search />
+        <Search onChange={e => onSearch(e.target.value)} />
           <Combobox label={"Gender"} items={items} item={item} />
           <ButtonAdd onClick={() => setIsAddOpen(true)} text={"Add Staff"} />
         </div>

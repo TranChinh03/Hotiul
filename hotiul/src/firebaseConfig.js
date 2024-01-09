@@ -10,15 +10,15 @@ import { getStorage } from 'firebase/storage';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // Hotiul 1
-const firebaseConfig = {
-  apiKey: "AIzaSyACK1byUNHYBvi0aJRiHzmDbM4XHoCAB5A",
-  authDomain: "hotiul.firebaseapp.com",
-  projectId: "hotiul",
-  storageBucket: "hotiul.appspot.com",
-  messagingSenderId: "13250723084",
-  appId: "1:13250723084:web:27908d4224d230113fdd29",
-  measurementId: "G-36RW5PYSM7",
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyACK1byUNHYBvi0aJRiHzmDbM4XHoCAB5A",
+//   authDomain: "hotiul.firebaseapp.com",
+//   projectId: "hotiul",
+//   storageBucket: "hotiul.appspot.com",
+//   messagingSenderId: "13250723084",
+//   appId: "1:13250723084:web:27908d4224d230113fdd29",
+//   measurementId: "G-36RW5PYSM7",
+// };
 
 // Hotiul 2
 // const firebaseConfig = {

@@ -21,9 +21,14 @@ function HomeRoutes() {
     const day = currentDate.getDate();
     const month = currentDate.getMonth() + 1; // Month is zero-indexed, so add 1
     const year = currentDate.getFullYear();
+    
+    const formattedDay = (day < 10) ? `0${day}` : day;
+    const formattedMonth = (month < 10) ? `0${month}` : month;
+    const fullDate = `${formattedDay}/${formattedMonth}/${year}`;
 
-    localStorage.setItem("currentDay", day);
-    localStorage.setItem("currentMonth", month);
+    localStorage.setItem("currentDate", fullDate)
+    localStorage.setItem("currentDay", formattedDay);
+    localStorage.setItem("currentMonth", formattedMonth);
     localStorage.setItem("currentYear", year);
   }, [])
 

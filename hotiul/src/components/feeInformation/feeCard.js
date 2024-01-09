@@ -4,19 +4,22 @@ import { IC_closebutton } from '../../assets/icons';
 import { createID } from '../../utils/appUtils.js';
 
 function FeeCard(props) {
-	const [detailValue, setDetailValue] = useState(props.detailValue);
-	const [state, setState] = useState({});
-	const [action, setAction] = useState(true);
-
-	console.log('detail value', props.detailValue);
-
+	const [state, setState] = useState({ ...props.detailValue });
 	useEffect(() => {
+		if (!props.detailValue?.Id) {
+			console.log('ID', props.detailValue);
+			setState(null);
+			return;
+		}
+		console.log('ID', props.detailValue?.Id);
 		setState({
-			name: props.detailValue.Name || '',
-			price: props.detailValue.Price || '',
-			date: props.detailValue.Date || '',
+			// Them cham hoi => Neu null ma yeu cau lay thong tin thi tra ve undefined
+			ID: props.detailValue?.Id,
+			Name: props.detailValue?.Name,
+			Price: props.detailValue?.Price,
+			Date: props.detailValue?.Date,
 		});
-	}, [props.detailValue]);
+	}, [props]);
 
 	const [edit, setEdit] = useState({
 		name: '',
@@ -31,57 +34,41 @@ function FeeCard(props) {
 			[evt.target.name]: value,
 		});
 	}
-
 	const handleSave = () => {
-		const feeID = createID({ prefix: 'DF' });
-		try {
+		// Phan biet create && update => ID.exist()?
+		console.log('state', state);
+		if (state.ID) {
 			const newData = {
-				ID: feeID,
-				Name: edit.name,
-				Price: Number(edit.price),
-				Date: edit.date,
+				ID: state.ID,
+				Name: state.Name ?? '',
+				Price: Number(state.Price) ?? '',
+				Date: state.Date ?? '',
 			};
-			if (detailValue && detailValue.Id) {
-				assignInfo(state, edit);
-			} else {
-				setEdit({
-					name: '',
-					price: '',
-					date: '',
-				});
+			props.handleSaveFeeCard(newData);
+		} else {
+			const feeID = createID({ prefix: 'DF' });
+			try {
+				const newData = {
+					ID: feeID,
+					Name: state.Name ?? '',
+					Price: Number(state.Price) ?? '',
+					Date: state.Date ?? '',
+				};
+
 				props.handleSaveFeeCard(newData); // Pass the new data to FeeInformation
-				assignInfo(edit, state);
+				setState({ Name: '', Price: '', Date: '' });
+				props.fetchData();
+				props.closeEvt();
+			} catch (err) {
+				console.log('Error updating data', err);
+				return;
 			}
-
-			props.fetchData();
-			props.closeEvt();
-		} catch (err) {
-			console.log('Error updating data', err);
-			return;
 		}
-
-		//handleAction();
 	};
 
-	// function handleAction() {
-	//
-	// 	setAction(!action);
-	// }
-
-	function handleCancel() {
-		props.setOpen(false);
-		setEdit({
-			name: '',
-			price: '',
-			date: '',
-		});
-	}
-
-	function assignInfo(state, edit) {
-		state.name = edit.name;
-		state.price = edit.price;
-		state.date = edit.date;
-	}
+	const handleDelete = () => {
+		props.handleDeleteFeeCard(state.ID);
+	};
 
 	return (
 		<>
@@ -90,6 +77,7 @@ function FeeCard(props) {
 					<div className={styles.headerTitle}>Fee</div>
 					<div className={styles.buttonContainer}>
 						<button
+							onClick={handleDelete}
 							className={styles.button}
 							style={{ backgroundColor: '#FF9A9A' }}>
 							Delete
@@ -100,7 +88,14 @@ function FeeCard(props) {
 							style={{ backgroundColor: '#66EB8B' }}>
 							Save
 						</button>
-						<button onClick={props.closeEvt}>
+						<button
+							onClick={() => {
+								if (!props.detailValue?.Id) {
+									setState({ Name: '', Price: '', Date: '' });
+								}
+
+								props.closeEvt();
+							}}>
 							<img
 								src={IC_closebutton}
 								alt="CloseButton"></img>
@@ -121,8 +116,8 @@ function FeeCard(props) {
 						<input
 							className={styles.inputInfo}
 							type="text"
-							name="name"
-							value={state.name}
+							name="Name"
+							value={state?.Name}
 							onChange={e => handleChange(e)}
 							required></input>
 					</div>
@@ -133,8 +128,8 @@ function FeeCard(props) {
 						<input
 							className={styles.inputInfo}
 							type="text"
-							name="price"
-							value={state.price}
+							name="Price"
+							value={state?.Price}
 							onChange={e => handleChange(e)}
 							required></input>
 					</div>
@@ -145,8 +140,8 @@ function FeeCard(props) {
 						<input
 							className={styles.inputInfo}
 							type="date"
-							name="date"
-							value={state.date}
+							name="Date"
+							value={state?.Date}
 							onChange={e => handleChange(e)}
 							required></input>
 					</div>

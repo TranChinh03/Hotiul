@@ -37,6 +37,8 @@ export const MonthlyFee = () => {
 							fee: item.Name,
 							total: item.Details.reduce((acc, curr) => acc + curr.Price, 0),
 							detail: item.Details,
+							month: item.Month,
+							year: item.Year,
 						};
 					}),
 				);
@@ -50,7 +52,7 @@ export const MonthlyFee = () => {
 	}, []);
 
 	useEffect(() => {
-		setTotalPage(Math.ceil(data.length / 9));
+		setTotalPage(Math.ceil(data?.length / 9));
 	}, [data]);
 
 	return (
@@ -62,7 +64,7 @@ export const MonthlyFee = () => {
 						text={'Add Fee'}
 						onClick={() => {
 							setIsOpenModal(true);
-							setSelectedData(null);
+							setSelectedData({ fee: '', total: '', detail: [] });
 							console.log(selectedData);
 						}}
 					/>

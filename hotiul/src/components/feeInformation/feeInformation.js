@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styles from './fee.module.scss';
 import ButtonAdd from '../../components/buttonAdd/buttonAdd';
 import { addData, updateData } from '../../controller/addData.ts';
+import { deleteData } from '../../controller/deleteData.ts';
 import { createID } from '../../utils/appUtils.js';
 import Modal from 'antd/es/modal/Modal';
 import FeeCard from '../../components/feeInformation/feeCard.js';
-
+import * as ReactDOM from 'react-dom';
 import {
 	IC_backArrow,
 	IC_navDetail,
@@ -28,44 +29,70 @@ function FeeInformation(props) {
 	//feecard
 	const [selectedData, setSelectedData] = useState(null);
 
+	//month
+	const [selectedMonth, setSelectedMonth] = useState(Number);
+	const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+	const handleMonthChange = event => {
+		const value = event.target.value;
+		setSelectedMonth(value);
+		setDataValue({
+			...dataValue,
+			month: value,
+		});
+	};
+
+	//year
+	const [selectedYear, setSelectedYear] = useState(Number);
+	const years = [2023, 2024];
+
+	const handleYearChange = event => {
+		const value = event.target.value;
+		setSelectedYear(value);
+		setDataValue({
+			...dataValue,
+			year: value,
+		});
+	};
+
 	//const dataValue = props.data;
 	const [dataValue, setDataValue] = useState(props.data);
 	const [tableData, setTableData] = useState([]);
 	console.log('dv', dataValue);
 
-	const [isOpenFee, setIsOpenFee] = useState(false);
 	useEffect(() => {
 		setDataValue(props.data);
-		console.log('UE2', props.data);
-		//Update tableData when dataValue changes
+		// Update tableData when dataValue changes
 		if (!props.data) {
 			setTableData([]);
 			return;
 		}
 		if (props.data.detail) {
 			const newTableData = props.data.detail.map(item => ({
-				Id: item.Id || '——',
-				Name: item.Name || '——',
-				Date: item.Date || '——',
-				Price: item.Price || '——',
+				Id: item?.ID,
+				Name: item?.Name,
+				Date: item?.Date,
+				Price: item?.Price,
 			}));
 			setTableData(newTableData);
 		}
 	}, [props.data]);
 
-	function UpdateTable() {
-		const newTableData = dataValue.detail.map(item => ({
-			Id: item.Id || '——',
-			Name: item.Name || '——',
-			Date: item.Date || '——',
-			Price: item.Price || '——',
-		}));
-		setTableData(newTableData);
-	}
-	function handleOpenFeeCard() {
-		setIsOpenFee(true);
-	}
+	useEffect(() => {
+		UpdateTable();
+	}, [dataValue]);
 
+	function UpdateTable() {
+		if (dataValue.detail) {
+			const newTableData = dataValue.detail.map(item => ({
+				Id: item?.ID,
+				Name: item?.Name,
+				Date: item?.Date,
+				Price: item?.Price,
+			}));
+			setTableData(newTableData);
+		} else setTableData([]);
+	}
 	const [edit, setEdit] = useState({
 		fee: '',
 		detail: [],
@@ -79,7 +106,6 @@ function FeeInformation(props) {
 		});
 		setEdit({ ...edit, fee: dataValue.fee });
 	}
-
 	function handleSave() {
 		const feeID = createID({ prefix: 'F' });
 		try {
@@ -87,10 +113,17 @@ function FeeInformation(props) {
 				ID: feeID,
 				Name: edit.fee,
 				Details: dataValue.detail,
+				Month: Number(selectedMonth),
+				Year: Number(selectedYear),
 			};
 			if (dataValue && dataValue.id) {
 				updateData({
-					data: { Name: edit.fee, Details: dataValue.detail },
+					data: {
+						Name: dataValue.fee,
+						Details: dataValue.detail,
+						Month: dataValue.month,
+						Year: dataValue.year,
+					},
 					table: 'FEE',
 					id: dataValue.id,
 				});
@@ -111,23 +144,57 @@ function FeeInformation(props) {
 
 	function handleSaveFeeCard(newData) {
 		console.log('New data from FeeCard:', newData);
-		setDataValue({ ...dataValue, detail: [...(dataValue?.detail ?? []), newData] });
+		handleClose();
+		const result = [];
+		var flag = false;
+		if (dataValue.detail.length == 0) result.push(newData);
+		else
+			dataValue.detail.forEach(element => {
+				element.Name = element.Name ?? '';
+				element.Price = element.Price ?? '';
+				element.Date = element.Date ?? '';
+				if (element.ID != newData.ID) result.push(element);
+				else {
+					result.push(newData);
+					flag = true;
+				}
+			});
+
+		if (!flag) result.push(newData);
+		setDataValue({ ...dataValue, detail: result });
 		UpdateTable();
 	}
 
-	function handleCancel() {
-		props.setOpen(false);
-		setEdit({
-			fee: '',
-			price: '',
-			date: '',
+	const handleDelete = () => {
+		try {
+			if (dataValue && dataValue.id) {
+				deleteData({ id: dataValue.id, table: 'FEE' });
+				props.fetchData();
+				props.closeEvt();
+			} else {
+				console.error('Invalid data or data ID');
+			}
+		} catch (err) {
+			console.log('Error delete data', err);
+		}
+	};
+
+	const handleDeleteFeeCard = deletedId => {
+		const updatedDetail = dataValue.detail.filter(item => item.ID !== deletedId);
+		setDataValue({
+			...dataValue,
+			detail: updatedDetail,
 		});
-	}
+		UpdateTable();
+	};
+
 	const [pageIndex, setPageIndex] = useState(1);
 	const [totalPage, setTotalPage] = useState(
-		dataValue ? Math.ceil(dataValue.detail.length / 9) : 0,
+		dataValue ? Math.ceil(dataValue.detail?.length ?? 0 / 9) : 0,
 	);
-
+	function handleClose() {
+		setSelectedData(null);
+	}
 	return (
 		<>
 			<div className={styles.container}>
@@ -135,6 +202,7 @@ function FeeInformation(props) {
 					<div className={styles.headerTitle}>Monthly Fee</div>
 					<div className={styles.buttonContainer}>
 						<button
+							onClick={() => handleDelete()}
 							className={styles.button}
 							style={{ backgroundColor: '#FF9A9A' }}>
 							Delete
@@ -155,8 +223,8 @@ function FeeInformation(props) {
 				</div>
 
 				<div
-					className={styles.info}
-					style={{}}>
+					className={styles.infooo}
+					style={{ width: '100%' }}>
 					<input
 						className={styles.inputInfo}
 						type="text"
@@ -164,6 +232,92 @@ function FeeInformation(props) {
 						value={dataValue.fee}
 						onChange={e => handleChange(e)}
 						required></input>
+					<select
+						//className={styles.inputInfo}
+						style={{
+							width: '100px',
+							height: 'max-content',
+							padding: '8px',
+							paddingLeft: '20px',
+							paddingRight: '20px',
+							borderRadius: '10px',
+							backgroundColor: '#caf0f859',
+							justifyItems: 'center',
+							textAlign: 'center',
+							border: '1px',
+							borderColor: 'var(--2, #023e8a)',
+							fontSize: '18px',
+							color: 'var(--2, #023e8a)',
+							marginLeft: '20px',
+						}}
+						id="monthSelector"
+						value={dataValue.month}
+						onChange={e => handleMonthChange(e)}>
+						<option value="">- M -</option>
+						{months.map((month, index) => (
+							<option
+								style={{
+									width: '100px',
+									height: 'max-content',
+									padding: '8px',
+									paddingLeft: '20px',
+									paddingRight: '20px',
+									borderRadius: '10px',
+									backgroundColor: '#caf0f859',
+									//justifyItems: 'center',
+									//textAlign: 'center',
+									fontSize: '18px',
+									color: 'var(--2, #023e8a)',
+								}}
+								key={index}
+								value={month}>
+								{month}
+							</option>
+						))}
+					</select>
+					<select
+						//className={styles.inputInfo}
+						style={{
+							width: '100px',
+							height: 'max-content',
+							padding: '8px',
+							paddingLeft: '20px',
+							paddingRight: '20px',
+							borderRadius: '10px',
+							backgroundColor: '#caf0f859',
+							justifyItems: 'center',
+							textAlign: 'center',
+							border: '1px',
+							borderColor: 'var(--2, #023e8a)',
+							fontSize: '18px',
+							color: 'var(--2, #023e8a)',
+							marginLeft: '20px',
+						}}
+						id="yearSelector"
+						value={dataValue.year}
+						onChange={e => handleYearChange(e)}>
+						<option value="">- Y -</option>
+						{years.map((year, index) => (
+							<option
+								style={{
+									width: '100px',
+									height: 'max-content',
+									padding: '8px',
+									paddingLeft: '20px',
+									paddingRight: '20px',
+									borderRadius: '10px',
+									backgroundColor: '#caf0f859',
+									//justifyItems: 'center',
+									//textAlign: 'center',
+									fontSize: '18px',
+									color: 'var(--2, #023e8a)',
+								}}
+								key={index}
+								value={year}>
+								{year}
+							</option>
+						))}
+					</select>
 				</div>
 				{/* )} */}
 				<div className={styles.con2}>
@@ -207,7 +361,6 @@ function FeeInformation(props) {
 										<td
 											className={styles.col}
 											onClick={() => {
-												setIsOpenFee(true);
 												setSelectedData(val);
 											}}>
 											View Full Detail{' '}
@@ -227,7 +380,7 @@ function FeeInformation(props) {
 						<>
 							<p className=" text-mainColor pt-5">
 								Showing <strong> 1 - {totalPage} </strong> results of{' '}
-								<strong>{dataValue.detail.length}</strong>
+								<strong>{dataValue.detail?.length ?? 0}</strong>
 							</p>
 							<div className="flex justify-around">
 								<button
@@ -235,10 +388,7 @@ function FeeInformation(props) {
 										if (pageIndex > 1) setPageIndex(pageIndex - 1);
 									}}
 									className={styles.btnnav}>
-									<img
-										src={IC_backArrow}
-										alt="vl"
-									/>
+									<img src={IC_backArrow} />
 								</button>
 								<p className="text-mainColor px-3">
 									Page <strong>{pageIndex}</strong>
@@ -248,10 +398,7 @@ function FeeInformation(props) {
 										if (pageIndex < totalPage) setPageIndex(pageIndex + 1);
 									}}
 									className={styles.btnnav}>
-									<img
-										src={IC_nextArrow}
-										alt="zlzlz"
-									/>
+									<img src={IC_nextArrow} />
 								</button>
 							</div>
 						</>
@@ -264,15 +411,32 @@ function FeeInformation(props) {
 					className="flex w-full items-start justify-between px-5">
 					<ButtonAdd
 						onClick={() => {
-							handleOpenFeeCard();
-							setSelectedData(null);
+							setSelectedData({ name: '', price: '' });
 						}}
 						text={'Add Fee'}
 					/>
 				</div>
 			</div>
+			{tableData.map((value, index) => {
+				return (
+					<Modal
+						key={index}
+						open={selectedData?.Id == value.Id}
+						width={'90%'}
+						closeIcon={false}
+						footer={false}
+						style={{ backgroundColor: 'transparent' }}>
+						<FeeCard
+							detailValue={selectedData}
+							fetchData={props.fetchData}
+							closeEvt={handleClose}
+							handleSaveFeeCard={handleSaveFeeCard}
+							handleDeleteFeeCard={handleDeleteFeeCard}></FeeCard>
+					</Modal>
+				);
+			})}
 			<Modal
-				open={isOpenFee}
+				open={selectedData && selectedData.Id == undefined}
 				width={'90%'}
 				closeIcon={false}
 				footer={false}
@@ -280,7 +444,7 @@ function FeeInformation(props) {
 				<FeeCard
 					detailValue={selectedData}
 					fetchData={props.fetchData}
-					closeEvt={() => setIsOpenFee(false)}
+					closeEvt={handleClose}
 					handleSaveFeeCard={handleSaveFeeCard}></FeeCard>
 			</Modal>
 		</>

@@ -32,15 +32,27 @@ import { getStorage } from "firebase/storage";
 // };
 
 //Hotiul 3
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDQLfSxe8XmDoOukdsdkG3m198UfmCpVrc",
+//   authDomain: "hotiul3.firebaseapp.com",
+//   projectId: "hotiul3",
+//   storageBucket: "hotiul3.appspot.com",
+//   messagingSenderId: "442975610624",
+//   appId: "1:442975610624:web:cf92301da2d0f42abc35e5",
+//   measurementId: "G-EXMZDDRZFP",
+// };
+
+//Hotiul 4
 const firebaseConfig = {
-  apiKey: "AIzaSyDQLfSxe8XmDoOukdsdkG3m198UfmCpVrc",
-  authDomain: "hotiul3.firebaseapp.com",
-  projectId: "hotiul3",
-  storageBucket: "hotiul3.appspot.com",
-  messagingSenderId: "442975610624",
-  appId: "1:442975610624:web:cf92301da2d0f42abc35e5",
-  measurementId: "G-EXMZDDRZFP",
+  apiKey: "AIzaSyC_bB2WhutoHLD6TC2hLHkqmV27wz7RbZM",
+  authDomain: "hotiul4.firebaseapp.com",
+  projectId: "hotiul4",
+  storageBucket: "hotiul4.appspot.com",
+  messagingSenderId: "679546932269",
+  appId: "1:679546932269:web:2864d19a05fc2520a5bca4",
+  measurementId: "G-3HSSGKJNLZ"
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

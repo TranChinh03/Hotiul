@@ -6,13 +6,16 @@ import { IC_backArrow, IC_navDetail, IC_nextArrow, IC_sort } from '../../assets/
 import { getData } from '../../controller/getData.ts';
 import FeeInformation from '../../components/feeInformation/feeInformation.js';
 import Modal from 'antd/es/modal/Modal';
+import { useTranslation } from 'react-i18next';
 
 export const MonthlyFee = () => {
+	const { t } = useTranslation();
+
 	const column = [
 		{ label: 'ID', accessor: 'id' },
-		{ label: 'Monthly Fee', accessor: 'fee' },
-		{ label: 'Total', accessor: 'total' },
-		{ label: 'Detail', accessor: 'detail' },
+		{ label: t('fee.feeCard'), accessor: 'fee' },
+		{ label: t('fee.feeTotal'), accessor: 'total' },
+		{ label: t('fee.feeDetail'), accessor: 'detail' },
 	];
 
 	const [pageIndex, setPageIndex] = useState(1);
@@ -61,7 +64,7 @@ export const MonthlyFee = () => {
 				<div className={styles.con1}>
 					<Search />
 					<ButtonAdd
-						text={'Add Fee'}
+						text={t('button.addFee')}
 						onClick={() => {
 							setIsOpenModal(true);
 							setSelectedData({ fee: '', total: '', detail: [] });
@@ -108,7 +111,7 @@ export const MonthlyFee = () => {
 												setIsOpenModal(true);
 												setSelectedData(val);
 											}}>
-											View Full Detail{' '}
+											{t('fee.feeViewDetail')}{' '}
 											<img
 												className="pl-2"
 												src={IC_navDetail}
@@ -122,7 +125,8 @@ export const MonthlyFee = () => {
 				</div>
 				<div className={styles.con1}>
 					<p className=" text-mainColor pt-5">
-						Showing <strong> 1 - {totalPage} </strong> results of <strong>{data.length}</strong>
+						{t('fee.feeShow')} <strong> 1 - {totalPage} </strong> {t('fee.feeResult')}{' '}
+						<strong>{data.length}</strong>
 					</p>
 					<div className="flex justify-around">
 						<button
@@ -133,7 +137,7 @@ export const MonthlyFee = () => {
 							<img src={IC_backArrow} />
 						</button>
 						<p className="text-mainColor px-3">
-							Page <strong>{pageIndex}</strong>
+							{t('fee.feePage')} <strong>{pageIndex}</strong>
 						</p>
 						<button
 							onClick={() => {

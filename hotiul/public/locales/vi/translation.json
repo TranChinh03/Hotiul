@@ -203,7 +203,8 @@
 		"all": "Tất cả",
 		"page": "Trang",
 		"result": "kết quả của",
-		"show": "Hiển thị"
+		"show": "Hiển thị",
+		"viewDetail": "Xem đầy đủ chi tiết"
 	},
 	"staff": {
 		"phoneNumber": "Số điện thoại",
@@ -273,7 +274,11 @@
 		"page": "Trang",
 		"result": "kết quả của",
 		"show": "Hiển thị",
-		"addRoomType": "Thêm Loại Phòng"
+		"addRoomType": "Thêm Loại Phòng",
+		"enterName": "Nhập tên phòng",
+		"price": "Giá",
+		"person": "Người",
+		"perRoom": "mỗi phòng"
 	},
 	"search": "Tìm kiếm",
 	"service": {
@@ -300,7 +305,11 @@
 		"nov": "THG 11",
 		"dec": "THG 12",
 		"todayStatistic": "Thống kê hôm nay",
-		"todayActivity": "Hoạt động hôm nay"
+		"todayActivity": "Hoạt động hôm nay",
+		"checkin": "Nhận phòng",
+		"checkout": "Trả phòng",
+		"guest": "Khách",
+		"booking": "Đặt phòng"
 	},
 	"refund": {
 		"incomplete": "Chưa hoàn thành",
@@ -314,7 +323,9 @@
 		"viewDetail": "Xem chi tiết đầy đủ",
 		"page": "Trang",
 		"result": "kết quả của",
-		"show": "Hiển thị"
+		"show": "Hiển thị",
+		"refundStatus": "Trạng thái Hoàn trả",
+		"all": "Tất cả"
 	},
 	"statistic": {
 		"jan": "THG 1",

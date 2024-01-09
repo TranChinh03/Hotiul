@@ -24,7 +24,7 @@ const SideBar = ({ handleChange }) => {
   const currentUser = localStorage.getItem('currentUser');
   const role = currentUser ? JSON.parse(currentUser).Role : '';
 
-  const staffTab = role === "Manager" ? 
+  const staffTab = role === "Admin" ? 
     {
       tabname: "Staff",
       tab: "staff",
@@ -117,10 +117,6 @@ const SideBar = ({ handleChange }) => {
     // Listen for language changes and update tabs accordingly
     updateTabsLanguage();
   }, [i18n.language]);
-
-  if (staffTab) {
-    initialTabs.splice(8, 0, staffTab);
-  }
 
   const [tabs, setTabs] = useState(initialTabs);
 

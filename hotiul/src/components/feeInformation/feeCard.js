@@ -65,6 +65,11 @@ function FeeCard(props) {
 			}
 		}
 	};
+
+	const handleDelete = () => {
+		props.handleDeleteFeeCard(state.ID);
+	};
+
 	return (
 		<>
 			<div className={styles.container}>
@@ -72,6 +77,7 @@ function FeeCard(props) {
 					<div className={styles.headerTitle}>Fee</div>
 					<div className={styles.buttonContainer}>
 						<button
+							onClick={handleDelete}
 							className={styles.button}
 							style={{ backgroundColor: '#FF9A9A' }}>
 							Delete

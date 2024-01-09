@@ -1,9 +1,9 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import { getStorage } from "firebase/storage";
+import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -42,6 +42,26 @@ const firebaseConfig = {
 //   measurementId: "G-EXMZDDRZFP",
 // };
 
+//Hotiul test
+// const firebaseConfig = {
+//   apiKey: "AIzaSyBtZX9mHjIxZQiL6yqwYNk3-fnLaRH8CbU",
+//   authDomain: "hotiultest.firebaseapp.com",
+//   projectId: "hotiultest",
+//   storageBucket: "hotiultest.appspot.com",
+//   messagingSenderId: "996219006310",
+//   appId: "1:996219006310:web:4ba330d476a7e176f82ca7",
+//   measurementId: "G-LXLYSGNLDD"
+// };
+
+const firebaseConfig = {
+	apiKey: 'AIzaSyDlu3iJLjpCyUjJ52NG-peL5ZZGyEuvOnY',
+	authDomain: 'hotiul-test.firebaseapp.com',
+	projectId: 'hotiul-test',
+	storageBucket: 'hotiul-test.appspot.com',
+	messagingSenderId: '107175772235',
+	appId: '1:107175772235:web:0afe1ce3ee4ab547f9cdce',
+	measurementId: 'G-K0P69R1XJ3',
+};
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);

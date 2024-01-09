@@ -1,15 +1,17 @@
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
 const FEE = [
 	{
 		ID: 'F001',
 		Name: 'Month 1 Fee',
 		Details: [
 			{
+				ID: 'DF028',
 				Name: 'Water',
 				Price: 100000,
 			},
 			{
+				ID: 'DF019',
 				Name: 'Electricity',
 				Price: 200000,
 			},
@@ -20,10 +22,12 @@ const FEE = [
 		Name: 'Month 2 Fee',
 		Details: [
 			{
+				ID: 'DF007',
 				Name: 'Water',
 				Price: 185000,
 			},
 			{
+				ID: 'DF002',
 				Name: 'Electricity',
 				Price: 245000,
 			},
@@ -34,10 +38,12 @@ const FEE = [
 		Name: 'Month 3 Fee',
 		Details: [
 			{
+				ID: 'DF011',
 				Name: 'Water',
 				Price: 115000,
 			},
 			{
+				ID: 'DF034',
 				Name: 'Electricity',
 				Price: 210000,
 			},
@@ -48,10 +54,12 @@ const FEE = [
 		Name: 'Month 4 Fee',
 		Details: [
 			{
+				ID: 'DF017',
 				Name: 'Water',
 				Price: 135000,
 			},
 			{
+				ID: 'DF021',
 				Name: 'Electricity',
 				Price: 220000,
 			},
@@ -62,10 +70,12 @@ const FEE = [
 		Name: 'Month 5 Fee',
 		Details: [
 			{
+				ID: 'DF001',
 				Name: 'Water',
 				Price: 250000,
 			},
 			{
+				ID: 'DF032',
 				Name: 'Electricity',
 				Price: 180000,
 			},
@@ -74,14 +84,7 @@ const FEE = [
 ];
 
 export const addDbFee = async () => {
-	FEE.map(async (b) => {
-	  await setDoc(
-		doc(
-		  db,
-		  "FEE",
-		  b.ID
-		),
-		b
-	  );
+	FEE.map(async b => {
+		await setDoc(doc(db, 'FEE', b.ID), b);
 	});
-  };
+};

@@ -37,6 +37,8 @@ export const MonthlyFee = () => {
 							fee: item.Name,
 							total: item.Details.reduce((acc, curr) => acc + curr.Price, 0),
 							detail: item.Details,
+							month: item.Month,
+							year: item.Year,
 						};
 					}),
 				);

@@ -113,12 +113,14 @@
 		"home": "Home",
 		"booking": "Booking",
 		"room": "Room",
+		"roomtype": "Room Type",
 		"refund": "Refund",
 		"customer": "Customer",
 		"monthlyFee": "Monthly Fee",
-		"service": "Services",
-		"Staff": "Staff",
-		"statistic": "Statistic"
+		"services": "Services",
+		"staff": "Staff",
+		"statistic": "Statistic",
+		"logout": "Log Out"
 	},
 
 	"button": {

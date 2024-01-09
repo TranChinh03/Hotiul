@@ -11,7 +11,7 @@ const STAFF = [
 		Salary: 10000000,
 		Username: 'admin',
 		Password: 'admin',
-		Role: 'Manager',
+		Role: 'Admin',
 		Image: "",
 	},
 	{

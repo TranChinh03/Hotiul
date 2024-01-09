@@ -20,6 +20,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { getData } from "../../controller/getData.ts";
+import { useTranslation } from 'react-i18next';
+
 
 
 export const Home = () => {
@@ -31,6 +33,9 @@ export const Home = () => {
   const [checkout, setCheckout] = useState(0)
   const [revenueToday, setRevenueToday] = useState(0)
   const [BOOKING, setBOOKING] = useState([])
+
+  const [isLoading, setIsLoading] = useState(true)
+  const { t } = useTranslation();
 
 
   const onChange = (value) => {
@@ -117,30 +122,6 @@ export const Home = () => {
     margin: "10px"
   };
   return (
-    <Spin spinning={isLoading} indicator={
-    <div style={{transform: 'translate(-50%, -50%)', backgroundColor:"#909090", opacity:0.8, width: "50%", height: "50%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
-      <img style={{width: "50%"}} src={IMG_logo}/>
-      <LoadingOutlined style={{ fontSize: 24 }} spin />
-    </div>
-  }>
-      <div className={styles.container}>
-        <div className={styles.todayStatistic}>
-          <p className={styles.homeText}>Today's statistics</p>
-          <div className={styles.statisticContainer}>
-            <StatisticBox icon={ IC_CircleCheck } title="Check-in" figure={checkin} unit="Bookings" backgroundColor="#0077B6"/>
-            <StatisticBox icon={ IC_CircleLogout } title="Check-out" figure={checkout} unit="Bookings" backgroundColor="#FF9C65"/>
-            <StatisticBox icon={ IC_CirclePerson } title="Guest" figure={guest} unit="Guests" backgroundColor="#68D8D6"/>
-            <StatisticBox icon={ IC_CircleDollar } title="Revenue" figure={revenueToday} unit="Dollars" backgroundColor="#F8DD4E"/>
-          </div>
-        </div>
-
-	const { token } = theme.useToken();
-	const wrapperStyle = {
-		border: `1px solid ${token.colorBorderSecondary}`,
-		borderRadius: token.borderRadiusLG,
-		margin: '10px',
-	};
-	return (
 		<Spin
 			spinning={isLoading}
 			indicator={
@@ -173,28 +154,28 @@ export const Home = () => {
 						<StatisticBox
 							icon={IC_CircleCheck}
 							title={t('home.checkin')}
-							figure="10"
+							figure={checkin}
 							unit={t('home.booking')}
 							backgroundColor="#0077B6"
 						/>
 						<StatisticBox
 							icon={IC_CircleLogout}
 							title={t('home.checkout')}
-							figure="10"
+							figure={checkout}
 							unit={t('home.booking')}
 							backgroundColor="#FF9C65"
 						/>
 						<StatisticBox
 							icon={IC_CirclePerson}
 							title={t('home.guest')}
-							figure="55"
+							figure={guest}
 							unit={t('home.guest')}
 							backgroundColor="#68D8D6"
 						/>
 						<StatisticBox
 							icon={IC_CircleDollar}
 							title={t('revenue')}
-							figure="2000"
+							figure={revenueToday}
 							unit="Dollars"
 							backgroundColor="#F8DD4E"
 						/>

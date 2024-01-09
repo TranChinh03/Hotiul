@@ -72,15 +72,15 @@ import { getStorage } from "firebase/storage";
 //   measurementId: "G-ZX9EDKY6P6",
 // };
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAwJ2hx69qVmqBiBBNk7wQhEGMzU_vXkvY",
-  authDomain: "niuniuniu-c4ca3.firebaseapp.com",
-  projectId: "niuniuniu-c4ca3",
-  storageBucket: "niuniuniu-c4ca3.appspot.com",
-  messagingSenderId: "926575785629",
-  appId: "1:926575785629:web:6b3bb802d57fb9b2644674",
-  measurementId: "G-C78BJ7MXW1",
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyAwJ2hx69qVmqBiBBNk7wQhEGMzU_vXkvY",
+//   authDomain: "niuniuniu-c4ca3.firebaseapp.com",
+//   projectId: "niuniuniu-c4ca3",
+//   storageBucket: "niuniuniu-c4ca3.appspot.com",
+//   messagingSenderId: "926575785629",
+//   appId: "1:926575785629:web:6b3bb802d57fb9b2644674",
+//   measurementId: "G-C78BJ7MXW1",
+// };
 //Myhotiul
 // const firebaseConfig = {
 //   apiKey: "AIzaSyAa7m3odNMuCAbPFg74SRWWjWBMuMrsr0U",
@@ -113,17 +113,26 @@ const firebaseConfig = {
 // };
 
 //Hotiul 4
+// const firebaseConfig = {
+//   apiKey: "AIzaSyC_bB2WhutoHLD6TC2hLHkqmV27wz7RbZM",
+//   authDomain: "hotiul4.firebaseapp.com",
+//   projectId: "hotiul4",
+//   storageBucket: "hotiul4.appspot.com",
+//   messagingSenderId: "679546932269",
+//   appId: "1:679546932269:web:2864d19a05fc2520a5bca4",
+//   measurementId: "G-3HSSGKJNLZ"
+// };
+
+// Hotiul 5
 const firebaseConfig = {
-  apiKey: "AIzaSyC_bB2WhutoHLD6TC2hLHkqmV27wz7RbZM",
-  authDomain: "hotiul4.firebaseapp.com",
-  projectId: "hotiul4",
-  storageBucket: "hotiul4.appspot.com",
-  messagingSenderId: "679546932269",
-  appId: "1:679546932269:web:2864d19a05fc2520a5bca4",
-  measurementId: "G-3HSSGKJNLZ"
+  apiKey: "AIzaSyBCJzDoazj1YyzJoIC6aiynZ6C_fk01v84",
+  authDomain: "hotiul5-45c01.firebaseapp.com",
+  projectId: "hotiul5-45c01",
+  storageBucket: "hotiul5-45c01.appspot.com",
+  messagingSenderId: "938501227061",
+  appId: "1:938501227061:web:71c5b9405637beedbee77c",
+  measurementId: "G-HP790ECXE3"
 };
-
-
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

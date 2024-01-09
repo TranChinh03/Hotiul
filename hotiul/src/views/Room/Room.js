@@ -159,18 +159,18 @@ export const Room = () => {
     console.log("Type", value);
     if (value != '') {
       if (statusFilter != '') {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.includes(searchKeyword) && item.roomStatus === statusFilter && item.roomType === value))
+        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase()) && item.roomStatus === statusFilter && item.roomType === value))
       }
       else {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.includes(searchKeyword) && item.roomType === value))
+        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase()) && item.roomType === value))
       }
     }
     else {
       if (statusFilter != '') {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.includes(searchKeyword) && item.roomStatus === statusFilter))
+        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase()) && item.roomStatus === statusFilter))
       }
       else {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.includes(searchKeyword)))
+        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase())))
       }
     }
   }
@@ -178,34 +178,34 @@ export const Room = () => {
     setStatusFilter(value);
     if (value != '') {
       if (typeFilter != '') {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.includes(searchKeyword) && item.roomStatus === value && item.roomType === typeFilter))
+        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase()) && item.roomStatus === value && item.roomType === typeFilter))
       }
       else {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.includes(searchKeyword) && item.roomStatus === value))
+        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase()) && item.roomStatus === value))
       }
     }
     else {
       if (typeFilter != '') {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.includes(searchKeyword) && item.roomType === typeFilter))
+        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase()) && item.roomType === typeFilter))
       }
       else {
-        setListRoomFiltered(listRoom.filter(item => item.roomId.includes(searchKeyword)))
+        setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(searchKeyword.toLowerCase())))
       }
     }
   };
   const handleSearchKeywordChange = (event) => {
     setSearchKeyword(event.target.value);
     if (typeFilter == '' && statusFilter == '') {
-      setListRoomFiltered(listRoom.filter(item => item.roomId.includes(event.target.value)));
+      setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(event.target.value.toLowerCase())));
     }
     else if (statusFilter == '') {
-      setListRoomFiltered(listRoom.filter(item => item.roomId.includes(event.target.value) && item.roomType === typeFilter));
+      setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(event.target.value.toLowerCase()) && item.roomType === typeFilter));
     }
     else if (typeFilter == '') {
-      setListRoomFiltered(listRoom.filter(item => item.roomId.includes(event.target.value) && item.roomStatus === statusFilter))
+      setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(event.target.value.toLowerCase()) && item.roomStatus === statusFilter))
     }
     else {
-      setListRoomFiltered(listRoom.filter(item => item.roomId.includes(event.target.value) && item.roomStatus === statusFilter && item.roomType === typeFilter))
+      setListRoomFiltered(listRoom.filter(item => item.roomId.toLowerCase().includes(event.target.value.toLowerCase()) && item.roomStatus === statusFilter && item.roomType === typeFilter))
     }
   }
   const handleRoomClick = (room) => {

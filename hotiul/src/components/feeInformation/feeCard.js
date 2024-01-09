@@ -54,7 +54,6 @@ function FeeCard(props) {
 					Price: Number(state.Price) ?? '',
 					Date: state.Date ?? '',
 				};
-
 				props.handleSaveFeeCard(newData); // Pass the new data to FeeInformation
 				setState({ Name: '', Price: '', Date: '' });
 				props.fetchData();

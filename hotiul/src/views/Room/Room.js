@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
-import RoomItem from "../../components/room/RoomItem";
+import React, { useState, useEffect } from 'react';
+import RoomItem from '../../components/room/RoomItem';
 import { Input, Select } from 'antd';
-import { FaSearch } from "react-icons/fa";
+import { FaSearch } from 'react-icons/fa';
 import '../../../src/components/room/Room.scss';
-import { getData } from "../../controller/getData.ts";
+import { getData } from '../../controller/getData.ts';
 import { updateData } from '../../controller/addData.ts';
-import { areDatesEqualIgnoringTime, convertStringToDate } from "../../utils/appUtils.js";
+import { areDatesEqualIgnoringTime, convertStringToDate } from '../../utils/appUtils.js';
+import { useTranslation } from 'react-i18next';
+
 // const listRoom = [
 //   {
 //     roomId: '101',
@@ -55,100 +57,111 @@ import { areDatesEqualIgnoringTime, convertStringToDate } from "../../utils/appU
 
 // ]
 export const Room = () => {
+	const { t } = useTranslation();
 
+	const [isLoading, setIsLoading] = useState(true);
+	const [listRoom, setListRoom] = useState([]);
+	const [listRoomFiltered, setListRoomFiltered] = useState([]);
+	const [listRoomType, setListRoomType] = useState([]);
 
-  const [isLoading, setIsLoading] = useState(true)
-  const [listRoom, setListRoom] = useState([])
-  const [listRoomFiltered, setListRoomFiltered] = useState([]);
-  const [listRoomType, setListRoomType] = useState([]);
+	// load list room with true status
+	// Available -> Confirm Checkin
+	//    find booking where roomId = currentRoomId
+	//    where currentDate = CheckIn
+	//          status != need clean && != fixing
+	// In Use -> Confirm Checkout
+	//    find booking where roomId = currentRoomId
+	//    where currentDate = CheckOut
 
-  // load list room with true status
-  // Available -> Confirm Checkin 
-  //    find booking where roomId = currentRoomId
-  //    where currentDate = CheckIn
-  //          status != need clean && != fixing
-  // In Use -> Confirm Checkout
-  //    find booking where roomId = currentRoomId
-  //    where currentDate = CheckOut
+	// Need Clean
+	//    find booking where roomId = currentRoomId
+	//    is need clean
+	// In Use
+	//    confirmCheckin < currentDate < confirmCheckout
+	// Fixing
+	//    is fixing
+	// Available
+	//    is available
 
-
-  // Need Clean
-  //    find booking where roomId = currentRoomId
-  //    is need clean
-  // In Use
-  //    confirmCheckin < currentDate < confirmCheckout
-  // Fixing
-  //    is fixing
-  // Available
-  //    is available
-
-  const fetchData = async () => {
-    await Promise.all([
-      getData('/ROOM').then(data => {
-        setListRoom(data.map(item => {
-          return {
-            roomId: item.ID,
-            roomType: item.TypeName,
-            roomStatus: item.Status
-          }
-        }))
-        setListRoomFiltered(data.map(item => {
-          return {
-            roomId: item.ID,
-            roomType: item.TypeName,
-            roomStatus: item.Status
-          }
-        }));
-      })
-    ])
-    await Promise.all(([
-      getData('ROOM_TYPE').then(data => {
-        setListRoomType(data.map(item => {
-          return {
-            label: item.TypeName,
-            value: item.TypeName
-          }
-        }))
-      })
-    ]))
-    setIsLoading(false)
-  }
-  const getRoomById = (listRoom, roomId) => {
-    const foundRoom = listRoom.find(room => room.ID === roomId);
-    if (foundRoom) {
-      return foundRoom;
-    } else {
-      console.warn(`Room with ID ${roomId} not found.`);
-      return null;
-    }
-  };
-  const [loadingCheck, setLoadingCheck] = useState(true);
-  const SetConfirmRoomStatus = async () => {
-    const listBooking = await getData('/BOOKING');
-    const listRoom = await getData('/ROOM');
-    const currentDate = new Date();
-    listBooking.forEach(async (item) => {
-      if (areDatesEqualIgnoringTime(convertStringToDate(item.CheckIn), currentDate)) {
-        const checkRoom = getRoomById(listRoom, item.RoomID);
-        if (checkRoom.Status == 'Available') {
-          console.log('checkRoom', checkRoom);
-          await updateData({ data: { Status: "Confirm Checkin" }, table: "ROOM", id: checkRoom.ID });
-        }
-      }
-      else if (areDatesEqualIgnoringTime(convertStringToDate(item.CheckOut), currentDate)) {
-        const checkRoom = getRoomById(listRoom, item.RoomID);
-        if (checkRoom.Status == 'In Use') {
-          console.log('checkRoom', checkRoom);
-          await updateData({ data: { Status: "Confirm Checkout" }, table: "ROOM", id: checkRoom.ID });
-        }
-      }
-    })
-    fetchData();
-  }
-  useEffect(() => {
-    SetConfirmRoomStatus();
-  }, [loadingCheck])
-
+	const fetchData = async () => {
+		await Promise.all([
+			getData('/ROOM').then(data => {
+				setListRoom(
+					data.map(item => {
+						return {
+							roomId: item.ID,
+							roomType: item.TypeName,
+							roomStatus: item.Status,
+						};
+					}),
+				);
+				setListRoomFiltered(
+					data.map(item => {
+						return {
+							roomId: item.ID,
+							roomType: item.TypeName,
+							roomStatus: item.Status,
+						};
+					}),
+				);
+			}),
+		]);
+		await Promise.all([
+			getData('ROOM_TYPE').then(data => {
+				setListRoomType(
+					data.map(item => {
+						return {
+							label: item.TypeName,
+							value: item.TypeName,
+						};
+					}),
+				);
+			}),
+		]);
+		setIsLoading(false);
+	};
+	const getRoomById = (listRoom, roomId) => {
+		const foundRoom = listRoom.find(room => room.ID === roomId);
+		if (foundRoom) {
+			return foundRoom;
+		} else {
+			console.warn(`Room with ID ${roomId} not found.`);
+			return null;
+		}
+	};
+	const [loadingCheck, setLoadingCheck] = useState(true);
+	const SetConfirmRoomStatus = async () => {
+		const listBooking = await getData('/BOOKING');
+		const listRoom = await getData('/ROOM');
+		const currentDate = new Date();
+		listBooking.forEach(async item => {
+			if (areDatesEqualIgnoringTime(convertStringToDate(item.CheckIn), currentDate)) {
+				const checkRoom = getRoomById(listRoom, item.RoomID);
+				if (checkRoom.Status == 'Available') {
+					console.log('checkRoom', checkRoom);
+					await updateData({
+						data: { Status: 'Confirm Checkin' },
+						table: 'ROOM',
+						id: checkRoom.ID,
+					});
+				}
+			} else if (areDatesEqualIgnoringTime(convertStringToDate(item.CheckOut), currentDate)) {
+				const checkRoom = getRoomById(listRoom, item.RoomID);
+				if (checkRoom.Status == 'In Use') {
+					console.log('checkRoom', checkRoom);
+					await updateData({
+						data: { Status: 'Confirm Checkout' },
+						table: 'ROOM',
+						id: checkRoom.ID,
+					});
+				}
+			}
+		});
+		fetchData();
+	};
+	useEffect(() => {
+		SetConfirmRoomStatus();
+	}, [loadingCheck]);
 
   useEffect(() => { }, [listRoomFiltered])
   const [typeFilter, setTypeFilter] = useState('');

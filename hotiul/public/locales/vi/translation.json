@@ -105,15 +105,17 @@
 		"placeHolder": "Chọn Ngôn ngữ"
 	},
 	"sidebar": {
-		"home": "Trang chủ",
-		"booking": "Đặt phòng",
+		"home": "Trang Chủ",
+		"booking": "Đặt Phòng",
 		"room": "Phòng",
-		"refund": "Hoàn trả",
-		"customer": "Khách hàng",
-		"monthlyFee": "Phí hàng tháng",
-		"service": "Dịch vụ",
-		"Staff": "Nhân viên",
-		"statistic": "Thống kê"
+		"roomtype": "Loại Phòng",
+		"refund": "Hoàn Trả",
+		"customer": "Khách Hàng",
+		"monthlyFee": "Phí Hàng Tháng",
+		"services": "Dịch Vụ",
+		"staff": "Nhân Viên",
+		"statistic": "Thống Kê",
+		"logout": "Đăng xuất"
 	},
 	"button": {
 		"filter": "Bộ lọc",

@@ -8,8 +8,10 @@ import { Select, Spin } from 'antd';
 import { IMG_logo } from '../../assets/imgs';
 import { LoadingOutlined } from '@ant-design/icons';
 import { getData } from '../../controller/getData.ts';
+import { useTranslation } from 'react-i18next';
 
 export const Statistic = () => {
+	const { t } = useTranslation();
 	const [isLoading, setIsLoading] = useState(true);
 	const [todayCheckIn, setTodayCheckIn] = useState([]);
 	const [todayCheckOut, setTodayCheckOut] = useState([]);
@@ -79,32 +81,32 @@ export const Statistic = () => {
 				const roomStatusMap = data.map(x => x.Status);
 				setRoomData([
 					{
-						label: 'Available',
+						label: t('statistic.available'),
 						value: roomStatusMap.filter(x => x === 'Available').length,
 						color: '#49E17C',
 					},
 					{
-						label: 'Confirm Checkin ',
+						label: t('statistic.confirmCheckin'),
 						value: roomStatusMap.filter(x => x === 'Confirm Checkin').length,
 						color: '#90F56C',
 					},
 					{
-						label: 'In Use',
+						label: t('statistic.inUse'),
 						value: roomStatusMap.filter(x => x === 'In Use').length,
 						color: '#FF9C9C',
 					},
 					{
-						label: 'Confirm Checkout',
+						label: t('statistic.confirmCheckout'),
 						value: roomStatusMap.filter(x => x === 'Confirm Checkout').length,
 						color: '#FF973F',
 					},
 					{
-						label: 'Cleaning',
+						label: t('statistic.Cleaning'),
 						value: roomStatusMap.filter(x => x === 'Cleaning'),
 						color: '#F8DD4E',
 					},
 					{
-						label: 'Fixing',
+						label: t('statistic.fixing'),
 						value: roomStatusMap.filter(x => x === 'Fixing').length,
 						color: '#88DDFF',
 					},
@@ -141,18 +143,18 @@ export const Statistic = () => {
 	}, []);
 
 	const xLabels = [
-		'JAN',
-		'FEB',
-		'MAR',
-		'APR',
-		'MAY',
-		'JUN',
-		'JUL',
-		'AUG',
-		'SEP',
-		'OCT',
-		'NOV',
-		'DEC',
+		t('home.jan'),
+		t('home.feb'),
+		t('home.mar'),
+		t('home.apr'),
+		t('home.may'),
+		t('home.jun'),
+		t('home.jul'),
+		t('home.aug'),
+		t('home.sep'),
+		t('home.oct'),
+		t('home.nov'),
+		t('home.dec'),
 	];
 
 	const [overallRevenue, setOverallRevenue] = useState([0]);
@@ -258,11 +260,11 @@ export const Statistic = () => {
 						<tr>
 							<td>
 								<div className={styles.guestContainer}>
-									<p className={styles.title}>Today guest</p>
+									<p className={styles.title}>{t('statistic.todayGuest')}</p>
 									<div className={styles.guestDetails}>
 										<div>
 											<p>{todayCheckIn.length}</p>
-											<p>Checkin</p>
+											<p>{t('statistic.checkin')}</p>
 											<div className={styles.scrollContainer}>
 												{todayCheckIn.map(value => {
 													return (
@@ -285,7 +287,7 @@ export const Statistic = () => {
 										</div>
 										<div>
 											<p style={{ color: '#FF5C00' }}>{todayCheckOut.length}</p>
-											<p style={{ color: '#FF5C00' }}>Checkout</p>
+											<p style={{ color: '#FF5C00' }}>{t('statistic.checkout')}</p>
 											<div className={styles.scrollContainer}>
 												{todayCheckOut.map(value => {
 													return (
@@ -307,7 +309,7 @@ export const Statistic = () => {
 										</div>
 										<div>
 											<p style={{ color: '#0C7373' }}>{newBooking.length}</p>
-											<p style={{ color: '#0C7373' }}>New Bookings</p>
+											<p style={{ color: '#0C7373' }}>{t('statistic.newBooking')}</p>
 											<div className={styles.scrollContainer}>
 												{newBooking.map(value => {
 													return (
@@ -334,7 +336,7 @@ export const Statistic = () => {
 							<td>
 								<div style={{ width: '20vw' }}>
 									<div className={styles.bookingContainer}>
-										<p className={styles.title}>Bookings</p>
+										<p className={styles.title}>{t('statistic.bookings')}</p>
 										<p
 											style={{ padding: '0 15px', fontSize: '30px', fontWeight: 'normal' }}
 											className={styles.title}>
@@ -343,7 +345,7 @@ export const Statistic = () => {
 										<p
 											style={{ padding: '0 15px', fontWeight: 'normal' }}
 											className={styles.title}>
-											this month
+											{t('statistic.thisMonth')}
 										</p>
 										<div style={{ width: '20vw', height: '25vh' }}>
 											<PieChart
@@ -381,8 +383,10 @@ export const Statistic = () => {
 												alignItems: 'center',
 											}}>
 											<img src={IC_wallet} />
-											<p style={{ fontSize: '16px', color: '#0077B6' }}>Revenue</p>
-											<p style={{ fontSize: '14px', color: '#0077B6' }}>This month</p>
+											<p style={{ fontSize: '16px', color: '#0077B6' }}>{t('revenue')}</p>
+											<p style={{ fontSize: '14px', color: '#0077B6' }}>
+												{t('statistic.thisMonth')}
+											</p>
 										</div>
 										<div
 											style={{
@@ -405,7 +409,7 @@ export const Statistic = () => {
 										<p
 											className={styles.title}
 											style={{ color: '#0096C7' }}>
-											Room Status
+											{t('statistic.roomStatus')}
 										</p>
 										<p
 											style={{
@@ -420,7 +424,7 @@ export const Statistic = () => {
 										<p
 											style={{ padding: '0 15px', fontWeight: 'normal', color: '#0096C7' }}
 											className={styles.title}>
-											rooms
+											{t('statistic.rooms')}
 										</p>
 										<div style={{ width: '20vw', height: '25vh' }}>
 											<PieChart
@@ -458,8 +462,10 @@ export const Statistic = () => {
 												alignItems: 'center',
 											}}>
 											<img src={IC_wallet2} />
-											<p style={{ fontSize: '16px', color: '#FF973F' }}>Fee</p>
-											<p style={{ fontSize: '14px', color: '#FF973F' }}>This month</p>
+											<p style={{ fontSize: '16px', color: '#FF973F' }}>{t('fee.feeCard')}</p>
+											<p style={{ fontSize: '14px', color: '#FF973F' }}>
+												{t('statistic.thisMonth')}
+											</p>
 										</div>
 										<div
 											style={{
@@ -481,7 +487,7 @@ export const Statistic = () => {
 							<td>
 								<div className={styles.revenueDiagram}>
 									<div style={{ width: '100%', display: 'flex', justifyContent: 'space-around' }}>
-										<p className={styles.title}>Revenue dynamics</p>
+										<p className={styles.title}>{t('statistic.revenueDynamics')}</p>
 										<Select
 											type="text"
 											bordered={false}
@@ -496,7 +502,7 @@ export const Statistic = () => {
 										width={600}
 										height={300}
 										series={[
-											{ data: revenueData, label: 'Revenue', id: 'revenue', color: '#00B4D8' },
+											{ data: revenueData, label: t('revenue'), id: 'revenue', color: '#00B4D8' },
 										]}
 										xAxis={[{ data: xLabels, scaleType: 'band' }]}
 									/>
@@ -505,7 +511,7 @@ export const Statistic = () => {
 							<td colspan="2">
 								<div className={styles.overallSales}>
 									<div style={{ width: '100%', display: 'flex', justifyContent: 'space-around' }}>
-										<p className={styles.title}>Overall sales</p>
+										<p className={styles.title}>{t('statistic.overallSales')}</p>
 										<Select
 											type="text"
 											bordered={false}
@@ -520,8 +526,8 @@ export const Statistic = () => {
 										width={700}
 										height={300}
 										series={[
-											{ data: overallRevenue, label: 'Revenue', color: '#00B4D8' },
-											{ data: overallFee, label: 'Fee', color: '#FF973F' },
+											{ data: overallRevenue, label: t('revenue'), color: '#00B4D8' },
+											{ data: overallFee, label: t('fee.feeCard'), color: '#FF973F' },
 										]}
 										xAxis={[{ scaleType: 'point', data: xLabels }]}
 									/>

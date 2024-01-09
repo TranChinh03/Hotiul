@@ -269,7 +269,7 @@ export const Room = () => {
 							onChange={handleSearchKeywordChange}
 							className="w-64 drop-shadow-xl rounded-2xl border-gray-100"
 							size="large"
-							placeholder="Search"
+							placeholder={t('room.search')}
 							prefix={
 								<FaSearch
 									className="mr-2"

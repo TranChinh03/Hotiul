@@ -26,3 +26,4 @@ export { default as IC_Calendar } from "./IC_Calendar.svg";
 export { default as IC_eye } from "./IC_eye.svg";
 export { default as IC_wallet } from "./IC_wallet.svg";
 export { default as IC_wallet2 } from "./IC_wallet2.svg";
+export { default as IC_circleDoor } from "./IC_circleDoor.svg";

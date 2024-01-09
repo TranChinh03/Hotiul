@@ -4,6 +4,8 @@ const FEE = [
 	{
 		ID: 'F001',
 		Name: 'Month 1 Fee',
+		Year: 2023,
+		Month: 1,
 		Details: [
 			{
 				Name: 'Water',
@@ -18,6 +20,8 @@ const FEE = [
 	{
 		ID: 'F002',
 		Name: 'Month 2 Fee',
+		Year: 2023,
+		Month: 2,
 		Details: [
 			{
 				Name: 'Water',
@@ -32,6 +36,8 @@ const FEE = [
 	{
 		ID: 'F003',
 		Name: 'Month 3 Fee',
+		Year: 2023,
+		Month: 3,
 		Details: [
 			{
 				Name: 'Water',
@@ -46,6 +52,8 @@ const FEE = [
 	{
 		ID: 'F004',
 		Name: 'Month 4 Fee',
+		Year: 2023,
+		Month: 4,
 		Details: [
 			{
 				Name: 'Water',
@@ -60,6 +68,8 @@ const FEE = [
 	{
 		ID: 'F005',
 		Name: 'Month 5 Fee',
+		Year: 2023,
+		Month: 5,
 		Details: [
 			{
 				Name: 'Water',

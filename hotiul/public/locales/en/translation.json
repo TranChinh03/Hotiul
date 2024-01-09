@@ -159,5 +159,9 @@
   "profile": {
     "changeProfile": "Change Profile",
     "changePassword": "Change Password"
-  }
+  },
+  "dashboard": {
+    "todayStatistic": "Today's statistic"
+  },
+  "revenue": "Revenue"
 }

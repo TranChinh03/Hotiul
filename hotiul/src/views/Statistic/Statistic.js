@@ -86,7 +86,7 @@ export const Statistic = () => {
                             height: "30px",
                             fontSize: "16px",
                             color: "#FF5C00",
-                          }} className="checkInItem">{value}</div>
+                          }}>{value}</div>
                         )
                       })}
                     </div>
@@ -221,7 +221,7 @@ export const Statistic = () => {
                   width={600}
                   height={300}
                   series={[
-                    { data: revenueData, label: 'Revenue', id: 'revenue' },
+                    { data: revenueData, label: 'Revenue', id: 'revenue', color: '#00B4D8' },
                   ]}
                   xAxis={[{ data: xLabels, scaleType: 'band' }]}
                 />

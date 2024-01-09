@@ -5,7 +5,7 @@ import { addData, updateData } from '../../controller/addData.ts';
 import { createID } from '../../utils/appUtils.js';
 import Modal from 'antd/es/modal/Modal';
 import FeeCard from '../../components/feeInformation/feeCard.js';
-
+import * as ReactDOM from 'react-dom';
 import {
 	IC_backArrow,
 	IC_navDetail,
@@ -33,39 +33,38 @@ function FeeInformation(props) {
 	const [tableData, setTableData] = useState([]);
 	console.log('dv', dataValue);
 
-	const [isOpenFee, setIsOpenFee] = useState(false);
 	useEffect(() => {
 		setDataValue(props.data);
 		console.log('UE2', props.data);
-		//Update tableData when dataValue changes
+		// Update tableData when dataValue changes
 		if (!props.data) {
 			setTableData([]);
 			return;
 		}
 		if (props.data.detail) {
 			const newTableData = props.data.detail.map(item => ({
-				Id: item.Id || '——',
-				Name: item.Name || '——',
-				Date: item.Date || '——',
-				Price: item.Price || '——',
+				Id: item?.ID,
+				Name: item?.Name,
+				Date: item?.Date,
+				Price: item?.Price,
 			}));
 			setTableData(newTableData);
 		}
 	}, [props.data]);
-
+	useEffect(() => {
+		UpdateTable();
+	}, [dataValue]);
 	function UpdateTable() {
-		const newTableData = dataValue.detail.map(item => ({
-			Id: item.Id || '——',
-			Name: item.Name || '——',
-			Date: item.Date || '——',
-			Price: item.Price || '——',
-		}));
-		setTableData(newTableData);
+		if (dataValue.detail) {
+			const newTableData = dataValue.detail.map(item => ({
+				Id: item?.ID,
+				Name: item?.Name,
+				Date: item?.Date,
+				Price: item?.Price,
+			}));
+			setTableData(newTableData);
+		} else setTableData([]);
 	}
-	function handleOpenFeeCard() {
-		setIsOpenFee(true);
-	}
-
 	const [edit, setEdit] = useState({
 		fee: '',
 		detail: [],
@@ -73,13 +72,12 @@ function FeeInformation(props) {
 
 	function handleChange(evt) {
 		const value = evt.target.value;
-		setEdit({
-			...edit,
+		setDataValue({
+			...dataValue,
 			fee: value,
 		});
-		//setDataValue({ ...dataValue, fee: edit.fee });
+		setEdit({ ...edit, fee: dataValue.fee });
 	}
-
 	function handleSave() {
 		const feeID = createID({ prefix: 'F' });
 		try {
@@ -90,7 +88,7 @@ function FeeInformation(props) {
 			};
 			if (dataValue && dataValue.id) {
 				updateData({
-					data: { Name: edit.fee, Details: dataValue.detail },
+					data: { Name: dataValue.fee, Details: dataValue.detail },
 					table: 'FEE',
 					id: dataValue.id,
 				});
@@ -111,10 +109,24 @@ function FeeInformation(props) {
 
 	function handleSaveFeeCard(newData) {
 		console.log('New data from FeeCard:', newData);
-		setDataValue({ ...dataValue, detail: [...(dataValue?.detail ?? []), newData] });
+		handleClose();
+		const result = [];
+		var flag = false;
+		if (dataValue.detail.length == 0) result.push(newData);
+		dataValue.detail.forEach(element => {
+			element.Name = element.Name ?? '';
+			element.Price = element.Price ?? '';
+			element.Date = element.Date ?? '';
+			if (element.ID != newData.ID) result.push(element);
+			else {
+				result.push(newData);
+				flag = true;
+			}
+		});
+		if (!flag) result.push(newData);
+		setDataValue({ ...dataValue, detail: result });
 		UpdateTable();
 	}
-
 	function handleCancel() {
 		props.setOpen(false);
 		setEdit({
@@ -125,9 +137,11 @@ function FeeInformation(props) {
 	}
 	const [pageIndex, setPageIndex] = useState(1);
 	const [totalPage, setTotalPage] = useState(
-		dataValue ? Math.ceil(dataValue.detail.length / 9) : 0,
+		dataValue ? Math.ceil(dataValue.detail?.length ?? 0 / 9) : 0,
 	);
-
+	function handleClose() {
+		setSelectedData(null);
+	}
 	return (
 		<>
 			<div className={styles.container}>
@@ -161,7 +175,7 @@ function FeeInformation(props) {
 						className={styles.inputInfo}
 						type="text"
 						name="fee"
-						value={edit.fee}
+						value={dataValue.fee}
 						onChange={e => handleChange(e)}
 						required></input>
 				</div>
@@ -207,7 +221,6 @@ function FeeInformation(props) {
 										<td
 											className={styles.col}
 											onClick={() => {
-												setIsOpenFee(true);
 												setSelectedData(val);
 											}}>
 											View Full Detail{' '}
@@ -227,7 +240,7 @@ function FeeInformation(props) {
 						<>
 							<p className=" text-mainColor pt-5">
 								Showing <strong> 1 - {totalPage} </strong> results of{' '}
-								<strong>{dataValue.detail.length}</strong>
+								<strong>{dataValue.detail?.length ?? 0}</strong>
 							</p>
 							<div className="flex justify-around">
 								<button
@@ -235,10 +248,7 @@ function FeeInformation(props) {
 										if (pageIndex > 1) setPageIndex(pageIndex - 1);
 									}}
 									className={styles.btnnav}>
-									<img
-										src={IC_backArrow}
-										alt="vl"
-									/>
+									<img src={IC_backArrow} />
 								</button>
 								<p className="text-mainColor px-3">
 									Page <strong>{pageIndex}</strong>
@@ -248,10 +258,7 @@ function FeeInformation(props) {
 										if (pageIndex < totalPage) setPageIndex(pageIndex + 1);
 									}}
 									className={styles.btnnav}>
-									<img
-										src={IC_nextArrow}
-										alt="zlzlz"
-									/>
+									<img src={IC_nextArrow} />
 								</button>
 							</div>
 						</>
@@ -264,15 +271,31 @@ function FeeInformation(props) {
 					className="flex w-full items-start justify-between px-5">
 					<ButtonAdd
 						onClick={() => {
-							handleOpenFeeCard();
-							setSelectedData(null);
+							setSelectedData({ name: '', price: '' });
 						}}
 						text={'Add Fee'}
 					/>
 				</div>
 			</div>
+			{tableData.map((value, index) => {
+				return (
+					<Modal
+						key={index}
+						open={selectedData?.Id == value.Id}
+						width={'90%'}
+						closeIcon={false}
+						footer={false}
+						style={{ backgroundColor: 'transparent' }}>
+						<FeeCard
+							detailValue={selectedData}
+							fetchData={props.fetchData}
+							closeEvt={handleClose}
+							handleSaveFeeCard={handleSaveFeeCard}></FeeCard>
+					</Modal>
+				);
+			})}
 			<Modal
-				open={isOpenFee}
+				open={selectedData && selectedData.Id == undefined}
 				width={'90%'}
 				closeIcon={false}
 				footer={false}
@@ -280,7 +303,7 @@ function FeeInformation(props) {
 				<FeeCard
 					detailValue={selectedData}
 					fetchData={props.fetchData}
-					closeEvt={() => setIsOpenFee(false)}
+					closeEvt={handleClose}
 					handleSaveFeeCard={handleSaveFeeCard}></FeeCard>
 			</Modal>
 		</>

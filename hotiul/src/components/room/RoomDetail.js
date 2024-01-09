@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '@mui/material/Modal';
 import { Box } from '@mui/material';
 import { Button } from 'antd';
@@ -84,6 +84,21 @@ function RoomDetail(props) {
         updateData({ data: roomData, table: "ROOM", id: props.roomId });
         handleCloseDetailModal();
         props.updateStatus("Fixing");
+    }
+    const [customerOfRoom, setCustomerOfRoom] = useState();
+    const [bookingOfRoom, setBookingOfRoom] = useState();
+    useEffect(() => {
+        if (props.roomStatus == 'In Use' || props.roomStatus == 'Confirm Checkin' || props.roomStatus == 'Confirm Checkout') {
+            fetchCustomerAndBookingForRoom();
+        }
+    }, []);
+    const fetchCustomerAndBookingForRoom = async () => {
+        const listBooking = await getData("/BOOKING");
+        const currentDate = new Date();
+        const bookingOfRoom = listBooking.find((item) => (item.RoomID == props.roomId && convertStringToDate(item.CheckIn) < currentDate && convertStringToDate(item.CheckOut) > currentDate));
+        if (bookingOfRoom) {
+            console.log('bookingOfRoom', bookingOfRoom);
+        }
     }
     return (
         <div>

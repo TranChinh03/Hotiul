@@ -15,13 +15,16 @@ import { IC_backArrow, IC_delete, IC_edit, IC_nextArrow, IC_sort } from '../../a
 import Combobox from '../../components/combobox/combobox';
 import { getData } from '../../controller/getData.ts';
 
+import { useTranslation } from 'react-i18next';
+
 export const Services = () => {
+	const { t } = useTranslation();
 	const column = [
 		{ label: 'ID', accessor: 'id' },
-		{ label: 'Service', accessor: 'service' },
-		{ label: 'Price', accessor: 'price' },
-		{ label: 'Available', accessor: 'available' },
-		{ label: 'Detail', accessor: 'detail' },
+		{ label: t('service.service'), accessor: 'service' },
+		{ label: t('service.price'), accessor: 'price' },
+		{ label: t('service.available'), accessor: 'available' },
+		{ label: t('service.detail'), accessor: 'detail' },
 	];
 
 	const [selectedData, setSelectedData] = useState(null);
@@ -177,7 +180,8 @@ export const Services = () => {
 				</div>
 				<div className={styles.con1}>
 					<p className=" text-mainColor pt-5">
-						Showing <strong> 1 - {totalPage} </strong> results of <strong>{data.length}</strong>
+						{t('service.show')} <strong> 1 - {totalPage} </strong> {t('service.result')}{' '}
+						<strong>{data.length}</strong>
 					</p>
 					<div className="flex justify-around">
 						<button
@@ -191,7 +195,7 @@ export const Services = () => {
 							/>
 						</button>
 						<p className="text-mainColor px-3">
-							Page <strong>{pageIndex}</strong>
+							{t('service.page')} <strong>{pageIndex}</strong>
 						</p>
 						<button
 							onClick={() => {

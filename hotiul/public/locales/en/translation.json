@@ -113,12 +113,14 @@
 		"home": "Home",
 		"booking": "Booking",
 		"room": "Room",
+		"roomtype": "Room Type",
 		"refund": "Refund",
 		"customer": "Customer",
 		"monthlyFee": "Monthly Fee",
-		"service": "Services",
-		"Staff": "Staff",
-		"statistic": "Statistic"
+		"services": "Services",
+		"staff": "Staff",
+		"statistic": "Statistic",
+		"logout": "Log Out"
 	},
 
 	"button": {
@@ -217,7 +219,8 @@
 		"all": "All",
 		"page": "Page",
 		"result": "results of",
-		"show": "Showing"
+		"show": "Showing",
+		"viewDetail": "View Full Detail"
 	},
 
 	"staff": {
@@ -283,14 +286,19 @@
 		"id": "ID",
 		"roomTypeName": "Room Type Name",
 		"numberRoom": "Number of room",
-		"numberPeopler": "Number of people",
+		"numberPeople": "Number of people",
 		"detail": "Detail",
+		"viewDetail": "View Full Detail",
 		"null": "Null",
 		"all": "All",
 		"page": "Page",
 		"result": "results of",
 		"show": "Showing",
-		"addRoomType": "Add Room Type"
+		"addRoomType": "Add Room Type",
+		"enterName": "Enter room type name",
+		"price": "Price",
+		"person": "Person",
+		"perRoom": "per room"
 	},
 
 	"search": "Search",
@@ -302,7 +310,8 @@
 		"detail": "Detail",
 		"page": "Page",
 		"result": "results of",
-		"show": "Showing"
+		"show": "Showing",
+		"viewDetail": "View Full Detail"
 	},
 
 	"home": {
@@ -319,7 +328,11 @@
 		"nov": "NOV",
 		"dec": "DEC",
 		"todayStatistic": "Today's statistic",
-		"todayActivity": "Today's activities"
+		"todayActivity": "Today's activities",
+		"checkin": "Checkin",
+		"checkout": "Checkout",
+		"guest": "Guest",
+		"booking": "Bookings"
 	},
 
 	"refund": {
@@ -334,7 +347,9 @@
 		"viewDetail": "View Full Detail",
 		"page": "Page",
 		"result": "results of",
-		"show": "Showing"
+		"show": "Showing",
+		"refundStatus": "Refund Status",
+		"all": "All"
 	},
 
 	"statistic": {
@@ -397,6 +412,7 @@
 	},
 
 	"on": "on",
+
 	"profile": {
 		"changeProfile": "Change Profile",
 		"changePassword": "Change Password"

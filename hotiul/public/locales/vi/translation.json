@@ -105,15 +105,17 @@
 		"placeHolder": "Chọn Ngôn ngữ"
 	},
 	"sidebar": {
-		"home": "Trang chủ",
-		"booking": "Đặt phòng",
+		"home": "Trang Chủ",
+		"booking": "Đặt Phòng",
 		"room": "Phòng",
-		"refund": "Hoàn trả",
-		"customer": "Khách hàng",
-		"monthlyFee": "Phí hàng tháng",
-		"service": "Dịch vụ",
-		"Staff": "Nhân viên",
-		"statistic": "Thống kê"
+		"roomtype": "Loại Phòng",
+		"refund": "Hoàn Trả",
+		"customer": "Khách Hàng",
+		"monthlyFee": "Phí Hàng Tháng",
+		"services": "Dịch Vụ",
+		"staff": "Nhân Viên",
+		"statistic": "Thống Kê",
+		"logout": "Đăng xuất"
 	},
 	"button": {
 		"filter": "Bộ lọc",
@@ -203,7 +205,8 @@
 		"all": "Tất cả",
 		"page": "Trang",
 		"result": "kết quả của",
-		"show": "Hiển thị"
+		"show": "Hiển thị",
+		"viewDetail": "Xem đầy đủ chi tiết"
 	},
 	"staff": {
 		"phoneNumber": "Số điện thoại",
@@ -266,14 +269,19 @@
 		"id": "ID",
 		"roomTypeName": "Tên Loại Phòng",
 		"numberRoom": "Số lượng phòng",
-		"numberPeopler": "Số lượng người",
+		"numberPeople": "Số lượng người",
 		"detail": "Chi tiết",
+		"viewDetail": "Xem chi tiết đầy đủ",
 		"null": "Trống",
 		"all": "Tất cả",
 		"page": "Trang",
 		"result": "kết quả của",
 		"show": "Hiển thị",
-		"addRoomType": "Thêm Loại Phòng"
+		"addRoomType": "Thêm Loại Phòng",
+		"enterName": "Nhập tên phòng",
+		"price": "Giá",
+		"person": "Người",
+		"perRoom": "mỗi phòng"
 	},
 	"search": "Tìm kiếm",
 	"service": {
@@ -284,7 +292,8 @@
 		"detail": "Chi tiết",
 		"page": "Trang",
 		"result": "kết quả của",
-		"show": "Hiển thị"
+		"show": "Hiển thị",
+		"viewDetail": "Xem chi tiết đầy đủ"
 	},
 	"home": {
 		"jan": "THG 1",
@@ -300,7 +309,11 @@
 		"nov": "THG 11",
 		"dec": "THG 12",
 		"todayStatistic": "Thống kê hôm nay",
-		"todayActivity": "Hoạt động hôm nay"
+		"todayActivity": "Hoạt động hôm nay",
+		"checkin": "Nhận phòng",
+		"checkout": "Trả phòng",
+		"guest": "Khách",
+		"booking": "Đặt phòng"
 	},
 	"refund": {
 		"incomplete": "Chưa hoàn thành",
@@ -314,7 +327,9 @@
 		"viewDetail": "Xem chi tiết đầy đủ",
 		"page": "Trang",
 		"result": "kết quả của",
-		"show": "Hiển thị"
+		"show": "Hiển thị",
+		"refundStatus": "Trạng thái Hoàn trả",
+		"all": "Tất cả"
 	},
 	"statistic": {
 		"jan": "THG 1",

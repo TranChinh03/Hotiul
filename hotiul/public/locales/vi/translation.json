@@ -269,8 +269,9 @@
 		"id": "ID",
 		"roomTypeName": "Tên Loại Phòng",
 		"numberRoom": "Số lượng phòng",
-		"numberPeopler": "Số lượng người",
+		"numberPeople": "Số lượng người",
 		"detail": "Chi tiết",
+		"viewDetail": "Xem chi tiết đầy đủ",
 		"null": "Trống",
 		"all": "Tất cả",
 		"page": "Trang",
@@ -291,7 +292,8 @@
 		"detail": "Chi tiết",
 		"page": "Trang",
 		"result": "kết quả của",
-		"show": "Hiển thị"
+		"show": "Hiển thị",
+		"viewDetail": "Xem chi tiết đầy đủ"
 	},
 	"home": {
 		"jan": "THG 1",

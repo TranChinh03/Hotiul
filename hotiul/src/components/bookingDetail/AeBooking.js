@@ -3,9 +3,11 @@ import styles from "./bookingInformation.module.scss";
 import { IC_Calendar, IC_closebutton, IC_delete } from "../../assets/icons";
 import BtnAdd from "../profileCustomer/btnAdd";
 import BtnSee from "../profileCustomer/btnSee";
-import { DatePicker, Select } from "antd";
+import { DatePicker, Select, message } from "antd";
 import { getData } from "../../controller/getData.ts";
 import dayjs from "dayjs";
+import { addData } from "../../controller/addData.ts";
+import { createID } from "../../utils/appUtils.js";
 
 export const AeBooking = (props) => {
   const today = new Date().toLocaleDateString("en-GB");
@@ -15,6 +17,7 @@ export const AeBooking = (props) => {
   const [roomList, setRoomList] = useState([]);
 
   const [bookings, setBookings] = useState([]);
+  const [services, setServices] = useState([]);
 
   //value
   const [roomtype, setRoomType] = useState("");
@@ -34,9 +37,10 @@ export const AeBooking = (props) => {
   );
   const [price, setPrice] = useState(props.booking?.Total ?? "");
 
-  const [customer, setCustomer] = useState(props.customer?.Name ?? "");
-  const [ctzID, setCtzID] = useState(props.customer?.CitizenID ?? "");
-  const [phone, setPhone] = useState(props.customer?.Phone ?? "");
+  const [customer, setCustomer] = useState("");
+  const [ctzID, setCtzID] = useState("");
+  const [phone, setPhone] = useState("");
+  const [id, setID] = useState("");
   const column = [
     { label: "Service", accessor: "service" },
     { label: "Unit Price", accessor: "unit" },
@@ -75,13 +79,6 @@ export const AeBooking = (props) => {
             };
           })
         );
-        setRoomList(
-          roomtype[0].Rooms.map((item) => {
-            return {
-              value: item,
-            };
-          })
-        );
       }),
     ]);
     await Promise.all([
@@ -94,6 +91,114 @@ export const AeBooking = (props) => {
   useEffect(() => {
     fetchData();
   });
+
+  useEffect(() => {
+    setCustomer(props.customer.Name);
+    setCtzID(props.customer.CitizenID);
+    setPhone(props.customer.Phone);
+    setID(props.customer.ID);
+  }, [props.customer]);
+
+  function convertToDate(dateString) {
+    //  Convert a "dd/MM/yyyy" string into a Date object
+    let d = dateString.split("/");
+    let dat = new Date(d[1] + "/" + d[0] + "/" + d[2]);
+    return dat;
+  }
+
+  function handleAdd() {
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    console.log("adding");
+    const bookingID = createID({ prefix: "B" });
+    if (ctzID === "" || phone === "" || customer === "") {
+      message.error("Please enter customer information");
+      return;
+    }
+    if (roomtype === "" || roomID === "") {
+      message.error("Please enter booking information");
+      return;
+    }
+    try {
+      const newData = {
+        ID: bookingID,
+        CustomerName: customer,
+        CustomerID: props.customer.ID,
+        CitizenID: ctzID,
+        Phone: phone,
+        Service: [],
+        RoomID: roomID,
+        CheckIn: checkin.format("MM/DD/YYYY").toString(),
+        CheckOut: checkout.format("MM/DD/YYYY").toString(),
+        isCancel: false,
+        PaymentStatus: "Unpaid",
+        Price: price,
+        CreateAt: new Date(today).toLocaleDateString("en-GB", options),
+        RoomType: {
+          TypeName: roomtype,
+          NumPerson: people,
+        },
+      };
+      console.log(newData);
+      addData({ data: newData, table: "BOOKING", id: bookingID });
+      //props.onClose();
+    } catch (err) {
+      console.log("Error adding data", err);
+      return;
+    }
+  }
+
+  function checkDate() {
+    var tempCin = checkin.format("MM/DD/YYYY").toString();
+    var tempCout = checkout.format("MM/DD/YYYY").toString();
+    console.log(new Date(tempCin));
+    console.log(new Date(tempCout));
+    if (new Date(tempCin) > new Date(tempCout)) return false;
+    return true;
+  }
+
+  function checkAvailable(e) {
+    var temp = [];
+    fullData.map((item) => {
+      console.log("bk", bookings);
+      if (item.TypeName === e) {
+        setPeople(item.NumPerson);
+        var tempCin = checkin.format("MM/DD/YYYY").toString();
+        var tempCout = checkout.format("MM/DD/YYYY").toString();
+
+        item.Rooms.forEach((element) => {
+          bookings.forEach((bk) => {
+            if (bk.RoomID === element) {
+              console.log("exist", element);
+              if (
+                (new Date(tempCin) <= convertToDate(bk.CheckIn) &&
+                  convertToDate(bk.CheckIn) <= new Date(tempCout)) ||
+                (new Date(tempCin) <= convertToDate(bk.CheckOut) &&
+                  convertToDate(bk.CheckOut) <= new Date(tempCout))
+              ) {
+                temp.push(element);
+                console.log(
+                  new Date(tempCin),
+                  convertToDate(bk.CheckIn),
+                  new Date(tempCout),
+
+                  convertToDate(bk.CheckOut)
+                );
+              }
+            }
+          });
+        });
+        console.log(temp);
+        var list = item.Rooms.filter((x) => !temp.includes(x));
+        setRoomList(
+          list.map((item) => {
+            return {
+              value: item,
+            };
+          })
+        );
+      }
+    });
+  }
 
   return (
     <div className={styles.container}>
@@ -117,9 +222,9 @@ export const AeBooking = (props) => {
           </button>
           <button
             onClick={() => {
-              // handleAction();
-              props.onClose();
-              props.onEdit();
+              handleAdd();
+              //props.onClose();
+              //props.onEdit();
             }}
             className={styles.button}
             style={{ backgroundColor: "#66EB8B" }}
@@ -141,11 +246,19 @@ export const AeBooking = (props) => {
               onClick={() => setOpenCheckin(!openCheckin)}
               label="Controlled picker"
               value={checkin}
-              onChange={(newValue) => setCheckin(newValue)}
+              onChange={(newValue) => {
+                setCheckin(newValue);
+                if (!checkDate())
+                  message.error("Please pick check out day after checkin date");
+
+                checkAvailable(roomtype);
+              }}
             />
             <button
               className={styles.btnCalendar}
-              onClick={() => setOpenCheckin(!openCheckin)}
+              onClick={() => {
+                setOpenCheckin(!openCheckin);
+              }}
             >
               <img src={IC_Calendar} alt="Calendar" />
             </button>
@@ -161,7 +274,14 @@ export const AeBooking = (props) => {
                 onClick={() => setOpenCheckout(!openCheckout)}
                 label="Controlled picker"
                 value={checkout}
-                onChange={(newValue) => setCheckout(newValue)}
+                onChange={(newValue) => {
+                  setCheckout(newValue);
+                  if (!checkDate())
+                    message.error(
+                      "Please pick check out day after check in date"
+                    );
+                  checkAvailable(roomtype);
+                }}
               />
               <button
                 className={styles.btnCalendar}
@@ -196,21 +316,14 @@ export const AeBooking = (props) => {
               }}
               options={roomTypes}
               onChange={(e) => {
+                setRoomID("");
                 setRoomType(e);
-                console.log("full", e);
+                setRoomList([]);
 
-                fullData.map((item) => {
-                  console.log("bk", bookings);
-                  if (item.TypeName === e) {
-                    console.log("item", item);
-                    setPeople(item.NumPerson);
-
-                    console.log(roomList);
-                    setRoomID(roomList[0]);
-                  }
+                fullData.map((element) => {
+                  if (element.TypeName === e) setPrice(element.Price);
                 });
-
-                console.log("rLis", roomList);
+                checkAvailable(e);
               }}
             />
           </div>
@@ -238,15 +351,27 @@ export const AeBooking = (props) => {
         <div className={styles.detailInfo}>
           <div className="flex justify-between">
             <p className={styles.title}>Customer</p>
-            <p className={styles.valueInfo}>{customer}</p>
+            <input
+              className={styles.inputInfo}
+              value={customer}
+              onChange={(e) => setCustomer(e.target.value)}
+            />
           </div>
           <div className="flex justify-between">
             <p className={styles.title}>Citizen ID</p>
-            <p className={styles.valueInfo}>{ctzID}</p>
+            <input
+              className={styles.inputInfo}
+              value={ctzID}
+              onChange={(e) => setCtzID(e.target.value)}
+            />
           </div>
           <div className="flex justify-between">
             <p className={styles.title}>Phone</p>
-            <p className={styles.valueInfo}>{phone}</p>
+            <input
+              className={styles.inputInfo}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
           </div>
         </div>
       </div>
@@ -271,7 +396,7 @@ export const AeBooking = (props) => {
                 </tr>
               </thead>
               <tbody className=" h-48">
-                {servicesTest.map((val, key) => {
+                {services.map((val, key) => {
                   return (
                     <tr className={styles.rowTbl} key={key}>
                       {column.map(({ accessor }) => {

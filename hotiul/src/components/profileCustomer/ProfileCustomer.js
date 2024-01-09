@@ -362,7 +362,7 @@ const ProfileCustomer = (props) => {
                     className={styles.btn}
                     onClick={() => {
                       setSelectedBooking(null);
-
+                      console.log(props.data);
                       setOnEdit(true);
                     }}
                   >

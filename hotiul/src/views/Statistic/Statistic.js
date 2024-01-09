@@ -140,10 +140,23 @@ export const Statistic = () => {
 		fetchData();
 	}, []);
 
-	//const xLabels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+	const xLabels = [
+		'JAN',
+		'FEB',
+		'MAR',
+		'APR',
+		'MAY',
+		'JUN',
+		'JUL',
+		'AUG',
+		'SEP',
+		'OCT',
+		'NOV',
+		'DEC',
+	];
 
-	const [overallRevenue, setOverallRevenue] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-	const [overallFee, setOverallFee] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+	const [overallRevenue, setOverallRevenue] = useState([0]);
+	const [overallFee, setOverallFee] = useState([0]);
 
 	const [revenueYear, setRevenueYear] = useState(2023);
 	const [overallYear, setOverallYear] = useState(2023);
@@ -173,11 +186,13 @@ export const Statistic = () => {
 					parseInt(x.CheckOut.split('/')[1]) === i &&
 					parseInt(x.CheckOut.split('/')[2]) === overallYear,
 			).map(x => x.Price);
-			const bookingfee = bookings.reduce(
-				(accumulator, currentValue) => accumulator + currentValue,
-				0,
-			);
-			newRevenueData.push(bookingfee);
+			if (bookings.length > 0) {
+				const bookingfee = bookings.reduce(
+					(accumulator, currentValue) => accumulator + currentValue,
+					0,
+				);
+				newRevenueData.push(bookingfee);
+			}
 		}
 		setOverallRevenue(newRevenueData);
 
@@ -189,8 +204,8 @@ export const Statistic = () => {
 				tempFee = findFee
 					.map(x => x.Price)
 					.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+				newFeeData.push(tempFee);
 			}
-			newFeeData.push(tempFee);
 		}
 		setOverallFee(newFeeData);
 	}, [overallYear]);

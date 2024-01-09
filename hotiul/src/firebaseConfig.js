@@ -10,15 +10,15 @@ import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // Hotiul 1
-// const firebaseConfig = {
-//   apiKey: "AIzaSyACK1byUNHYBvi0aJRiHzmDbM4XHoCAB5A",
-//   authDomain: "hotiul.firebaseapp.com",
-//   projectId: "hotiul",
-//   storageBucket: "hotiul.appspot.com",
-//   messagingSenderId: "13250723084",
-//   appId: "1:13250723084:web:27908d4224d230113fdd29",
-//   measurementId: "G-36RW5PYSM7",
-// };
+const firebaseConfig = {
+  apiKey: "AIzaSyACK1byUNHYBvi0aJRiHzmDbM4XHoCAB5A",
+  authDomain: "hotiul.firebaseapp.com",
+  projectId: "hotiul",
+  storageBucket: "hotiul.appspot.com",
+  messagingSenderId: "13250723084",
+  appId: "1:13250723084:web:27908d4224d230113fdd29",
+  measurementId: "G-36RW5PYSM7",
+};
 
 // Hotiul 2
 // const firebaseConfig = {
@@ -32,15 +32,15 @@ import { getStorage } from "firebase/storage";
 // };
 
 //Hotiul 3
-const firebaseConfig = {
-  apiKey: "AIzaSyDQLfSxe8XmDoOukdsdkG3m198UfmCpVrc",
-  authDomain: "hotiul3.firebaseapp.com",
-  projectId: "hotiul3",
-  storageBucket: "hotiul3.appspot.com",
-  messagingSenderId: "442975610624",
-  appId: "1:442975610624:web:cf92301da2d0f42abc35e5",
-  measurementId: "G-EXMZDDRZFP",
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDQLfSxe8XmDoOukdsdkG3m198UfmCpVrc",
+//   authDomain: "hotiul3.firebaseapp.com",
+//   projectId: "hotiul3",
+//   storageBucket: "hotiul3.appspot.com",
+//   messagingSenderId: "442975610624",
+//   appId: "1:442975610624:web:cf92301da2d0f42abc35e5",
+//   measurementId: "G-EXMZDDRZFP",
+// };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

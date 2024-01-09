@@ -10,10 +10,28 @@ import { Customer } from '../../views/Customer/Customer';
 import { MonthlyFee } from '../../views/MonthlyFee/MonthlyFee';
 import { Services } from '../../views/Services/Services';
 import { Header } from '../../components/header/header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Draft } from '../../views/Draft/Draft';
 import { RoomType } from '../../views/RoomType/RoomType';
 function HomeRoutes() {
+  
+  useEffect(() => {
+    localStorage.setItem("language", "EN")
+    const currentDate = new Date();
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1; // Month is zero-indexed, so add 1
+    const year = currentDate.getFullYear();
+    
+    const formattedDay = (day < 10) ? `0${day}` : day;
+    const formattedMonth = (month < 10) ? `0${month}` : month;
+    const fullDate = `${formattedDay}/${formattedMonth}/${year}`;
+
+    localStorage.setItem("currentDate", fullDate)
+    localStorage.setItem("currentDay", formattedDay);
+    localStorage.setItem("currentMonth", formattedMonth);
+    localStorage.setItem("currentYear", year);
+  }, [])
+
   const [currentTab, setCurrentTab] = useState('home');
   return (
     <>

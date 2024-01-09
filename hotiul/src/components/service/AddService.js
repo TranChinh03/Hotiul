@@ -1,31 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import styles from './fee.module.scss';
+import styles from './service.module.scss';
 import { IC_closebutton } from '../../assets/icons';
 import { createID } from '../../utils/appUtils.js';
+import { addData, updateData } from '../../controller/addData.ts';
 
-function FeeCard(props) {
+function AddService(props) {
 	const [state, setState] = useState({ ...props.detailValue });
 	useEffect(() => {
-		if (!props.detailValue?.Id) {
+		if (!props.detailValue?.id) {
 			console.log('ID', props.detailValue);
 			setState(null);
 			return;
 		}
-		console.log('ID', props.detailValue?.Id);
+		console.log('ID', props.detailValue?.id);
 		setState({
 			// Them cham hoi => Neu null ma yeu cau lay thong tin thi tra ve undefined
-			ID: props.detailValue?.Id,
-			Name: props.detailValue?.Name,
-			Price: props.detailValue?.Price,
-			Date: props.detailValue?.Date,
+			ID: props.detailValue?.id,
+			Service: props.detailValue?.service,
+			Price: props.detailValue?.price,
+			Available: props.detailValue?.available,
 		});
 	}, [props]);
-
-	const [edit, setEdit] = useState({
-		name: '',
-		price: '',
-		date: '',
-	});
 
 	function handleChange(evt) {
 		const value = evt.target.value;
@@ -35,28 +30,28 @@ function FeeCard(props) {
 		});
 	}
 	const handleSave = () => {
-		// Phan biet create && update => ID.exist()?
 		console.log('state', state);
 		if (state.ID) {
 			const newData = {
 				ID: state.ID,
-				Name: state.Name ?? '',
+				Service: state.Service ?? '',
 				Price: Number(state.Price) ?? '',
-				Date: state.Date ?? '',
+				Available: Number(state.Available) ?? '',
 			};
-			props.handleSaveFeeCard(newData);
+			updateData({ data: newData, table: 'SERVICE', id: state.ID });
+			props.fetchData();
+			props.closeEvt();
 		} else {
-			const feeID = createID({ prefix: 'DF' });
+			const serviceID = createID({ prefix: 'S' });
 			try {
 				const newData = {
-					ID: feeID,
-					Name: state.Name ?? '',
+					ID: serviceID,
+					Service: state.Service ?? '',
 					Price: Number(state.Price) ?? '',
-					Date: state.Date ?? '',
+					Available: Number(state.Available) ?? '',
 				};
-
-				props.handleSaveFeeCard(newData); // Pass the new data to FeeInformation
-				setState({ Name: '', Price: '', Date: '' });
+				addData({ data: newData, table: 'SERVICE', id: serviceID });
+				setState({ Service: '', Price: '', Available: '' });
 				props.fetchData();
 				props.closeEvt();
 			} catch (err) {
@@ -66,21 +61,17 @@ function FeeCard(props) {
 		}
 	};
 
-	const handleDelete = () => {
-		props.handleDeleteFeeCard(state.ID);
-	};
-
 	return (
 		<>
 			<div className={styles.container}>
 				<div className={styles.header}>
-					<div className={styles.headerTitle}>Fee</div>
+					<div className={styles.headerTitle}>Service</div>
 					<div className={styles.buttonContainer}>
 						<button
-							onClick={handleDelete}
+							onClick={() => {}}
 							className={styles.button}
 							style={{ backgroundColor: '#FF9A9A' }}>
-							Delete
+							Cancel
 						</button>
 						<button
 							onClick={() => handleSave()}
@@ -91,9 +82,8 @@ function FeeCard(props) {
 						<button
 							onClick={() => {
 								if (!props.detailValue?.Id) {
-									setState({ Name: '', Price: '', Date: '' });
+									setState({ Service: '', Price: '', Available: '' });
 								}
-
 								props.closeEvt();
 							}}>
 							<img
@@ -112,12 +102,12 @@ function FeeCard(props) {
 					<div
 						className={styles.info}
 						style={{ marginBottom: '10px' }}>
-						<div className={styles.title}>Name:</div>
+						<div className={styles.title}>Service:</div>
 						<input
 							className={styles.inputInfo}
 							type="text"
-							name="Name"
-							value={state?.Name}
+							name="Service"
+							value={state?.Service}
 							onChange={e => handleChange(e)}
 							required></input>
 					</div>
@@ -136,12 +126,12 @@ function FeeCard(props) {
 					<div
 						className={styles.info}
 						style={{ marginBottom: '10px' }}>
-						<div className={styles.title}>Date:</div>
+						<div className={styles.title}>Available:</div>
 						<input
 							className={styles.inputInfo}
-							type="date"
-							name="Date"
-							value={state?.Date}
+							type="text"
+							name="Available"
+							value={state?.Available}
 							onChange={e => handleChange(e)}
 							required></input>
 					</div>
@@ -151,4 +141,4 @@ function FeeCard(props) {
 	);
 }
 
-export default FeeCard;
+export default AddService;

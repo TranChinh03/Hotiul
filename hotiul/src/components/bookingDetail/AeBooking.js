@@ -1,654 +1,674 @@
-import React, { useEffect, useState } from 'react';
-import styles from './bookingInformation.module.scss';
-import { IC_Calendar, IC_closebutton, IC_delete } from '../../assets/icons';
-import BtnAdd from '../profileCustomer/btnAdd';
-import BtnSee from '../profileCustomer/btnSee';
-import { DatePicker, Modal, Select, message } from 'antd';
-import { getData } from '../../controller/getData.ts';
-import dayjs from 'dayjs';
-import { addData } from '../../controller/addData.ts';
-import { createID } from '../../utils/appUtils.js';
-import { DeleteService } from '../../controller/deleteInArray.ts';
-import { UpdateService } from '../../controller/updateService.ts';
+import React, { useEffect, useState } from "react";
+import styles from "./bookingInformation.module.scss";
+import { IC_Calendar, IC_closebutton, IC_delete } from "../../assets/icons";
+import BtnAdd from "../profileCustomer/btnAdd";
+import BtnSee from "../profileCustomer/btnSee";
+import { DatePicker, Modal, Select, message } from "antd";
+import { getData } from "../../controller/getData.ts";
+import dayjs from "dayjs";
+import { addData } from "../../controller/addData.ts";
+import { createID } from "../../utils/appUtils.js";
+import { DeleteService } from "../../controller/deleteInArray.ts";
+import { UpdateService } from "../../controller/updateService.ts";
 
-export const AeBooking = props => {
-	const today = new Date().toLocaleDateString('en-GB');
-	var [roomTypes, setRoomTypes] = useState([]);
-	var [fullData, setFullData] = useState([]);
-	const [roomList, setRoomList] = useState([]);
+export const AeBooking = (props) => {
+  const today = new Date().toLocaleDateString("en-GB");
+  var [roomTypes, setRoomTypes] = useState([]);
+  var [fullData, setFullData] = useState([]);
+  const [roomList, setRoomList] = useState([]);
 
-	const [bookings, setBookings] = useState([]);
-	const [services, setServices] = useState([]);
-	const [serviceName, setServiceName] = useState('');
-	const [serviceDtb, setServiceDtb] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [services, setServices] = useState([]);
+  const [serviceName, setServiceName] = useState("");
+  const [serviceDtb, setServiceDtb] = useState([]);
 
-	//modal Add Services
-	const [openAddService, SetOpenAddService] = useState(false);
-	const [serviceList, SetServiceList] = useState([]);
-	const [allServiceList, SetAllServiceList] = useState([]);
-	const [serviceQuantity, SetServiceQuantity] = useState([]);
+  //modal Add Services
+  const [openAddService, SetOpenAddService] = useState(false);
+  const [serviceList, SetServiceList] = useState([]);
+  const [allServiceList, SetAllServiceList] = useState([]);
+  const [serviceQuantity, SetServiceQuantity] = useState([]);
 
-	//value
-	const [roomtype, setRoomType] = useState('');
-	const [roomID, setRoomID] = useState('');
-	const [people, setPeople] = useState('');
+  //value
+  const [roomtype, setRoomType] = useState("");
+  const [roomID, setRoomID] = useState("");
+  const [people, setPeople] = useState("");
 
-	//calendar
-	const [openCheckin, setOpenCheckin] = useState(false);
-	const [openCheckout, setOpenCheckout] = useState(false);
-	const dateFormat = 'DD/MM/YYYY';
+  //calendar
+  const [openCheckin, setOpenCheckin] = useState(false);
+  const [openCheckout, setOpenCheckout] = useState(false);
+  const dateFormat = "DD/MM/YYYY";
 
-	const [checkin, setCheckin] = useState(
-		props.booking ? dayjs(convertToDate(props.booking.CheckIn)) : dayjs(today, dateFormat),
-	);
-	const [checkout, setCheckout] = useState(
-		props.booking ? dayjs(convertToDate(props.booking.CheckOut)) : dayjs(today, dateFormat),
-	);
-	const [price, setPrice] = useState(0);
-	console.log(price);
-	const [roomprice, setRoomPrice] = useState();
+  const [checkin, setCheckin] = useState(
+    props.booking
+      ? dayjs(convertToDate(props.booking.CheckIn))
+      : dayjs(today, dateFormat)
+  );
+  const [checkout, setCheckout] = useState(
+    props.booking
+      ? dayjs(convertToDate(props.booking.CheckOut))
+      : dayjs(today, dateFormat)
+  );
+  const [price, setPrice] = useState(0);
+  const [roomprice, setRoomPrice] = useState();
 
-	const [customer, setCustomer] = useState('');
-	const [ctzID, setCtzID] = useState('');
-	const [phone, setPhone] = useState('');
-	const [id, setID] = useState('');
-	const column = [
-		{ label: 'Service', accessor: 'Service' },
-		{ label: 'Unit Price', accessor: 'Price' },
-		{ label: 'Quantity', accessor: 'Quantity' },
-		{ label: 'Date', accessor: 'Date' },
-	];
+  const [customer, setCustomer] = useState("");
+  const [ctzID, setCtzID] = useState("");
+  const [phone, setPhone] = useState("");
+  const [id, setID] = useState("");
+  const column = [
+    { label: "Service", accessor: "Service" },
+    { label: "Unit Price", accessor: "Price" },
+    { label: "Quantity", accessor: "Quantity" },
+    { label: "Date", accessor: "Date" },
+  ];
 
-	const servicesTest = [
-		{
-			service: 'Coca',
-			unit: '2$',
-			quantity: '5',
-			total: '10$',
-		},
-		{
-			service: 'Pepsi',
-			unit: '2$',
-			quantity: '5',
-			total: '10$',
-		},
-		{
-			service: '7Up',
-			unit: '2$',
-			quantity: '5',
-			total: '10$',
-		},
-	];
-	const fetchData = async () => {
-		await Promise.all([
-			getData('/ROOM_TYPE').then(roomtype => {
-				setFullData(roomtype);
-				setRoomTypes(
-					roomtype.map(item => {
-						return {
-							value: item.TypeName,
-						};
-					}),
-				);
-			}),
-		]);
-		await Promise.all([
-			getData('/BOOKING').then(data => {
-				setBookings(data);
-			}),
-		]);
-		await Promise.all([
-			getData('/SERVICE').then(data => {
-				SetAllServiceList(data);
-				SetServiceList(
-					data.map(item => {
-						return {
-							value: item.Service,
-						};
-					}),
-				);
-			}),
-		]);
-	};
+  const servicesTest = [
+    {
+      service: "Coca",
+      unit: "2$",
+      quantity: "5",
+      total: "10$",
+    },
+    {
+      service: "Pepsi",
+      unit: "2$",
+      quantity: "5",
+      total: "10$",
+    },
+    {
+      service: "7Up",
+      unit: "2$",
+      quantity: "5",
+      total: "10$",
+    },
+  ];
+  const fetchData = async () => {
+    await Promise.all([
+      getData("/ROOM_TYPE").then((roomtype) => {
+        setFullData(roomtype);
+        setRoomTypes(
+          roomtype.map((item) => {
+            return {
+              value: item.TypeName,
+            };
+          })
+        );
+      }),
+    ]);
+    await Promise.all([
+      getData("/BOOKING").then((data) => {
+        setBookings(data);
+      }),
+    ]);
+    await Promise.all([
+      getData("/SERVICE").then((data) => {
+        SetAllServiceList(data);
+        SetServiceList(
+          data.map((item) => {
+            return {
+              value: item.Service,
+            };
+          })
+        );
+      }),
+    ]);
+  };
 
-	//seleservice
-	function handleDelete(id, index, idBooking) {
-		console.log('id', id);
-		console.log('idex', index);
-		console.log('idbk', idBooking);
-		var temp = services;
-		temp.splice(index, 1);
+  //seleservice
+  function handleDelete(id, index, idBooking) {
+    console.log("id", id);
+    console.log("idex", index);
+    console.log("idbk", idBooking);
+    var temp = services;
+    temp.splice(index, 1);
 
-		// try {
-		//   DeleteService(id, idBooking);
-		// } catch (err) {
-		//   console.log("Error delete data", err);
-		// }
-		return temp;
-	}
-	useEffect(() => {
-		fetchData();
-	}, []);
+    // try {
+    //   DeleteService(id, idBooking);
+    // } catch (err) {
+    //   console.log("Error delete data", err);
+    // }
+    return temp;
+  }
+  useEffect(() => {
+    fetchData();
+  });
 
-	// price
-	useEffect(() => {
-		var sum = roomprice;
-		console.log(services);
-		services.forEach(element => {
-			sum += element.Price;
-		});
-		setPrice(sum);
-	}, [services, roomprice]);
+  // price
+  useEffect(() => {
+    var sum = roomprice;
+    console.log(services);
+    services.forEach((element) => {
+      sum += element.Price;
+    });
+    setPrice(sum);
+  }, [services, roomprice]);
 
-	//   /console.log(props.booking);
-	useEffect(() => {
-		setCustomer(props.customer.Name);
-		setCtzID(props.customer.CitizenID);
-		setPhone(props.customer.Phone);
-		setID(props.customer.ID);
-		if (props.booking) {
-			setRoomType(props.booking.RoomType.TypeName);
-			setPeople(props.booking.RoomType.NumPerson);
-			setRoomID(props.booking.RoomID);
-			setServices(props.booking.Service ?? []);
-		}
-	}, [props.customer, props.booking]);
+  //console.log(props.customerAdding);
+  useEffect(() => {
+    if (props.customer) {
+      setCustomer(props.customer.Name);
+      setCtzID(props.customer.CitizenID);
+      setPhone(props.customer.Phone);
+      setID(props.customer.ID);
+    } else {
+      setCustomer(props.customerAdding.name);
+      setCtzID(props.customerAdding.ctzId);
+      setPhone(props.customerAdding.phone);
+    }
+    if (props.booking) {
+      setRoomType(props.booking.RoomType.TypeName);
+      setPeople(props.booking.RoomType.NumPerson);
+      setRoomID(props.booking.RoomID);
+      setServices(props.booking.Service ?? []);
+    }
+  }, [props.customer, props.booking, props.customerAdding]);
 
-	const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+  const options = { day: "2-digit", month: "2-digit", year: "numeric" };
 
-	//add new 1 service
-	function handleAdd1Service() {
-		if (serviceName === '' || serviceQuantity === '') {
-			message.error('Please choose service and enter quantity.');
-			return;
-		}
-		const temp = allServiceList.find(e => e.Service === serviceName);
-		console.log('temp', temp);
-		if (temp.Available - serviceQuantity < 0) {
-			message.error('Service quantity is not  enought. Please pick another');
-			return;
-		}
-		temp.Available -= serviceQuantity;
-		console.log('temp2', temp);
-		//setServiceDtb(serviceDtb=> [...serviceDtb, temp.ID])
-		setServices(services => [
-			...services,
-			{
-				Service: serviceName,
-				Price: temp.Price,
-				Quantity: serviceQuantity,
-				Date: new Date().toLocaleDateString('en-GB', options),
-			},
-		]);
-		console.log('service', services);
-		SetOpenAddService(false);
-	}
+  //add new 1 service
+  function handleAdd1Service() {
+    if (serviceName === "" || serviceQuantity === "") {
+      message.error("Please choose service and enter quantity.");
+      return;
+    }
+    const temp = allServiceList.find((e) => e.Service === serviceName);
+    console.log("temp", temp);
+    if (temp.Available - serviceQuantity < 0) {
+      message.error("Service quantity is not  enought. Please pick another");
+      return;
+    }
+    temp.Available -= serviceQuantity;
+    console.log("temp2", temp);
+    //setServiceDtb(serviceDtb=> [...serviceDtb, temp.ID])
+    setServices((services) => [
+      ...services,
+      {
+        Service: serviceName,
+        Price: temp.Price,
+        Quantity: serviceQuantity,
+        Date: new Date().toLocaleDateString("en-GB", options),
+      },
+    ]);
+    console.log("service", services);
+    SetOpenAddService(false);
+  }
 
-	function handleAddService(type) {
-		switch (type) {
-			case 'service':
-				SetOpenAddService(true);
-				return;
-			case 'washing':
-				setServices(services => [
-					...services,
-					{
-						Service: 'Washing',
-						Price: 7,
-						Quantity: '1',
-						Date: new Date().toLocaleDateString('en-GB', options),
-					},
-				]);
-				console.log('service', services);
-				return;
-			case 'clean':
-				setServices(services => [
-					...services,
-					{
-						Service: 'Clean',
-						Price: 5,
-						Quantity: '1',
-						Date: new Date().toLocaleDateString('en-GB', options),
-					},
-				]);
-				return;
-			default:
-				return;
-		}
-	}
+  function handleAddService(type) {
+    switch (type) {
+      case "service":
+        SetOpenAddService(true);
+        return;
+      case "washing":
+        setServices((services) => [
+          ...services,
+          {
+            Service: "Washing",
+            Price: 7,
+            Quantity: "1",
+            Date: new Date().toLocaleDateString("en-GB", options),
+          },
+        ]);
+        console.log("service", services);
+        return;
+      case "clean":
+        setServices((services) => [
+          ...services,
+          {
+            Service: "Clean",
+            Price: 5,
+            Quantity: "1",
+            Date: new Date().toLocaleDateString("en-GB", options),
+          },
+        ]);
+        return;
+      default:
+        return;
+    }
+  }
 
-	function convertToDate(dateString) {
-		//  Convert a "dd/MM/yyyy" string into a Date object
-		let d = dateString.split('/');
-		let dat = new Date(d[1] + '/' + d[0] + '/' + d[2]);
-		return dat;
-	}
+  function convertToDate(dateString) {
+    //  Convert a "dd/MM/yyyy" string into a Date object
+    let d = dateString.split("/");
+    let dat = new Date(d[1] + "/" + d[0] + "/" + d[2]);
+    return dat;
+  }
 
-	async function handleAdd() {
-		const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-		console.log('adding');
-		const bookingID = createID({ prefix: 'B' });
-		if (ctzID === '' || phone === '' || customer === '') {
-			message.error('Please enter customer information');
-			return;
-		}
-		if (roomtype === '' || roomID === '') {
-			message.error('Please enter booking information');
-			return;
-		}
-		try {
-			const newData = {
-				ID: bookingID,
-				CustomerName: customer,
-				CustomerID: props.customer.ID,
-				CitizenID: ctzID,
-				Phone: phone,
-				Service: services,
-				RoomID: roomID,
-				CheckIn: checkin.format('MM/DD/YYYY').toString(),
-				CheckOut: checkout.format('MM/DD/YYYY').toString(),
-				isCancel: false,
-				PaymentStatus: 'Unpaid',
-				Price: price,
-				CreateAt: new Date(today).toLocaleDateString('en-GB', options),
-				RoomType: {
-					TypeName: roomtype,
-					NumPerson: people,
-				},
-			};
-			console.log(newData);
-			addData({ data: newData, table: 'BOOKING', id: bookingID });
-			console.log(services);
-			services.forEach(element => {
-				console.log('e1', element);
-				allServiceList.forEach(e => {
-					console.log('e2', e);
-					if (element.Service === e.Service) {
-						console.log('check', e.ID, e.Available - element.Quantity);
-						UpdateService(e.ID, e.Available - element.Quantity);
-					}
-				});
-			});
+  function handleUpdate() {}
 
-			props.onClose();
-			setServices([]);
-			setRoomType('');
-			setRoomID('');
-			setPeople('');
-			setPrice(0);
-			setRoomPrice(0);
-		} catch (err) {
-			console.log('Error adding data', err);
-			return;
-		}
-	}
+  function handleAdd() {
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
 
-	function checkDate() {
-		var tempCin = checkin.format('MM/DD/YYYY').toString();
-		var tempCout = checkout.format('MM/DD/YYYY').toString();
-		console.log(new Date(tempCin));
-		console.log(new Date(tempCout));
-		if (new Date(tempCin) > new Date(tempCout)) return false;
-		return true;
-	}
+    const bookingID = createID({ prefix: "B" });
+    console.log("adding", bookingID);
+    var customerID;
+    if (!props.customer) {
+      customerID = createID({ prefix: "C" });
+      props.onAddCustomer(customerID);
+    } else {
+      customerID = props.customer.ID;
+    }
+    if (ctzID === "" || phone === "" || customer === "") {
+      message.error("Please enter customer information");
+      return;
+    }
+    if (roomtype === "" || roomID === "") {
+      message.error("Please enter booking information");
+      return;
+    }
+    try {
+      const newData = {
+        ID: bookingID,
+        CustomerName: customer,
+        CustomerID: customerID,
+        CitizenID: ctzID,
+        Phone: phone,
+        Service: services,
+        RoomID: roomID,
+        CheckIn: checkin.format("MM/DD/YYYY").toString(),
+        CheckOut: checkout.format("MM/DD/YYYY").toString(),
+        isCancel: false,
+        PaymentStatus: "Unpaid",
+        Price: price,
+        CreateAt: new Date(today).toLocaleDateString("en-GB", options),
+        RoomType: {
+          TypeName: roomtype,
+          NumPerson: people,
+        },
+      };
+      console.log(newData);
+      addData({ data: newData, table: "BOOKING", id: bookingID });
+      props.onAddBooking(newData);
+      console.log(services);
+      services.forEach((element) => {
+        allServiceList.forEach((e) => {
+          if (element.Service === e.Service) {
+            UpdateService(e.ID, e.Available - element.Quantity);
+          }
+        });
+      });
 
-	function checkAvailable(e) {
-		var temp = [];
-		fullData.map(item => {
-			console.log('bk', bookings);
-			if (item.TypeName === e) {
-				setPeople(item.NumPerson);
-				var tempCin = checkin.format('MM/DD/YYYY').toString();
-				var tempCout = checkout.format('MM/DD/YYYY').toString();
+      props.onClose();
+      setServices([]);
+      setRoomType("");
+      setRoomID("");
+      setPeople("");
+      setPrice(0);
+      setRoomPrice(0);
+    } catch (err) {
+      console.log("Error adding data", err);
+      return;
+    }
+  }
 
-				item.Rooms.forEach(element => {
-					bookings.forEach(bk => {
-						if (bk.RoomID === element) {
-							console.log('exist', element);
-							if (
-								(new Date(tempCin) <= convertToDate(bk.CheckIn) &&
-									convertToDate(bk.CheckIn) <= new Date(tempCout)) ||
-								(new Date(tempCin) <= convertToDate(bk.CheckOut) &&
-									convertToDate(bk.CheckOut) <= new Date(tempCout))
-							) {
-								temp.push(element);
-								console.log(
-									new Date(tempCin),
-									convertToDate(bk.CheckIn),
-									new Date(tempCout),
+  function checkDate() {
+    var tempCin = checkin.format("MM/DD/YYYY").toString();
+    var tempCout = checkout.format("MM/DD/YYYY").toString();
+    console.log(new Date(tempCin));
+    console.log(new Date(tempCout));
+    if (new Date(tempCin) > new Date(tempCout)) return false;
+    return true;
+  }
 
-									convertToDate(bk.CheckOut),
-								);
-							}
-						}
-					});
-				});
-				console.log(temp);
-				var list = item.Rooms.filter(x => !temp.includes(x));
-				setRoomList(
-					list.map(item => {
-						return {
-							value: item,
-						};
-					}),
-				);
-			}
-		});
-	}
+  function checkAvailable(e) {
+    var temp = [];
+    fullData.map((item) => {
+      console.log("bk", bookings);
+      if (item.TypeName === e) {
+        setPeople(item.NumPerson);
+        var tempCin = checkin.format("MM/DD/YYYY").toString();
+        var tempCout = checkout.format("MM/DD/YYYY").toString();
 
-	return (
-		<div className={styles.container}>
-			<div className={styles.header}>
-				{props.booking ? (
-					<p className={styles.txtheader}>BOOKING INFORMATION</p>
-				) : (
-					<p className={styles.txtheader}>ADD BOOKING</p>
-				)}
-				<div className="flex items-center">
-					<button
-						onClick={() => {
-							setServices([]);
-							setRoomType('');
-							setRoomID('');
-							setPeople('');
-							setPrice(0);
-							setRoomPrice(0);
-							// handleAction();
-							props.onClose();
+        item.Rooms.forEach((element) => {
+          bookings.forEach((bk) => {
+            if (bk.RoomID === element) {
+              console.log("exist", element);
+              if (
+                (new Date(tempCin) <= convertToDate(bk.CheckIn) &&
+                  convertToDate(bk.CheckIn) <= new Date(tempCout)) ||
+                (new Date(tempCin) <= convertToDate(bk.CheckOut) &&
+                  convertToDate(bk.CheckOut) <= new Date(tempCout))
+              ) {
+                temp.push(element);
+                console.log(
+                  new Date(tempCin),
+                  convertToDate(bk.CheckIn),
+                  new Date(tempCout),
 
-							//props.onEdit();
-						}}
-						className={styles.button}
-						style={{ backgroundColor: '#FF9A9A' }}>
-						Cancel
-					</button>
-					<button
-						onClick={() => {
-							handleAdd();
-							//props.onClose();
-							//props.onEdit();
-						}}
-						className={styles.button}
-						style={{ backgroundColor: '#66EB8B' }}>
-						Save
-					</button>
-				</div>
-			</div>
+                  convertToDate(bk.CheckOut)
+                );
+              }
+            }
+          });
+        });
+        console.log(temp);
+        var list = item.Rooms.filter((x) => !temp.includes(x));
+        setRoomList(
+          list.map((item) => {
+            return {
+              value: item,
+            };
+          })
+        );
+      }
+    });
+  }
 
-			{/* Calendar */}
-			<div className="flex justify-center w-full">
-				<div className={styles.checkin}>
-					<div className={styles.content}>
-						<p className={styles.title}>Checkin</p>
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        {props.booking ? (
+          <p className={styles.txtheader}>BOOKING INFORMATION</p>
+        ) : (
+          <p className={styles.txtheader}>ADD BOOKING</p>
+        )}
+        <div className="flex items-center">
+          <button
+            onClick={() => {
+              setServices([]);
+              setRoomType("");
+              setRoomID("");
+              setPeople("");
+              setPrice(0);
+              setRoomPrice(0);
+              // handleAction();
+              props.onClose();
 
-						<DatePicker
-							format={dateFormat}
-							open={openCheckin}
-							onClick={() => setOpenCheckin(!openCheckin)}
-							label="Controlled picker"
-							value={checkin}
-							onChange={newValue => {
-								setCheckin(newValue);
-								if (!checkDate()) message.error('Please pick check out day after checkin date');
+              //props.onEdit();
+            }}
+            className={styles.button}
+            style={{ backgroundColor: "#FF9A9A" }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              if (!props.booking) handleAdd();
+              else handleUpdate();
+              //props.onClose();
+              //props.onEdit();
+            }}
+            className={styles.button}
+            style={{ backgroundColor: "#66EB8B" }}
+          >
+            Save
+          </button>
+        </div>
+      </div>
 
-								checkAvailable(roomtype);
-							}}
-						/>
-						<button
-							className={styles.btnCalendar}
-							onClick={() => {
-								setOpenCheckin(!openCheckin);
-							}}>
-							<img
-								src={IC_Calendar}
-								alt="Calendar"
-							/>
-						</button>
-					</div>
-				</div>
-				<div className={styles.checkout}>
-					<div className={styles.content}>
-						<p className={styles.title}>Checkout</p>
-						<div className="flex items-center">
-							<DatePicker
-								open={openCheckout}
-								format={dateFormat}
-								onClick={() => setOpenCheckout(!openCheckout)}
-								label="Controlled picker"
-								value={checkout}
-								onChange={newValue => {
-									setCheckout(newValue);
-									if (!checkDate()) message.error('Please pick check out day after check in date');
-									checkAvailable(roomtype);
-								}}
-							/>
-							<button
-								className={styles.btnCalendar}
-								onClick={() => setOpenCheckout(!openCheckout)}>
-								<img
-									src={IC_Calendar}
-									alt="Calendar"
-								/>
-							</button>
-						</div>
-					</div>
-				</div>
-				<div className={styles.fee}>
-					<div className={styles.contentFee}>
-						<p className={styles.titleFee}>Total Fee</p>
-						<p className={styles.valueInfoFee}>{price} $</p>
-					</div>
-				</div>
-			</div>
+      {/* Calendar */}
+      <div className="flex justify-center w-full">
+        <div className={styles.checkin}>
+          <div className={styles.content}>
+            <p className={styles.title}>Checkin</p>
 
-			<div className={styles.info}>
-				{/* Room info */}
-				<div className={styles.detailInfo}>
-					<div className="flex justify-between">
-						<p className={styles.title}>Room Type</p>
-						<Select
-							type="text"
-							name="gender"
-							value={roomtype}
-							style={{
-								width: '20vw',
-								height: '40px',
-								marginLeft: '10px',
-							}}
-							options={roomTypes}
-							onChange={e => {
-								setRoomID('');
-								setRoomType(e);
-								setRoomList([]);
+            <DatePicker
+              format={dateFormat}
+              open={openCheckin}
+              onClick={() => setOpenCheckin(!openCheckin)}
+              label="Controlled picker"
+              value={checkin}
+              onChange={(newValue) => {
+                setCheckin(newValue);
+                if (!checkDate())
+                  message.error("Please pick check out day after checkin date");
 
-								fullData.map(element => {
-									if (element.TypeName === e) setRoomPrice(element.Price);
-								});
-								checkAvailable(e);
-							}}
-						/>
-					</div>
-					<div className="flex justify-between">
-						<p className={styles.title}>Room ID</p>
-						<Select
-							type="text"
-							name="gender"
-							value={roomID}
-							style={{
-								width: '20vw',
-								height: '40px',
-								marginLeft: '10px',
-							}}
-							options={roomList}
-							onChange={e => setRoomID(e)}
-						/>
-					</div>
-					<div className="flex justify-between">
-						<p className={styles.title}>People</p>
-						<p className={styles.valueInfo}>{people}</p>
-					</div>
-				</div>
-				{/* Customer Info */}
-				<div className={styles.detailInfo}>
-					<div className="flex justify-between">
-						<p className={styles.title}>Customer</p>
-						<input
-							className={styles.inputInfo}
-							value={customer}
-							onChange={e => setCustomer(e.target.value)}
-						/>
-					</div>
-					<div className="flex justify-between">
-						<p className={styles.title}>Citizen ID</p>
-						<input
-							className={styles.inputInfo}
-							value={ctzID}
-							onChange={e => setCtzID(e.target.value)}
-						/>
-					</div>
-					<div className="flex justify-between">
-						<p className={styles.title}>Phone</p>
-						<input
-							className={styles.inputInfo}
-							value={phone}
-							onChange={e => setPhone(e.target.value)}
-						/>
-					</div>
-				</div>
-			</div>
+                checkAvailable(roomtype);
+              }}
+            />
+            <button
+              className={styles.btnCalendar}
+              onClick={() => {
+                setOpenCheckin(!openCheckin);
+              }}
+            >
+              <img src={IC_Calendar} alt="Calendar" />
+            </button>
+          </div>
+        </div>
+        <div className={styles.checkout}>
+          <div className={styles.content}>
+            <p className={styles.title}>Checkout</p>
+            <div className="flex items-center">
+              <DatePicker
+                open={openCheckout}
+                format={dateFormat}
+                onClick={() => setOpenCheckout(!openCheckout)}
+                label="Controlled picker"
+                value={checkout}
+                onChange={(newValue) => {
+                  setCheckout(newValue);
+                  if (!checkDate())
+                    message.error(
+                      "Please pick check out day after check in date"
+                    );
+                  checkAvailable(roomtype);
+                }}
+              />
+              <button
+                className={styles.btnCalendar}
+                onClick={() => setOpenCheckout(!openCheckout)}
+              >
+                <img src={IC_Calendar} alt="Calendar" />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className={styles.fee}>
+          <div className={styles.contentFee}>
+            <p className={styles.titleFee}>Total Fee</p>
+            <p className={styles.valueInfoFee}>{price} $</p>
+          </div>
+        </div>
+      </div>
 
-			{/* List service & button */}
-			<div className="py-5 pl-5">
-				<div className="ml-10 mb-5">
-					<p className={styles.title}> Order service</p>
-				</div>
-				<div className="flex">
-					<div className="w-9/12 bg-white rounded-3xl shadow-lg ">
-						<table
-							id="my-table"
-							class={styles.tableData}>
-							<thead className="w-full">
-								<tr className={styles.tbHeading}>
-									{column.map(headding => {
-										return (
-											<th>
-												<p> {headding.label}</p>
-											</th>
-										);
-									})}
-								</tr>
-							</thead>
-							<tbody className=" h-48">
-								{services.map((val, key) => {
-									return (
-										<tr
-											className={styles.rowTbl}
-											key={key}>
-											{column.map(({ accessor }) => {
-												const tData = val[accessor] ? val[accessor] : '——';
-												return <td className={styles.col}>{tData}</td>;
-											})}
-											<td className={styles.col}>
-												<button
-													onClick={() => {
-														handleDelete(val?.ID, key, props.booking?.ID);
-													}}>
-													<img
-														style={{
-															justifySelf: 'center',
-															alignSelf: 'center',
-														}}
-														className="pl-2"
-														src={IC_delete}
-														alt="delete"
-													/>
-												</button>
-											</td>
-										</tr>
-									);
-								})}
-							</tbody>
-						</table>
-					</div>
-					<div className="w-3/12 flex flex-col pl-5 justify-around">
-						<BtnAdd
-							onClick={() => handleAddService('service')}
-							text={'Add service'}
-						/>
-						<BtnAdd
-							onClick={() => handleAddService('clean')}
-							text={'Add clean'}
-						/>
-						<BtnAdd
-							onClick={() => handleAddService('washing')}
-							text={'Add washing'}
-						/>
-						<BtnSee text={'See amentity'} />
-					</div>
-				</div>
-				<Modal
-					centered={true}
-					width="50%"
-					closeIcon={null}
-					open={openAddService}
-					footer={null}
-					onCancel={() => {
-						SetOpenAddService(false);
-					}}>
-					<div className="bg-white h-96 flex flex-col justify-around items-center w-full">
-						<p className="text-mainColor font-bold text-3xl items-center self-center flex ">
-							ADD SERVICE
-						</p>
-						<div className=" flex w-full justify-around">
-							<div>
-								<p className={styles.headding}> Searvice name</p>
-								<Select
-									type="text"
-									name="gender"
-									value={serviceName}
-									style={{
-										width: '20vw',
-										height: '40px',
-										marginLeft: '10px',
-									}}
-									options={serviceList}
-									onChange={e => setServiceName(e)}
-								/>
-							</div>
-							<div>
-								<p className={styles.headding}> Quantity</p>
-								<input
-									value={serviceQuantity}
-									className={styles.inputInfo}
-									onChange={e => SetServiceQuantity(e.target.value)}
-								/>
-							</div>
-						</div>
-						<div className="flex items-center">
-							<button
-								onClick={() => {
-									SetOpenAddService(false);
-									setServiceName('');
-									SetServiceQuantity('');
-								}}
-								className={styles.button}
-								style={{ backgroundColor: '#FF9A9A' }}>
-								Cancel
-							</button>
-							<button
-								onClick={() => {
-									handleAdd1Service();
-									setServiceName('');
-									SetServiceQuantity('');
-								}}
-								className={styles.button}
-								style={{ backgroundColor: '#66EB8B' }}>
-								Add
-							</button>
-						</div>
-					</div>
-				</Modal>
-			</div>
-		</div>
-	);
+      <div className={styles.info}>
+        {/* Room info */}
+        <div className={styles.detailInfo}>
+          <div className="flex justify-between">
+            <p className={styles.title}>Room Type</p>
+            <Select
+              type="text"
+              name="gender"
+              value={roomtype}
+              style={{
+                width: "20vw",
+                height: "40px",
+                marginLeft: "10px",
+              }}
+              options={roomTypes}
+              onChange={(e) => {
+                setRoomID("");
+                setRoomType(e);
+                setRoomList([]);
+
+                fullData.map((element) => {
+                  if (element.TypeName === e) setRoomPrice(element.Price);
+                });
+                checkAvailable(e);
+              }}
+            />
+          </div>
+          <div className="flex justify-between">
+            <p className={styles.title}>Room ID</p>
+            <Select
+              type="text"
+              name="gender"
+              value={roomID}
+              style={{
+                width: "20vw",
+                height: "40px",
+                marginLeft: "10px",
+              }}
+              options={roomList}
+              onChange={(e) => setRoomID(e)}
+            />
+          </div>
+          <div className="flex justify-between">
+            <p className={styles.title}>People</p>
+            <p className={styles.valueInfo}>{people}</p>
+          </div>
+        </div>
+        {/* Customer Info */}
+        <div className={styles.detailInfo}>
+          <div className="flex justify-between">
+            <p className={styles.title}>Customer</p>
+            <input
+              className={styles.inputInfo}
+              value={customer}
+              onChange={(e) => setCustomer(e.target.value)}
+            />
+          </div>
+          <div className="flex justify-between">
+            <p className={styles.title}>Citizen ID</p>
+            <input
+              className={styles.inputInfo}
+              value={ctzID}
+              onChange={(e) => setCtzID(e.target.value)}
+            />
+          </div>
+          <div className="flex justify-between">
+            <p className={styles.title}>Phone</p>
+            <input
+              className={styles.inputInfo}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* List service & button */}
+      <div className="py-5 pl-5">
+        <div className="ml-10 mb-5">
+          <p className={styles.title}> Oder service</p>
+        </div>
+        <div className="flex">
+          <div className="w-9/12 bg-white rounded-3xl shadow-lg ">
+            <table id="my-table" class={styles.tableData}>
+              <thead className="w-full">
+                <tr className={styles.tbHeading}>
+                  {column.map((headding) => {
+                    return (
+                      <th>
+                        <p> {headding.label}</p>
+                      </th>
+                    );
+                  })}
+                </tr>
+              </thead>
+              <tbody className=" h-48">
+                {services.map((val, key) => {
+                  return (
+                    <tr className={styles.rowTbl} key={key}>
+                      {column.map(({ accessor }) => {
+                        const tData = val[accessor] ? val[accessor] : "——";
+                        return <td className={styles.col}>{tData}</td>;
+                      })}
+                      <td className={styles.col}>
+                        <button
+                          onClick={() => {
+                            handleDelete(val?.ID, key, props.booking?.ID);
+                          }}
+                        >
+                          <img
+                            style={{
+                              justifySelf: "center",
+                              alignSelf: "center",
+                            }}
+                            className="pl-2"
+                            src={IC_delete}
+                            alt="delete"
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div className="w-3/12 flex flex-col pl-5 justify-around">
+            <BtnAdd
+              onClick={() => handleAddService("service")}
+              text={"Add service"}
+            />
+            <BtnAdd
+              onClick={() => handleAddService("clean")}
+              text={"Add clean"}
+            />
+            <BtnAdd
+              onClick={() => handleAddService("washing")}
+              text={"Add washing"}
+            />
+            <BtnSee text={"See amentity"} />
+          </div>
+        </div>
+        <Modal
+          centered={true}
+          width="50%"
+          closeIcon={null}
+          open={openAddService}
+          footer={null}
+          onCancel={() => {
+            SetOpenAddService(false);
+          }}
+        >
+          <div className="bg-white h-96 flex flex-col justify-around items-center w-full">
+            <p className="text-mainColor font-bold text-3xl items-center self-center flex ">
+              ADD SERVICE
+            </p>
+            <div className=" flex w-full justify-around">
+              <div>
+                <p className={styles.headding}> Searvice name</p>
+                <Select
+                  type="text"
+                  name="gender"
+                  value={serviceName}
+                  style={{
+                    width: "20vw",
+                    height: "40px",
+                    marginLeft: "10px",
+                  }}
+                  options={serviceList}
+                  onChange={(e) => setServiceName(e)}
+                />
+              </div>
+              <div>
+                <p className={styles.headding}> Quantity</p>
+                <input
+                  value={serviceQuantity}
+                  className={styles.inputInfo}
+                  onChange={(e) => SetServiceQuantity(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex items-center">
+              <button
+                onClick={() => {
+                  SetOpenAddService(false);
+                  setServiceName("");
+                  SetServiceQuantity("");
+                }}
+                className={styles.button}
+                style={{ backgroundColor: "#FF9A9A" }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  handleAdd1Service();
+                  setServiceName("");
+                  SetServiceQuantity("");
+                }}
+                className={styles.button}
+                style={{ backgroundColor: "#66EB8B" }}
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        </Modal>
+      </div>
+    </div>
+  );
 };

@@ -100,13 +100,12 @@ import { getStorage } from 'firebase/storage';
 
 // Hotiul 6
 const firebaseConfig = {
-  apiKey: "AIzaSyCxmoZimcGjKZSvO6qsjCvXkYLt6O3_mIA",
-  authDomain: "hotiul6.firebaseapp.com",
-  projectId: "hotiul6",
-  storageBucket: "hotiul6.appspot.com",
-  messagingSenderId: "230418311677",
-  appId: "1:230418311677:web:d74428566474828bbe9194",
-  measurementId: "G-FQS2S08H43"
+  apiKey: "AIzaSyBxA2IzhKHoQyJ8xpdvH9Ude7l3Uzol4Ls",
+  authDomain: "hotiul-d08e7.firebaseapp.com",
+  projectId: "hotiul-d08e7",
+  storageBucket: "hotiul-d08e7.appspot.com",
+  messagingSenderId: "606799689455",
+  appId: "1:606799689455:web:3106ddf4558a72c145cd1a"
 };
 
 // Initialize Firebase

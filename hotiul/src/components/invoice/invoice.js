@@ -140,7 +140,7 @@ function Invoice(props) {
 						</div>
 					</div>
 				</div>
-				{/* <div className={styles.payInfo}>
+				<div className={styles.payInfo}>
 					<div
 						className={styles.title}
 						style={{ marginTop: '50px' }}>
@@ -176,7 +176,7 @@ function Invoice(props) {
 							</div>
 						</div>
 					</div>
-				</div> */}
+				</div>
 				<div className={styles.footer}>
 					<div
 						style={{

@@ -108,7 +108,7 @@ const SideBar = ({ handleChange }) => {
 
 		if (staffTab) {
 			staffTab.displayName = t('sidebar.staff');
-			updatedTabs.splice(8, 0, staffTab);
+			updatedTabs.splice(7, 0, staffTab);
 		}
 
 		setTabs(updatedTabs);

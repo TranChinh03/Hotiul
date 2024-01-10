@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from '../invoice/invoice.module.scss';
 import { IC_closebutton } from '../../assets/icons';
-import { Table } from 'antd';
+import { Button, Modal, Table } from 'antd';
+import { convertStringToDate } from '../../utils/appUtils';
 
 const columns = [
 	{
@@ -41,6 +42,62 @@ const columns = [
 // }
 
 function Invoice(props) {
+
+	const success = () => {
+		Modal.success({
+		  content: 'This customer may come back! Introduce new promotions!',
+		});
+	  };
+	  
+	const error = () => {
+		Modal.error({
+			title: '!!!SOS!!!',
+			content: 'This customer is not likely to come back! Give them special vouchers!',
+		});
+	};
+
+	const onPredict = async (e) => {
+
+		const checkInDate = convertStringToDate(props.bookingOfRoom.CheckIn)
+		const checkOutDate = convertStringToDate(props.bookingOfRoom.CheckOut)
+		const dayStay = (checkOutDate - checkInDate) / (1000*60*60*24)
+
+		const formData = {
+			"gender": props.customerOfRoom.Gender === "Male" ? "male" : "female",
+			"price": props.bookingOfRoom.Price,
+			"number_of_staying_days": dayStay,
+			"number_of_service": props.bookingOfRoom.Service.length
+		}
+
+		console.log(formData)
+
+		e.preventDefault();
+		// Make a POST request to the API endpoint
+		fetch('https://hotiul.onrender.com/predict', {
+			method: 'POST',
+			headers: {
+			  'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(formData),
+		  })
+		  .then((response) => response.json())
+		  .then((responseData) => {
+			console.log('Response:', responseData.result === 0);
+			if (responseData.result === 0) {
+				error()
+			}
+			else {
+				success()
+			}
+		  })
+		  .catch((error) => {
+			// Handle errors
+			console.error('Error:', error);
+		  });
+
+		
+	}
+
 	const rawData = props.bookingOfRoom.Service.map(x => {
 		return ({
 			ID: x.ID,
@@ -140,7 +197,7 @@ function Invoice(props) {
 						</div>
 					</div>
 				</div>
-				<div className={styles.payInfo}>
+				{/* <div className={styles.payInfo}>
 					<div
 						className={styles.title}
 						style={{ marginTop: '50px' }}>
@@ -176,8 +233,11 @@ function Invoice(props) {
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> */}
 				<div className={styles.footer}>
+				<Button onClick={(e) => onPredict(e)}>
+						See return ability!
+					</Button>
 					<div
 						style={{
 							display: 'flex',

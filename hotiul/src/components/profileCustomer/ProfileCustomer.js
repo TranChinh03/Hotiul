@@ -51,8 +51,8 @@ const ProfileCustomer = (props) => {
   //add booking
   const [newBookings, setNewBookings] = useState([]);
   const [idCustomer, setIDCustomer] = useState("");
-  console.log("idcus", idCustomer);
-  console.log("newBookings", bookings);
+  // console.log("idcus", idCustomer);
+  // console.log("newBookings", bookings);
 
   const [edit, setEdit] = useState({
     name: "",
@@ -146,7 +146,7 @@ const ProfileCustomer = (props) => {
       phone: props.data?.Phone ?? "",
       ctzId: props.data?.CitizenID ?? "",
     });
-    if (props.data)
+    if (props.data) {
       setBookings(
         props.data.Booking.map((value) => {
           return {
@@ -157,7 +157,10 @@ const ProfileCustomer = (props) => {
           };
         })
       );
-  }, [props.data]);
+    } else {
+      setBookings([]);
+    }
+  });
 
   return (
     <>
@@ -171,6 +174,7 @@ const ProfileCustomer = (props) => {
                   onClick={() => {
                     props.onClose();
                     setBookings([]);
+                    setNewBookings([]);
                     setEdit({ name: "", gender: "", phone: "", ctzId: "" });
                     setState({ name: "", gender: "", phone: "", ctzId: "" });
                   }}

@@ -1,9 +1,9 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
-import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import { getStorage } from 'firebase/storage';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -214,17 +214,34 @@ import { getStorage } from 'firebase/storage';
 // 	measurementId: 'G-87NWSVPZXT',
 // };
 
-// //22
+// // //22
+// const firebaseConfig = {
+// 	apiKey: 'AIzaSyC9reMUbEdp0_4JV0gsfPhZjRVeGgBycHc',
+// 	authDomain: 'hotiul22.firebaseapp.com',
+// 	projectId: 'hotiul22',
+// 	storageBucket: 'hotiul22.appspot.com',
+// 	messagingSenderId: '883200827',
+// 	appId: '1:883200827:web:1794764a24310a18be5d1e',
+// 	measurementId: 'G-V0E33VQDVM',
+// };
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCdiesVO99xxA2CyGZHm5RF7iLO6nTOsJE",
+//   authDomain: "hotiulniu.firebaseapp.com",
+//   projectId: "hotiulniu",
+//   storageBucket: "hotiulniu.appspot.com",
+//   messagingSenderId: "340569071652",
+//   appId: "1:340569071652:web:42a16adf974e667780b8b1",
+//   measurementId: "G-H27TMYBZ33",
+// };
 const firebaseConfig = {
-	apiKey: 'AIzaSyC9reMUbEdp0_4JV0gsfPhZjRVeGgBycHc',
-	authDomain: 'hotiul22.firebaseapp.com',
-	projectId: 'hotiul22',
-	storageBucket: 'hotiul22.appspot.com',
-	messagingSenderId: '883200827',
-	appId: '1:883200827:web:1794764a24310a18be5d1e',
-	measurementId: 'G-V0E33VQDVM',
+  apiKey: "AIzaSyD85iPxvnHj675rpfmotgnyPgv0pRRtm9I",
+  authDomain: "hotiulniuniu.firebaseapp.com",
+  projectId: "hotiulniuniu",
+  storageBucket: "hotiulniuniu.appspot.com",
+  messagingSenderId: "216976820021",
+  appId: "1:216976820021:web:9a20256a4ed8693bb22e7c",
+  measurementId: "G-KM4QZE34RZ",
 };
-
 // //33
 // const firebaseConfig = {
 // 	apiKey: 'AIzaSyAuu2YPlWD5iu-oViGW7D8ot_6m6wtcnvA',

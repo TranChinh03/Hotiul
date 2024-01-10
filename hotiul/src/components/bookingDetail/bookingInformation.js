@@ -62,6 +62,7 @@ export const BookingInfo = (props) => {
             onClick={() => {
               // handleAction();
               props.onClose();
+
               props.onEdit();
             }}
             className={styles.button}

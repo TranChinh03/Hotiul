@@ -148,7 +148,7 @@ function FeeInformation(props) {
 		const result = [];
 		var flag = false;
 		if (dataValue.detail.length == 0) result.push(newData);
-		else
+		else {
 			dataValue.detail.forEach(element => {
 				element.Name = element.Name ?? '';
 				element.Price = element.Price ?? '';
@@ -160,7 +160,9 @@ function FeeInformation(props) {
 				}
 			});
 
-		if (!flag) result.push(newData);
+			if (!flag) result.push(newData);
+		}
+
 		setDataValue({ ...dataValue, detail: result });
 		UpdateTable();
 	}

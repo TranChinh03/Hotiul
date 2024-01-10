@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './bookingInformation.module.scss';
+import styles from '../../components/bookingDetail/bookingInformation.module.css';
 import { IC_Calendar, IC_closebutton, IC_delete } from '../../assets/icons';
 import BtnAdd from '../profileCustomer/btnAdd';
 import BtnSee from '../profileCustomer/btnSee';
@@ -8,10 +8,11 @@ import { getData } from '../../controller/getData.ts';
 import dayjs from 'dayjs';
 import { addData } from '../../controller/addData.ts';
 import { createID } from '../../utils/appUtils.js';
-import { DeleteService } from '../../controller/deleteInArray.ts';
-import { UpdateService } from '../../controller/updateService.ts';
 
-export const AeBooking = props => {
+import { UpdateService } from '../../controller/updateService.ts';
+import { DeleteService } from '../../controller/deleteInArray.ts';
+
+export const AddBooking = props => {
 	const today = new Date().toLocaleDateString('en-GB');
 	var [roomTypes, setRoomTypes] = useState([]);
 	var [fullData, setFullData] = useState([]);

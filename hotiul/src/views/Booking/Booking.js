@@ -6,123 +6,44 @@ import { IC_backArrow, IC_navDetail, IC_nextArrow, IC_sort } from '../../assets/
 import { useTranslation } from 'react-i18next';
 import { getData } from '../../controller/getData.ts';
 import { convertStringToDate } from '../../utils/appUtils';
+import { BookingInfo } from './bookingInformation.js';
+import { Modal } from 'antd';
 
 export const Booking = () => {
 	const { t } = useTranslation();
 	// search
 	const [keywords, setKeywords] = useState('');
-
+	const [data, setData] = useState([]);
+	const [selectedBooking, setSelectedBooking] = useState(null);
 	const column = [
-		{ label: 'ID', accessor: 'id' },
-		{ label: t('customer.customerName'), accessor: 'name' },
-		{ label: t('roomType.room'), accessor: 'room' },
-		{ label: t('room.checkin'), accessor: 'checkin' },
-		{ label: t('room.checkout'), accessor: 'checkout' },
-		{ label: t('roomType.detail'), accessor: 'detail' },
+		{ label: 'ID', accessor: 'Id' },
+		{ label: t('customer.customerName'), accessor: 'Name' },
+		{ label: t('roomType.room'), accessor: 'Room' },
+		{ label: t('room.checkin'), accessor: 'Checkin' },
+		{ label: t('room.checkout'), accessor: 'Checkout' },
+		{ label: t('roomType.detail'), accessor: 'Detail' },
 	];
-	const data = [
-		{
-			id: '001',
-			name: 'Anom',
-			room: 19,
-			checkin: '20/11/2023',
-			checkout: '25/11/2023',
-		},
-		{
-			id: '002',
-			name: 'Hello',
-			room: 12,
-			checkin: '20/11/2023',
-			checkout: '25/11/2023',
-		},
-		{
-			id: '001',
-			name: 'Hi',
-			room: 17,
-			checkin: '20/11/2023',
-			checkout: '25/11/2023',
-		},
-		{
-			id: '001',
-			name: 'Anom',
-			room: 19,
-			checkin: '20/11/2023',
-			checkout: '25/11/2023',
-		},
-		{
-			id: '002',
-			name: 'Hello',
-			room: 12,
-			checkin: '20/11/2023',
-			checkout: '25/11/2023',
-		},
-		{
-			id: '001',
-			name: 'Hi',
-			room: 17,
-			checkin: '20/11/2023',
-			checkout: '25/11/2023',
-		},
-		{
-			id: '001',
-			name: 'Anom',
-			room: 19,
-			checkin: '20/11/2023',
-			checkout: '25/11/2023',
-		},
-		{
-			id: '002',
-			name: 'Hello',
-			room: 12,
-			checkin: '20/11/2023',
-			checkout: '25/11/2023',
-		},
-		{
-			id: '001',
-			name: 'Hi',
-			room: 17,
-			checkin: '20/11/2023',
-			checkout: '25/11/2023',
-		},
-		{
-			id: '001',
-			name: 'Anom',
-			room: 19,
-			checkin: '20/11/2023',
-			checkout: '25/11/2023',
-		},
-		{
-			id: '002',
-			name: 'Hello',
-			room: 12,
-			checkin: '20/11/2023',
-			checkout: '25/11/2023',
-		},
-		{
-			id: '001',
-			name: 'Hi',
-			room: 17,
-			checkin: '20/11/2023',
-			checkout: '25/11/2023',
-		},
-		{
-			id: '001',
-			name: 'Hi',
-			room: 17,
-			checkin: '20/11/2023',
-			checkout: '25/11/2023',
-		},
-	];
+
 	useEffect(() => {
-		fetchInUseBooking();
-	}, [])
-	const fetchInUseBooking = async () => {
-		const listBooking = await getData('/BOOKING');
-		const currentDate = new Date();
-		const checkInUse = listBooking.filter((item) => convertStringToDate(item.CheckIn) < currentDate && convertStringToDate(item.CheckOut) > currentDate);
-		const roomInUse = checkInUse.map((item) => (item.RoomID));
-		console.log(roomInUse);
-	}
+		fetchBooking();
+	}, []);
+	const fetchBooking = async () => {
+		getData('/BOOKING').then(listBooking => {
+			console.log(listBooking);
+			setData(
+				listBooking.map((value, index) => {
+					return {
+						Id: value.ID,
+						Name: value.CustomerID,
+						Room: value.RoomID,
+						Checkin: value.RoomType.Price,
+						Checkout: value.Price,
+						...value,
+					};
+				}),
+			);
+		});
+	};
 	const [pageIndex, setPageIndex] = useState(1);
 	const [totalPage, setTotalPage] = useState(Math.ceil(data.length / 9));
 	return (
@@ -156,9 +77,10 @@ export const Booking = () => {
 					<tbody className="h-96">
 						{data.slice(pageIndex * 9 - 9, pageIndex * 9).map((val, key) => {
 							if (
-								val.name.toLowerCase().includes(keywords.toLowerCase()) ||
-								val.id.toLowerCase().includes(keywords.toLowerCase()) ||
-								val.room.toString().includes(keywords)
+								val.name &&
+								(val.name.toLowerCase().includes(keywords.toLowerCase()) ||
+									val.id.toLowerCase().includes(keywords.toLowerCase()) ||
+									val.room.toString().includes(keywords))
 							)
 								return (
 									<tr
@@ -168,7 +90,9 @@ export const Booking = () => {
 											const tData = val[accessor] ? val[accessor] : '——';
 											return <td className={styles.col}>{tData}</td>;
 										})}
-										<td className={styles.col}>
+										<td
+											className={styles.col}
+											onClick={() => setSelectedBooking(val)}>
 											<p>{t('booking.viewDetail')}</p>
 											<img
 												className="pl-2"
@@ -206,6 +130,9 @@ export const Booking = () => {
 					</button>
 				</div>
 			</div>
+			<Modal open={selectedBooking}>
+				<BookingInfo booking={selectedBooking} />
+			</Modal>
 		</div>
 	);
 };

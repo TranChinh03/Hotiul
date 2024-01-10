@@ -204,15 +204,15 @@ import { getStorage } from 'firebase/storage';
 
 ///---------------------///
 // //11
-// const firebaseConfig = {
-// 	apiKey: 'AIzaSyAngnPq2s_wKXx8axpfk3YnWjrGOriCJG4',
-// 	authDomain: 'hotiul11.firebaseapp.com',
-// 	projectId: 'hotiul11',
-// 	storageBucket: 'hotiul11.appspot.com',
-// 	messagingSenderId: '975500922153',
-// 	appId: '1:975500922153:web:a67c551ecb01d42ba0bb38',
-// 	measurementId: 'G-87NWSVPZXT',
-// };
+const firebaseConfig = {
+	apiKey: 'AIzaSyAngnPq2s_wKXx8axpfk3YnWjrGOriCJG4',
+	authDomain: 'hotiul11.firebaseapp.com',
+	projectId: 'hotiul11',
+	storageBucket: 'hotiul11.appspot.com',
+	messagingSenderId: '975500922153',
+	appId: '1:975500922153:web:a67c551ecb01d42ba0bb38',
+	measurementId: 'G-87NWSVPZXT',
+};
 
 // //22
 // const firebaseConfig = {
@@ -236,15 +236,62 @@ import { getStorage } from 'firebase/storage';
 // 	measurementId: 'G-9ZE0W5VE46',
 // };
 
-//44
-const firebaseConfig = {
-	apiKey: 'AIzaSyANkm3G23zlp_wa7E6VlmxpF305mOnUJVQ',
-	authDomain: 'hotiul44.firebaseapp.com',
-	projectId: 'hotiul44',
-	storageBucket: 'hotiul44.appspot.com',
-	messagingSenderId: '202478913049',
-	appId: '1:202478913049:web:b394f6d6610d05f88f4c88',
-};
+// 44
+// const firebaseConfig = {
+// 	apiKey: 'AIzaSyANkm3G23zlp_wa7E6VlmxpF305mOnUJVQ',
+// 	authDomain: 'hotiul44.firebaseapp.com',
+// 	projectId: 'hotiul44',
+// 	storageBucket: 'hotiul44.appspot.com',
+// 	messagingSenderId: '202478913049',
+// 	appId: '1:202478913049:web:b394f6d6610d05f88f4c88',
+// };
+
+// 55
+// const firebaseConfig = {
+// 	apiKey: 'AIzaSyDjLsgIr6ug_h3b7E_IgnVBDQbjRQFngVE',
+// 	authDomain: 'hotiul55.firebaseapp.com',
+// 	projectId: 'hotiul55',
+// 	storageBucket: 'hotiul55.appspot.com',
+// 	messagingSenderId: '941979233384',
+// 	appId: '1:941979233384:web:7999696d11f45888d89fdd',
+// };
+// 66
+// const firebaseConfig = {
+// 	apiKey: 'AIzaSyDRwuDUUnic3oDdtSa-GJ4-MwkhhQY00xI',
+// 	authDomain: 'hotiul66.firebaseapp.com',
+// 	projectId: 'hotiul66',
+// 	storageBucket: 'hotiul66.appspot.com',
+// 	messagingSenderId: '321270205853',
+// 	appId: '1:321270205853:web:88ccf277fcc9688bfef374',
+// };
+// 77
+// const firebaseConfig = {
+// 	apiKey: 'AIzaSyCHSqjhEom9iFOYfk62zot_1UC-VGiICe0',
+// 	authDomain: 'hotiul77.firebaseapp.com',
+// 	projectId: 'hotiul77',
+// 	storageBucket: 'hotiul77.appspot.com',
+// 	messagingSenderId: '374144982409',
+// 	appId: '1:374144982409:web:018dd6cf1aaab3b86a9558',
+// };
+
+// 88
+// const firebaseConfig = {
+// 	apiKey: 'AIzaSyDFztbNZkyarfjsKbVHTs3w0WGaE9yJIWY',
+// 	authDomain: 'hotiul-d3e8f.firebaseapp.com',
+// 	projectId: 'hotiul-d3e8f',
+// 	storageBucket: 'hotiul-d3e8f.appspot.com',
+// 	messagingSenderId: '936815058427',
+// 	appId: '1:936815058427:web:1c58f3c727264d2cecff5e',
+// };
+// 99
+// const firebaseConfig = {
+// 	apiKey: 'AIzaSyCsI6SDVxH4QVzcz9q6Qg40NkZqrZYQYow',
+// 	authDomain: 'hotiul99.firebaseapp.com',
+// 	projectId: 'hotiul99',
+// 	storageBucket: 'hotiul99.appspot.com',
+// 	messagingSenderId: '184601068150',
+// 	appId: '1:184601068150:web:8f49bd7bd8a1548816d557',
+// };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);

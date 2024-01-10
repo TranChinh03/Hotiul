@@ -68,6 +68,7 @@ const ProfileCustomer = (props) => {
     state.ctzId = edit.ctzId;
   }
 
+  // console.log("selec", props.data);
   function handleAction() {
     assignInfo(edit, state);
     setAction(!action);
@@ -121,7 +122,7 @@ const ProfileCustomer = (props) => {
         CitizenID: edit.ctzId,
         Phone: edit.phone,
         Gender: edit.gender,
-        Booking: [],
+        Booking: newBookings,
       };
       console.log(newData);
       addData({ data: newData, table: "CUSTOMER", id: customerID });
@@ -132,6 +133,8 @@ const ProfileCustomer = (props) => {
         ctzId: "",
       });
       props.onClose();
+      setBookings([]);
+      setNewBookings([]);
     } catch (err) {
       console.log("Error adding data", err);
       return;
@@ -202,6 +205,7 @@ const ProfileCustomer = (props) => {
                     handleDelete();
                     props.onClose();
                     setBookings([]);
+                    setNewBookings([]);
                   }}
                   className={styles.button}
                   style={{ backgroundColor: "#FF9A9A" }}
@@ -221,6 +225,7 @@ const ProfileCustomer = (props) => {
                   onClick={() => {
                     props.onClose();
                     setBookings([]);
+                    setNewBookings([]);
                   }}
                 >
                   <img src={IC_closebutton} alt="CloseButton"></img>
@@ -415,6 +420,48 @@ const ProfileCustomer = (props) => {
                     return (
                       <tr className={styles.rowTbl} key={key}>
                         {columnNew.slice(0, -1).map(({ accessor }) => {
+                          const tData = val.e[accessor]
+                            ? val.e[accessor]
+                            : "——";
+                          return <td className={styles.col}>{tData}</td>;
+                        })}
+                        <td className={styles.col}>
+                          <button
+                            onClick={() => {
+                              setOnDetail(true);
+                              setSelectedBooking(
+                                props.data.Booking.find(
+                                  (x) => x.ID === val.e.id
+                                )
+                              );
+                              console.log("seleted", selectedBooking);
+                            }}
+                          >
+                            <div className={styles.tableInfo}>
+                              View detail
+                              <img
+                                style={{
+                                  justifySelf: "center",
+                                  alignSelf: "center",
+                                }}
+                                className="pl-2"
+                                src={IC_navDetail}
+                              />
+                            </div>
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            ) : bookings.e ? (
+              <tbody className=" h-48">
+                {bookings
+                  .slice(pageIndex * 9 - 9, pageIndex * 9)
+                  .map((val, key) => {
+                    return (
+                      <tr className={styles.rowTbl} key={key}>
+                        {column.slice(0, -1).map(({ accessor }) => {
                           const tData = val.e[accessor]
                             ? val.e[accessor]
                             : "——";

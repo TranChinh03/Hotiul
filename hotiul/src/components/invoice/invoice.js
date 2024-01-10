@@ -29,25 +29,54 @@ const columns = [
 		render: text => <div className={styles.tableInfo}>{text}</div>,
 	},
 ];
-const data = [];
-for (let i = 0; i < 100; i++) {
-	data.push({
-		key: i,
-		service: `Service ${i}`,
-		unitprice: `Unit ${i + 5}`,
-		quantity: `Quantity ${i + 2}`,
-		price: `10000000 + ${i + 5}`,
-	});
-}
 
-function Invoice() {
+// for (let i = 0; i < 100; i++) {
+// 	data.push({
+// 		key: i,
+// 		service: `Service ${i}`,
+// 		unitprice: `Unit ${i + 5}`,
+// 		quantity: `Quantity ${i + 2}`,
+// 		price: `10000000 + ${i + 5}`,
+// 	});
+// }
+
+function Invoice(props) {
+	const rawData = props.bookingOfRoom.Service.map(x => {
+		return ({
+			ID: x.ID,
+			Price: x.Price,
+			Service: x.Service
+		})
+	})
+
+	let idCounter = 1
+
+	const data = Object.values(rawData.reduce((acc, curr) => {
+		const key = JSON.stringify(curr);
+		if (!acc[key]) {
+		  acc[key] = {...curr, Quantity: 1, IntegralKey: idCounter};
+		  idCounter++;
+		} else {
+		  acc[key].Quantity++;
+		}
+		return acc;
+	  }, {})).map(x=> {return({
+		key: x.IntegralKey,
+		service: x.Service,
+		unitprice: x.Price,
+		quantity: x.Quantity,
+		price: x.Price * x.Quantity,
+	  })})
+	
+
+
 	return (
 		<>
 			<div className={styles.container}>
 				<div className={styles.header}>
 					<div style={{ width: '60px', height: '60px' }}></div>
 					<div className={styles.headerTitle}>Invoice</div>
-					<button>
+					<button onClick={props.setOpen}>
 						<img
 							src={IC_closebutton}
 							alt="CloseButton"></img>
@@ -63,9 +92,9 @@ function Invoice() {
 								<div>People</div>
 							</div>
 							<div className={styles.colData}>
-								<div>R.1221</div>
-								<div>Single Bedroom</div>
-								<div>2</div>
+								<div>{props.bookingOfRoom.RoomID}</div>
+								<div>{props.bookingOfRoom.RoomType.TypeName}</div>
+								<div>{props.bookingOfRoom.RoomType.NumPerson}</div>
 							</div>
 						</div>
 						<div className={styles.card2}>
@@ -75,9 +104,9 @@ function Invoice() {
 								<div>Citizen ID</div>
 							</div>
 							<div className={styles.colData}>
-								<div>R.1221</div>
-								<div>Single Bedroom</div>
-								<div>2</div>
+								<div>{props.customerOfRoom.Name}</div>
+								<div>{props.customerOfRoom.Phone}</div>
+								<div>{props.customerOfRoom.CitizenID}</div>
 							</div>
 						</div>
 					</div>
@@ -93,7 +122,7 @@ function Invoice() {
 						columns={columns}
 						dataSource={data}
 						pagination={false}
-						scroll={{ y: 150 }}
+
 					/>
 					<div
 						style={{
@@ -107,7 +136,7 @@ function Invoice() {
 						<div
 							className={styles.totalText}
 							style={{ marginLeft: '20px' }}>
-							1.590.000 VND
+							${props.bookingOfRoom.Price}
 						</div>
 					</div>
 				</div>
@@ -159,7 +188,7 @@ function Invoice() {
 						}}>
 						<div style={{ color: 'var(--3, #0077b6)' }}>Created by staff:</div>
 						<div style={{ color: 'var(--3, #0077b6)', marginLeft: '20px', fontWeight: 'bold' }}>
-							Le Nhan Vien
+							{JSON.parse(localStorage.getItem("currentUser")).Name}
 						</div>
 					</div>
 					<div

@@ -5,6 +5,7 @@ import { Button } from 'antd';
 import { updateData } from '../../controller/addData.ts';
 import { getData } from '../../controller/getData.ts';
 import { areDatesEqualIgnoringTime, convertStringToDate, formatDateToDDMMYYYY } from '../../utils/appUtils.js';
+import Invoice from '../invoice/invoice.js';
 const style = {
     position: 'absolute',
     top: '30%',
@@ -16,6 +17,9 @@ const style = {
     boxShadow: 24,
 };
 function RoomDetail(props) {
+
+    const [isInvoiceOpen, setIsInvoiceOpen] = useState(false)
+
     const handleCloseDetailModal = () => {
         props.onCloseModal();
     }
@@ -129,7 +133,7 @@ function RoomDetail(props) {
 
     }
     const handlePrintInvoice = () => {
-        // open Invoice and Print
+        setIsInvoiceOpen(true);
     }
     return (
         <div>
@@ -276,6 +280,12 @@ function RoomDetail(props) {
                             </button>}
                     </div>
                 </Box>
+            </Modal>
+            <Modal open={isInvoiceOpen}>
+                <Invoice 
+                    customerOfRoom={customerOfRoom}
+                    bookingOfRoom={bookingOfRoom}
+                    setOpen={() => setIsInvoiceOpen(false)}/>
             </Modal>
         </div >
     );

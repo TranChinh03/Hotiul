@@ -77,14 +77,58 @@ import { getStorage } from 'firebase/storage';
 // };
 
 //x3
+// const firebaseConfig = {
+// 	apiKey: 'AIzaSyBLaFmR1FZsFhjsZlErv_oB5VDfKHt0CPY',
+// 	authDomain: 'hotiulx3.firebaseapp.com',
+// 	projectId: 'hotiulx3',
+// 	storageBucket: 'hotiulx3.appspot.com',
+// 	messagingSenderId: '784033549645',
+// 	appId: '1:784033549645:web:d2071ff91164ec38997b04',
+// 	measurementId: 'G-HLYLR25WND',
+// };
+
+///---------------------///
+// //11
+// const firebaseConfig = {
+// 	apiKey: 'AIzaSyAngnPq2s_wKXx8axpfk3YnWjrGOriCJG4',
+// 	authDomain: 'hotiul11.firebaseapp.com',
+// 	projectId: 'hotiul11',
+// 	storageBucket: 'hotiul11.appspot.com',
+// 	messagingSenderId: '975500922153',
+// 	appId: '1:975500922153:web:a67c551ecb01d42ba0bb38',
+// 	measurementId: 'G-87NWSVPZXT',
+// };
+
+// //22
+// const firebaseConfig = {
+// 	apiKey: 'AIzaSyC9reMUbEdp0_4JV0gsfPhZjRVeGgBycHc',
+// 	authDomain: 'hotiul22.firebaseapp.com',
+// 	projectId: 'hotiul22',
+// 	storageBucket: 'hotiul22.appspot.com',
+// 	messagingSenderId: '883200827',
+// 	appId: '1:883200827:web:1794764a24310a18be5d1e',
+// 	measurementId: 'G-V0E33VQDVM',
+// };
+
+// //33
+// const firebaseConfig = {
+// 	apiKey: 'AIzaSyAuu2YPlWD5iu-oViGW7D8ot_6m6wtcnvA',
+// 	authDomain: 'hotiul33-35416.firebaseapp.com',
+// 	projectId: 'hotiul33-35416',
+// 	storageBucket: 'hotiul33-35416.appspot.com',
+// 	messagingSenderId: '972975959268',
+// 	appId: '1:972975959268:web:c193adf6a5686d9b8b10f1',
+// 	measurementId: 'G-9ZE0W5VE46',
+// };
+
+//44
 const firebaseConfig = {
-	apiKey: 'AIzaSyBLaFmR1FZsFhjsZlErv_oB5VDfKHt0CPY',
-	authDomain: 'hotiulx3.firebaseapp.com',
-	projectId: 'hotiulx3',
-	storageBucket: 'hotiulx3.appspot.com',
-	messagingSenderId: '784033549645',
-	appId: '1:784033549645:web:d2071ff91164ec38997b04',
-	measurementId: 'G-HLYLR25WND',
+	apiKey: 'AIzaSyANkm3G23zlp_wa7E6VlmxpF305mOnUJVQ',
+	authDomain: 'hotiul44.firebaseapp.com',
+	projectId: 'hotiul44',
+	storageBucket: 'hotiul44.appspot.com',
+	messagingSenderId: '202478913049',
+	appId: '1:202478913049:web:b394f6d6610d05f88f4c88',
 };
 
 const app = initializeApp(firebaseConfig);

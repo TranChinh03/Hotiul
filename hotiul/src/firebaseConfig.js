@@ -1,9 +1,9 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
-import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import { getStorage } from 'firebase/storage';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -40,7 +40,6 @@ import { getStorage } from 'firebase/storage';
 //   measurementId: "G-4E06ZF507V",
 // };
 
-
 // Hotiul 2
 // const firebaseConfig = {
 //   apiKey: "AIzaSyBnqcFDMddroMdne3qVmdF6BTMzYeRUUNo",
@@ -62,7 +61,6 @@ import { getStorage } from 'firebase/storage';
 //   appId: "1:442975610624:web:cf92301da2d0f42abc35e5",
 //   measurementId: "G-EXMZDDRZFP",
 // };
-
 
 //Hotiul test
 
@@ -99,16 +97,24 @@ import { getStorage } from 'firebase/storage';
 // };
 
 // Hotiul 6
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCxmoZimcGjKZSvO6qsjCvXkYLt6O3_mIA",
+//   authDomain: "hotiul6.firebaseapp.com",
+//   projectId: "hotiul6",
+//   storageBucket: "hotiul6.appspot.com",
+//   messagingSenderId: "230418311677",
+//   appId: "1:230418311677:web:d74428566474828bbe9194",
+//   measurementId: "G-FQS2S08H43"
+// };
 const firebaseConfig = {
-  apiKey: "AIzaSyCxmoZimcGjKZSvO6qsjCvXkYLt6O3_mIA",
-  authDomain: "hotiul6.firebaseapp.com",
-  projectId: "hotiul6",
-  storageBucket: "hotiul6.appspot.com",
-  messagingSenderId: "230418311677",
-  appId: "1:230418311677:web:d74428566474828bbe9194",
-  measurementId: "G-FQS2S08H43"
+  apiKey: "AIzaSyDbok3PaFnfP1JhS1LlLyHxlfbxLDuhBwI",
+  authDomain: "finoniu.firebaseapp.com",
+  projectId: "finoniu",
+  storageBucket: "finoniu.appspot.com",
+  messagingSenderId: "68776458013",
+  appId: "1:68776458013:web:770192541402670e76d3f4",
+  measurementId: "G-1QFP7J7TYL",
 };
-
 // Initialize Firebase
 
 // const firebaseConfig = {
@@ -131,7 +137,6 @@ const firebaseConfig = {
 // 	appId: '1:679546932269:web:2864d19a05fc2520a5bca4',
 // 	measurementId: 'G-3HSSGKJNLZ',
 // };
-
 
 // const firebaseConfig = {
 //   apiKey: "AIzaSyAwJ2hx69qVmqBiBBNk7wQhEGMzU_vXkvY",
@@ -165,7 +170,6 @@ const firebaseConfig = {
 // 	appId: '1:938501227061:web:71c5b9405637beedbee77c',
 // 	measurementId: 'G-HP790ECXE3',
 // };
-
 
 // const firebaseConfig = {
 //   apiKey: "AIzaSyDlu3iJLjpCyUjJ52NG-peL5ZZGyEuvOnY",

@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import { addData } from "../../controller/addData.ts";
 import { createID } from "../../utils/appUtils.js";
 import { DeleteService } from "../../controller/deleteInArray.ts";
+import { UpdateService } from "../../controller/updateService.ts";
 
 export const AeBooking = (props) => {
   const today = new Date().toLocaleDateString("en-GB");
@@ -19,6 +20,7 @@ export const AeBooking = (props) => {
   const [bookings, setBookings] = useState([]);
   const [services, setServices] = useState([]);
   const [serviceName, setServiceName] = useState("");
+  const [serviceDtb, setServiceDtb] = useState([]);
 
   //modal Add Services
   const [openAddService, SetOpenAddService] = useState(false);
@@ -37,12 +39,18 @@ export const AeBooking = (props) => {
   const dateFormat = "DD/MM/YYYY";
 
   const [checkin, setCheckin] = useState(
-    dayjs(convertToDate(props.booking?.CheckIn)) ?? dayjs(today, dateFormat)
+    props.booking
+      ? dayjs(convertToDate(props.booking.CheckIn))
+      : dayjs(today, dateFormat)
   );
   const [checkout, setCheckout] = useState(
-    dayjs(convertToDate(props.booking?.CheckOut)) ?? dayjs(today, dateFormat)
+    props.booking
+      ? dayjs(convertToDate(props.booking.CheckOut))
+      : dayjs(today, dateFormat)
   );
-  const [price, setPrice] = useState(props.booking?.Total ?? "");
+  const [price, setPrice] = useState(0);
+  console.log(price);
+  const [roomprice, setRoomPrice] = useState();
 
   const [customer, setCustomer] = useState("");
   const [ctzID, setCtzID] = useState("");
@@ -107,6 +115,7 @@ export const AeBooking = (props) => {
     ]);
   };
 
+  //seleservice
   function handleDelete(id, index, idBooking) {
     console.log("id", id);
     console.log("idex", index);
@@ -114,16 +123,26 @@ export const AeBooking = (props) => {
     var temp = services;
     temp.splice(index, 1);
 
-    try {
-      DeleteService(id, idBooking);
-    } catch (err) {
-      console.log("Error delete data", err);
-    }
+    // try {
+    //   DeleteService(id, idBooking);
+    // } catch (err) {
+    //   console.log("Error delete data", err);
+    // }
     return temp;
   }
   useEffect(() => {
     fetchData();
-  });
+  }, []);
+
+  // price
+  useEffect(() => {
+    var sum = roomprice;
+    console.log(services);
+    services.forEach((element) => {
+      sum += element.Price;
+    });
+    setPrice(sum);
+  }, [services, roomprice]);
 
   //   /console.log(props.booking);
   useEffect(() => {
@@ -131,17 +150,31 @@ export const AeBooking = (props) => {
     setCtzID(props.customer.CitizenID);
     setPhone(props.customer.Phone);
     setID(props.customer.ID);
-    setRoomType(props.booking?.RoomType.TypeName);
-    setPeople(props.booking?.RoomType.NumPerson);
-    setRoomID(props.booking?.RoomID);
-    setServices(props.booking.Service);
+    if (props.booking) {
+      setRoomType(props.booking.RoomType.TypeName);
+      setPeople(props.booking.RoomType.NumPerson);
+      setRoomID(props.booking.RoomID);
+      setServices(props.booking.Service ?? []);
+    }
   }, [props.customer, props.booking]);
 
   const options = { day: "2-digit", month: "2-digit", year: "numeric" };
 
   //add new 1 service
   function handleAdd1Service() {
+    if (serviceName === "" || serviceQuantity === "") {
+      message.error("Please choose service and enter quantity.");
+      return;
+    }
     const temp = allServiceList.find((e) => e.Service === serviceName);
+    console.log("temp", temp);
+    if (temp.Available - serviceQuantity < 0) {
+      message.error("Service quantity is not  enought. Please pick another");
+      return;
+    }
+    temp.Available -= serviceQuantity;
+    console.log("temp2", temp);
+    //setServiceDtb(serviceDtb=> [...serviceDtb, temp.ID])
     setServices((services) => [
       ...services,
       {
@@ -153,8 +186,6 @@ export const AeBooking = (props) => {
     ]);
     console.log("service", services);
     SetOpenAddService(false);
-    setServiceName("");
-    SetServiceQuantity("");
   }
 
   function handleAddService(type) {
@@ -167,7 +198,7 @@ export const AeBooking = (props) => {
           ...services,
           {
             Service: "Washing",
-            Price: "7$",
+            Price: 7,
             Quantity: "1",
             Date: new Date().toLocaleDateString("en-GB", options),
           },
@@ -179,7 +210,7 @@ export const AeBooking = (props) => {
           ...services,
           {
             Service: "Clean",
-            Price: "5$",
+            Price: 5,
             Quantity: "1",
             Date: new Date().toLocaleDateString("en-GB", options),
           },
@@ -197,7 +228,7 @@ export const AeBooking = (props) => {
     return dat;
   }
 
-  function handleAdd() {
+  async function handleAdd() {
     const options = { day: "2-digit", month: "2-digit", year: "numeric" };
     console.log("adding");
     const bookingID = createID({ prefix: "B" });
@@ -216,7 +247,7 @@ export const AeBooking = (props) => {
         CustomerID: props.customer.ID,
         CitizenID: ctzID,
         Phone: phone,
-        Service: [],
+        Service: services,
         RoomID: roomID,
         CheckIn: checkin.format("MM/DD/YYYY").toString(),
         CheckOut: checkout.format("MM/DD/YYYY").toString(),
@@ -231,7 +262,25 @@ export const AeBooking = (props) => {
       };
       console.log(newData);
       addData({ data: newData, table: "BOOKING", id: bookingID });
-      //props.onClose();
+      console.log(services);
+      services.forEach((element) => {
+        console.log("e1", element);
+        allServiceList.forEach((e) => {
+          console.log("e2", e);
+          if (element.Service === e.Service) {
+            console.log("check", e.ID, e.Available - element.Quantity);
+            UpdateService(e.ID, e.Available - element.Quantity);
+          }
+        });
+      });
+
+      props.onClose();
+      setServices([]);
+      setRoomType("");
+      setRoomID("");
+      setPeople("");
+      setPrice(0);
+      setRoomPrice(0);
     } catch (err) {
       console.log("Error adding data", err);
       return;
@@ -302,8 +351,15 @@ export const AeBooking = (props) => {
         <div className="flex items-center">
           <button
             onClick={() => {
+              setServices([]);
+              setRoomType("");
+              setRoomID("");
+              setPeople("");
+              setPrice(0);
+              setRoomPrice(0);
               // handleAction();
               props.onClose();
+
               //props.onEdit();
             }}
             className={styles.button}
@@ -412,7 +468,7 @@ export const AeBooking = (props) => {
                 setRoomList([]);
 
                 fullData.map((element) => {
-                  if (element.TypeName === e) setPrice(element.Price);
+                  if (element.TypeName === e) setRoomPrice(element.Price);
                 });
                 checkAvailable(e);
               }}
@@ -497,9 +553,7 @@ export const AeBooking = (props) => {
                       <td className={styles.col}>
                         <button
                           onClick={() => {
-                            setServices(
-                              handleDelete(val.ID, key, props.booking.ID)
-                            );
+                            handleDelete(val?.ID, key, props.booking?.ID);
                           }}
                         >
                           <img
@@ -568,6 +622,7 @@ export const AeBooking = (props) => {
               <div>
                 <p className={styles.headding}> Quantity</p>
                 <input
+                  value={serviceQuantity}
                   className={styles.inputInfo}
                   onChange={(e) => SetServiceQuantity(e.target.value)}
                 />
@@ -577,6 +632,8 @@ export const AeBooking = (props) => {
               <button
                 onClick={() => {
                   SetOpenAddService(false);
+                  setServiceName("");
+                  SetServiceQuantity("");
                 }}
                 className={styles.button}
                 style={{ backgroundColor: "#FF9A9A" }}
@@ -586,11 +643,13 @@ export const AeBooking = (props) => {
               <button
                 onClick={() => {
                   handleAdd1Service();
+                  setServiceName("");
+                  SetServiceQuantity("");
                 }}
                 className={styles.button}
                 style={{ backgroundColor: "#66EB8B" }}
               >
-                Save
+                Add
               </button>
             </div>
           </div>

@@ -15,46 +15,72 @@ import { useTranslation } from 'react-i18next';
 
 export const Staff = () => {
 	const { t } = useTranslation();
-	const items = [
-		{
-			label: (
-				<button
-					className="w-20"
-					onClick={() => setItem('--' + t('staff.all') + '--')}>
-					{t('staff.all')}
-				</button>
-			),
-			key: '1',
-		},
-		{
-			label: (
-				<button
-					className="w-20"
-					onClick={() => setItem(t('staff.male'))}>
-					{t('staff.male')}
-				</button>
-			),
-			key: '2',
-		},
-		{
-			label: (
-				<button
-					className="w-20"
-					onClick={() => setItem(t('staff.male'))}>
-					{t('staff.female')}
-				</button>
-			),
-			key: '3',
-		},
-	];
-	const [item, setItem] = useState('--' + t('staff.all') + '--');
+  const [keywords, setKeywords] = useState('');
+  const items = [
+    {
+      label: (
+        <button className="w-20" onClick={() => {
+          setItem(" - - All - -")
+          setData(fullData.filter(x=>x.Role !== "Admin").map(item => {
+            return {
+              id: item.ID,
+              name: item.Name,
+              phone: item.Phone,
+              gender: item.Gender
+            }
+          }))
+        }}>
+          All
+        </button>
+      ),
+      key: "1",
+    },
+    {
+      label: (
+        <button className="w-20" onClick={() => {
+          setItem("Male")
+          setData(fullData.filter(x=>x.Role !== "Admin" && x.Gender === "Male").map(item => {
+            return {
+              id: item.ID,
+              name: item.Name,
+              phone: item.Phone,
+              gender: item.Gender
+            }
+          }))
+        }
+          }>
+          Male
+        </button>
+      ),
+      key: "2",
+    },
+    {
+      label: (
+        <button className="w-20" onClick={() => {
+          setItem("Female")
+          setData(fullData.filter(x=>x.Role !== "Admin" && x.Gender === "Female").map(item => {
+            return {
+              id: item.ID,
+              name: item.Name,
+              phone: item.Phone,
+              gender: item.Gender
+            }
+          }))
+          }}>
+          Female
+        </button>
+      ),
+      key: "3",
+    },
+  ];
+  const [item, setItem] = useState(" -- All --");
 	const column = [
 		{ label: 'ID', accessor: 'id' },
 		{ label: t('staff.staffName'), accessor: 'name' },
 		{ label: t('staff.phoneNumber'), accessor: 'phone' },
 		{ label: t('staff.gender'), accessor: 'gender' },
 		{ label: t('staff.detail'), accessor: 'detail' },
-	];
+  ];
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [fullData, setFullData] = useState([]);
@@ -90,74 +116,21 @@ export const Staff = () => {
 		setTotalPage(Math.ceil(data.length / 9));
 	}, [data]);
 
-	// const data = [
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	//   {
-	//     id: "001",
-	//     name: "Anom",
-	//     phone: "01234567",
-	//     gender: "Male",
-	//   },
-	// ];
+  const onSearch = (e) => {
+    setKeywords(e)
+    setData(fullData.filter(x=>x.Role !== "Admin" && ( x.Name.toLowerCase().includes(e.toLowerCase()) || (x.Phone.includes(e)))).map(item => {
+      return {
+        id: item.ID,
+        name: item.Name,
+        phone: item.Phone,
+        gender: item.Gender
+      }
+    }))
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
 	const [isAddOpen, setIsAddOpen] = useState(false);
 	const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -278,38 +251,14 @@ export const Staff = () => {
 					</div>
 				</div>
 			</div>
+      
+      <Modal centered={true} width="70%" closeIcon={null} open={isAddOpen} footer={null} onCancel={() => setIsAddOpen(false)}>
+        <AddStaff setIsLoading={() => setIsLoading()} fullData={fullData} open={isAddOpen} setOpen={setIsAddOpen} fetchData={() => fetchData()}/>
+      </Modal>
+      <Modal centered={true} width="70%" closeIcon={null} open={isDetailOpen} footer={null} onCancel={() => setIsDetailOpen(false)}>
+        <ProfileStaff setIsLoading={() => setIsLoading()} fullData={fullData} open={isDetailOpen} setOpen={setIsDetailOpen} data={selectedData} fetchData={() => fetchData()}/>
+      </Modal>
 
-			<Modal
-				centered={true}
-				width="70%"
-				closeIcon={null}
-				open={isAddOpen}
-				footer={null}
-				onCancel={() => setIsAddOpen(false)}>
-				<AddStaff
-					setIsLoading={() => setIsLoading()}
-					fullData={fullData}
-					open={isAddOpen}
-					setOpen={setIsAddOpen}
-					fetchData={() => fetchData()}
-				/>
-			</Modal>
-			<Modal
-				centered={true}
-				width="70%"
-				closeIcon={null}
-				open={isDetailOpen}
-				footer={null}
-				onCancel={() => setIsDetailOpen(false)}>
-				<ProfileStaff
-					setIsLoading={() => setIsLoading()}
-					fullData={fullData}
-					open={isDetailOpen}
-					setOpen={setIsDetailOpen}
-					data={selectedData}
-					fetchData={() => fetchData()}
-				/>
-			</Modal>
-		</Spin>
-	);
+    </Spin>
+  );
 };

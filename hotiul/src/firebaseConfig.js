@@ -10,15 +10,15 @@ import { getStorage } from 'firebase/storage';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // Hotiul 1
-// const firebaseConfig = {
-//   apiKey: "AIzaSyACK1byUNHYBvi0aJRiHzmDbM4XHoCAB5A",
-//   authDomain: "hotiul.firebaseapp.com",
-//   projectId: "hotiul",
-//   storageBucket: "hotiul.appspot.com",
-//   messagingSenderId: "13250723084",
-//   appId: "1:13250723084:web:27908d4224d230113fdd29",
-//   measurementId: "G-36RW5PYSM7",
-// };
+const firebaseConfig = {
+	apiKey: "AIzaSyACK1byUNHYBvi0aJRiHzmDbM4XHoCAB5A",
+	authDomain: "hotiul.firebaseapp.com",
+	projectId: "hotiul",
+	storageBucket: "hotiul.appspot.com",
+	messagingSenderId: "13250723084",
+	appId: "1:13250723084:web:27908d4224d230113fdd29",
+	measurementId: "G-36RW5PYSM7",
+};
 
 // const firebaseConfig = {
 //   apiKey: "AIzaSyDHi_F_OOHUiYed_ImY71Fxi7VPttR45Dc",
@@ -76,24 +76,24 @@ import { getStorage } from 'firebase/storage';
 
 //Hotiul 4
 // const firebaseConfig = {
-//   apiKey: "AIzaSyC_bB2WhutoHLD6TC2hLHkqmV27wz7RbZM",
-//   authDomain: "hotiul4.firebaseapp.com",
-//   projectId: "hotiul4",
-//   storageBucket: "hotiul4.appspot.com",
-//   messagingSenderId: "679546932269",
-//   appId: "1:679546932269:web:2864d19a05fc2520a5bca4",
-//   measurementId: "G-3HSSGKJNLZ"
+// 	apiKey: "AIzaSyC_bB2WhutoHLD6TC2hLHkqmV27wz7RbZM",
+// 	authDomain: "hotiul4.firebaseapp.com",
+// 	projectId: "hotiul4",
+// 	storageBucket: "hotiul4.appspot.com",
+// 	messagingSenderId: "679546932269",
+// 	appId: "1:679546932269:web:2864d19a05fc2520a5bca4",
+// 	measurementId: "G-3HSSGKJNLZ"
 // };
 
 // Hotiul 5
 // const firebaseConfig = {
-//   apiKey: "AIzaSyBCJzDoazj1YyzJoIC6aiynZ6C_fk01v84",
-//   authDomain: "hotiul5-45c01.firebaseapp.com",
-//   projectId: "hotiul5-45c01",
-//   storageBucket: "hotiul5-45c01.appspot.com",
-//   messagingSenderId: "938501227061",
-//   appId: "1:938501227061:web:71c5b9405637beedbee77c",
-//   measurementId: "G-HP790ECXE3"
+// 	apiKey: "AIzaSyBCJzDoazj1YyzJoIC6aiynZ6C_fk01v84",
+// 	authDomain: "hotiul5-45c01.firebaseapp.com",
+// 	projectId: "hotiul5-45c01",
+// 	storageBucket: "hotiul5-45c01.appspot.com",
+// 	messagingSenderId: "938501227061",
+// 	appId: "1:938501227061:web:71c5b9405637beedbee77c",
+// 	measurementId: "G-HP790ECXE3"
 // };
 
 // Hotiul 6
@@ -204,15 +204,15 @@ import { getStorage } from 'firebase/storage';
 
 ///---------------------///
 // //11
-const firebaseConfig = {
-	apiKey: 'AIzaSyAngnPq2s_wKXx8axpfk3YnWjrGOriCJG4',
-	authDomain: 'hotiul11.firebaseapp.com',
-	projectId: 'hotiul11',
-	storageBucket: 'hotiul11.appspot.com',
-	messagingSenderId: '975500922153',
-	appId: '1:975500922153:web:a67c551ecb01d42ba0bb38',
-	measurementId: 'G-87NWSVPZXT',
-};
+// const firebaseConfig = {
+// 	apiKey: 'AIzaSyAngnPq2s_wKXx8axpfk3YnWjrGOriCJG4',
+// 	authDomain: 'hotiul11.firebaseapp.com',
+// 	projectId: 'hotiul11',
+// 	storageBucket: 'hotiul11.appspot.com',
+// 	messagingSenderId: '975500922153',
+// 	appId: '1:975500922153:web:a67c551ecb01d42ba0bb38',
+// 	measurementId: 'G-87NWSVPZXT',
+// };
 
 // //22
 // const firebaseConfig = {

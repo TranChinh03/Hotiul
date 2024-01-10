@@ -95,7 +95,7 @@ const ROOM = [
   {
     ID: "R304",
     Name: "R304",
-    Status: "Available",
+    Status: "In Use",
     TypeID: "RT03",
     TypeName: "Single VIP Room",
   },
